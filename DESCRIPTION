@@ -1,13 +1,28 @@
-Package: BhGAM
+Package: BHAM
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Bayesian Hierarchical Additive Model
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person(given = "Boyi",
+           family = "Guo",
+           role = c("aut", "cre"),
+           email = "boyiguo1992@gmail.com",
+           comment = c(ORCID = "0000-0003-2950-2349")),
+           person(given = "Nengjun",
+           family = "Yi",
+           role = c("aut"),
+           email = "nyi@uab.edu")
+           )
+Maintainer@R: c(
+    person(given = "Boyi",
+           family = "Guo",
+           role = c("aut", "cre"),
+           email = "boyiguo1992@gmail.com",
+           comment = c(ORCID = "0000-0003-2950-2349"))
+           )
+Description: Functions for setting up and fitting various Bayesian hierarchical additive models, e.g. generalized additive model, additive Cox Model.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/boyiguo1/BhGAM
-BugReports: https://github.com/boyiguo1/BhGAM/issues
+URL: https://github.com/boyiguo1/BHAM
+BugReports: https://github.com/boyiguo1/BHAM/issues
