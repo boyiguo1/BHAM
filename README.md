@@ -7,7 +7,7 @@
 
 <!-- badges: end -->
 
-The goal of BHAM is to …
+The goal of BHAM is …
 
 ## Installation
 
