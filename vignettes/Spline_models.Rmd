@@ -1,0 +1,70 @@
+---
+title: "Using Spline in bglm"
+author: "Boyi Guo"
+date: "10/29/2020"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using Spline in bglm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=F)
+```
+
+### Dependency
+We would need the package `mgcv` to create spline data
+
+```{r}
+library(mgcv)
+```
+
+### Simulate data
+Following the data simulation example in `gam` from `mgcv`
+
+```{r}
+set.seed(2) ## simulate some data... 
+dat <- gamSim(1,n=400,dist="normal",scale=2)
+
+```
+
+### Prepare fitting data
+```{r}
+G <- gam(y~s(x0, bs="cr")+x1+ x2+s(x3),data=dat, fit=FALSE, drop.intercept = TRUE)
+```
+
+### Fitting spike and slab model
+What we need to do here is to create grouping based on G
+
+
+Following is a function that creates the grouping
+```{r}
+create_group <- function(G, intercept=T)
+{
+  m <- length(G$smooth)
+  
+  group <- c(G$smooth[[1]]$first.para,
+             map_dbl(G$smooth, .f = function(x){x$last.para}))
+  
+  
+  if(intercept == FALSE)
+    group <- group - 1
+}
+```
+
+### Reparmeterize the spline terms
+```{r}
+apply(G$smooth, FUN = function(x){
+  x
+  
+})
+
+```
+
+
+Fitting the model
+```{r}
+bglm(G$y ~ G$X, family = G$family, prior = mde(0, 0.04, 0.5),
+     group = create_group(G, intercept=T))
+```
