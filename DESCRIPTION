@@ -24,7 +24,7 @@ Description: TODO:: update thise section Functions for setting up and fitting va
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/boyiguo1/BHAM
+URL: https://boyiguo1.github.io/BHAM, https://github.com/boyiguo1/BHAM
 BugReports: https://github.com/boyiguo1/BHAM/issues
 RoxygenNote: 7.1.1
 Suggests: 
