@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • BHAM</title>
+<title>Create spline formula for high-dimension applications — create_HD_formula • BHAM</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Create spline formula for high-dimension applications — create_HD_formula" />
+<meta property="og:description" content="Create a formula that contains spline terms for high-dimension applications using spline_df" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -122,20 +123,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Create spline formula for high-dimension applications</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/HD_formula.R'><code>R/HD_formula.R</code></a></small>
+    <div class="hidden name"><code>create_HD_formula.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="Spline_models.html">Using Spline in bglm</a></dt>
-        <dd></dt>
-        <dt><a href="introduction.html">introduction</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>Create a formula that contains spline terms for high-dimension applications using spline_df</p>
     </div>
+
+    <pre class="usage"><span class='fu'>create_HD_formula</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>data</span>, <span class='va'>spl_df</span>, rm_overlap <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>formula</th>
+      <td><p>an optional object of class "<a href='https://rdrr.io/r/stats/formula.html'>formula</a>": a symbolic description of the parametric part of the model</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>an optional data frame, containing the parametric variables in the model, which will directly translate to a formula</p></td>
+    </tr>
+    <tr>
+      <th>spl_df</th>
+      <td><p>a data frame of three columns ("Var","Func", "Args") that is used to create spline terms in the model. Please see example or details or vignettes</p></td>
+    </tr>
+    <tr>
+      <th>rm_overlap</th>
+      <td><p>a logical variable: when there are overlapping variable(s) in both parametric part and spline part of the model, if the overlapping variables are removed from the parametric part.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>a logical variable: if the result formula would be printed</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an object of class "<a href='https://rdrr.io/r/stats/formula.html'>formula</a>": the final spline formula that could be to  <a href='bgam.html'>bgam</a> or <a href='https://rdrr.io/pkg/mgcv/man/gam.html'>gam</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>One of the [formula] and [data] arguments are required to create the parametric part of the formula. When both arguments are supplied,
+[data] arguments would be ignored. When [data] is supplied, <a href='https://rdrr.io/r/stats/formula.html'>DF2formula</a> will be called to generate [formula].</p>
+<p>[spl_df] is a data frame of three string columns: "Var" column contains the variable for splines, "Func" column contains the corresponding spline of choice (see also mgcv[smooth.terms]),
+"Args" column contains the arguments for the spline function.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/stats-package.html'>stats</a>[update], <a href='https://rdrr.io/r/stats/stats-package.html'>stats</a>[formula], mgcv[smooth.terms]</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># spl_df template</span>
+<span class='va'>spline_df</span> <span class='op'>&lt;-</span> <span class='fu'>tribble</span><span class='op'>(</span>
+ <span class='op'>~</span><span class='va'>Var</span>, <span class='op'>~</span><span class='va'>Func</span>, <span class='op'>~</span><span class='va'>Args</span>,
+ <span class='st'>"x0"</span>, <span class='st'>"s"</span>, <span class='st'>"k=1, bs='cr'"</span>,
+ <span class='st'>"x1"</span>, <span class='st'>"s"</span>, <span class='st'>"k=2, bs='cr'"</span>,
+ <span class='st'>"x2"</span>, <span class='st'>""</span>, <span class='st'>"k=2"</span> <span class='co'># will be ignored</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in tribble(~Var, ~Func, ~Args, "x0", "s", "k=1, bs='cr'", "x1",     "s", "k=2, bs='cr'", "x2", "", "k=2"): could not find function "tribble"</span></div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
