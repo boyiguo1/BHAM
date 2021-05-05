@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • BHAM</title>
+<title>Create grouping for spline design matrix — make_group • BHAM</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Create grouping for spline design matrix — make_group" />
+<meta property="og:description" content="Create grouping for spline design matrix" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -120,78 +121,43 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Create grouping for spline design matrix</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/helper-functions.R'><code>R/helper-functions.R</code></a></small>
+    <div class="hidden name"><code>make_group.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Create grouping for spline design matrix</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>make_group</span><span class='op'>(</span><span class='va'>.names</span>, null_group <span class='op'>=</span> <span class='cn'>TRUE</span>, shared_null <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BHAM.html">BHAM</a></code> </p>
-        </td>
-        <td><p>BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bgam.html">bgam()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="construct_smooth_data.html">construct_smooth_data()</a></code> </p>
-        </td>
-        <td><p>Creating design matrix based on spline configuration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_HD_formula.html">create_HD_formula()</a></code> </p>
-        </td>
-        <td><p>Create spline formula for high-dimension applications</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_group.html">make_group()</a></code> </p>
-        </td>
-        <td><p>Create grouping for spline design matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_predict_dat.html">make_predict_dat()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sim_Bai_logistic.html">sim_Bai_logistic()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.names</th>
+      <td><p>spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data</p></td>
+    </tr>
+    <tr>
+      <th>null_group</th>
+      <td><p>A indicator if the null space are in its own group, i.e. if null space are penalized</p></td>
+    </tr>
+    <tr>
+      <th>shared_null</th>
+      <td><p>A indicator if the null space have a shared indicator with the penalized space</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+
+
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

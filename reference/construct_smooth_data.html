@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • BHAM</title>
+<title>Creating design matrix based on spline configuration — construct_smooth_data • BHAM</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Creating design matrix based on spline configuration — construct_smooth_data" />
+<meta property="og:description" content="contruct_smooth_data creates the design matrix according to the spline function defined
+in sm_df. The spline design matrix is created using smoothCon from the pacakge mgcv." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -120,78 +122,38 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Creating design matrix based on spline configuration</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/helper-functions.R'><code>R/helper-functions.R</code></a></small>
+    <div class="hidden name"><code>construct_smooth_data.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>contruct_smooth_data creates the design matrix according to the spline function defined
+in sm_df. The spline design matrix is created using smoothCon from the pacakge mgcv.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>construct_smooth_data</span><span class='op'>(</span><span class='va'>sm_df</span>, <span class='va'>dat</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BHAM.html">BHAM</a></code> </p>
-        </td>
-        <td><p>BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bgam.html">bgam()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="construct_smooth_data.html">construct_smooth_data()</a></code> </p>
-        </td>
-        <td><p>Creating design matrix based on spline configuration</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_HD_formula.html">create_HD_formula()</a></code> </p>
-        </td>
-        <td><p>Create spline formula for high-dimension applications</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_group.html">make_group()</a></code> </p>
-        </td>
-        <td><p>Create grouping for spline design matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_predict_dat.html">make_predict_dat()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sim_Bai_logistic.html">sim_Bai_logistic()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>sm_df</th>
+      <td><p>a data frame that has three columns, _Func_, _Var_, _Args_ (case sensitive). See example</p></td>
+    </tr>
+    <tr>
+      <th>dat</th>
+      <td><p>the raw data set</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a dataframe that contains the design matrix of</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
