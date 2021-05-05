@@ -32,4 +32,10 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports: 
-    mgcv
+    glue,
+    dplyr,
+    mgcv,
+    magrittr,
+    purrr,
+    rlang,
+    unglue
