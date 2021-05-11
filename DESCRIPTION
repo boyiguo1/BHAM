@@ -38,4 +38,6 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    unglue
+    unglue,
+    MASS,
+    stats
