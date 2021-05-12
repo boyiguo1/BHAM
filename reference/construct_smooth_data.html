@@ -151,8 +151,26 @@ in sm_df. The spline design matrix is created using smoothCon from the pacakge m
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a dataframe that contains the design matrix of</p>
+    <p>a list contains</p><ul>
+<li><p>datathe contructed design matrix, the intercept and outcome is not included</p></li>
+<li><p>Smooth</p></li>
+</ul>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='va'>raw_dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sim_Bai.html'>sim_Bai</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in sim_Bai(10, ): argument "p" is missing, with no default</span></div><div class='input'>
+<span class='va'>sm_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+ Var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>, <span class='st'>"y"</span><span class='op'>)</span>,
+ Func <span class='op'>=</span> <span class='st'>"s"</span>,
+ Args <span class='op'>=</span><span class='st'>"bs='cr', k=27"</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in as.vector(x): object 'dat' not found</span></div><div class='input'>
+<span class='fu'>contruct_smooth_data</span><span class='op'>(</span><span class='va'>sm_df</span>, <span class='va'>raw_dat</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in contruct_smooth_data(sm_df, raw_dat): could not find function "contruct_smooth_data"</span></div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
