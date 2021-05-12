@@ -12,9 +12,27 @@ construct_smooth_data(sm_df, dat)
 \item{dat}{the raw data set}
 }
 \value{
-a dataframe that contains the design matrix of
+a list contains
+\itemize{
+  \item{data}{the contructed design matrix, the intercept and outcome is not included}
+  \item{Smooth}{}
+}
 }
 \description{
 contruct_smooth_data creates the design matrix according to the spline function defined
 in sm_df. The spline design matrix is created using smoothCon from the pacakge mgcv.
+}
+\examples{
+
+raw_dat <- sim_Bai(10, )
+
+sm_df <- data.frame(
+ Var = setdiff(names(dat), "y"),
+ Func = "s",
+ Args ="bs='cr', k=27"
+)
+
+contruct_smooth_data(sm_df, raw_dat)
+
+
 }

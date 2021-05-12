@@ -7,14 +7,32 @@
 #' @param sm_df a data frame that has three columns, _Func_, _Var_, _Args_ (case sensitive). See example
 #' @param dat the raw data set
 #'
-#' @return a dataframe that contains the design matrix of
+#' @return a list contains
+#' \itemize{
+#'   \item{data}{the contructed design matrix, the intercept and outcome is not included}
+#'   \item{Smooth}{}
+#' }
+#'
 #' @export
 #'
 #' @importFrom glue glue_data
 #' @import mgcv
-#' @import rlang
+#' @importFrom  rlang parse_expr
 #'
 #' @examples
+#'
+#' raw_dat <- sim_Bai(100, 5)$dat %>% data.frame
+#'
+#' sm_df <- data.frame(
+#'  Var = setdiff(names(raw_dat), "y"),
+#'  Func = "s",
+#'  Args ="bs='cr', k=5"
+#' )
+#'
+#'
+#' construct_smooth_data(sm_df, raw_dat)
+#'
+#'
 construct_smooth_data <- function(sm_df, dat){
 
   # To construct a list of expression
@@ -32,14 +50,26 @@ construct_smooth_data <- function(sm_df, dat){
                            null.space.penalty = TRUE,
                            diagonal.penalty = TRUE))[[1]]
 
-    colnames(raw_sm$X) <- paste0(raw_sm$term, ".base", 1:ncol(raw_sm$X))
+
+    if(length(raw_sm$rank) ==2 ){
+      pen.ind <- colSums(raw_sm$S[[1]])!=0
+      null.ind <- colSums(raw_sm$S[[2]])!=0
+      colnames(raw_sm$X)[pen.ind] <- paste0(raw_sm$term, ".pen", 1:sum(pen.ind))
+      colnames(raw_sm$X)[null.ind] <- paste0(raw_sm$term, ".null", 1:sum(null.ind))
+    } else if(length(raw_sm$rank) == 1 ){
+      colnames(raw_sm$X) <- paste0(raw_sm$term, ".base", 1:ncol(raw_sm$X))
+      warning("Abnormal behaviour when creating spline design matrix. No null space.")
+    } else{
+      error("Fail to create spline design matrix. Rank length > 2")
+    }
+
 
 
     .dat <- cbind(.dat,
                   raw_sm$X)
     SMs[[raw_sm$term]] <- raw_sm
 
-    expr(`$`(SMs, !!raw_sm$term)<-raw_sm) %>% eval()
+    # expr(`$`(SMs, !!raw_sm$term)<-raw_sm) %>% eval()
   }
 
 
@@ -64,6 +94,17 @@ construct_smooth_data <- function(sm_df, dat){
 #' @importFrom magrittr `%>%`
 #'
 #' @examples
+#' raw_dat <- sim_Bai(100, 5)$dat %>% data.frame
+#'
+#' sm_df <- data.frame(
+#'  Var = setdiff(names(raw_dat), "y"),
+#'  Func = "s",
+#'  Args ="bs='cr', k=5"
+#' )
+#'
+#' dsn_mat <- construct_smooth_data(sm_df, raw_dat)$data
+#'
+#' make_group(names(dsn_mat))
 make_group <- function(.names,
                        null_group = TRUE,
                        shared_null = FALSE
