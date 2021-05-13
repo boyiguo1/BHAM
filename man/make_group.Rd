@@ -4,12 +4,13 @@
 \alias{make_group}
 \title{Create grouping for spline design matrix}
 \usage{
-make_group(.names, null_group = TRUE, shared_null = FALSE)
+make_group(.names, penalize_null = TRUE, shared_null = FALSE)
 }
 \arguments{
-\item{.names}{spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data}
+\item{.names}{spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data
+#param null_group A indicator if the null space are in its own group, i.e. if null space are penalized}
 
-\item{null_group}{A indicator if the null space are in its own group, i.e. if null space are penalized}
+\item{penalize_null}{do we penalize the null space, i.e. do we fit the null space into group parameter in bglm group parameter.}
 
 \item{shared_null}{A indicator if the null space have a shared indicator with the penalized space}
 }
@@ -18,4 +19,17 @@ make_group(.names, null_group = TRUE, shared_null = FALSE)
 }
 \description{
 Create grouping for spline design matrix
+}
+\examples{
+raw_dat <- sim_Bai(100, 5)$dat \%>\% data.frame
+
+sm_df <- data.frame(
+ Var = setdiff(names(raw_dat), "y"),
+ Func = "s",
+ Args ="bs='cr', k=5"
+)
+
+dsn_mat <- construct_smooth_data(sm_df, raw_dat)$data
+
+make_group(names(dsn_mat))
 }

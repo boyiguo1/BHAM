@@ -83,7 +83,8 @@ construct_smooth_data <- function(sm_df, dat){
 #' Create grouping for spline design matrix
 #'
 #' @param .names spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data
-#' @param null_group A indicator if the null space are in its own group, i.e. if null space are penalized
+#' #param null_group A indicator if the null space are in its own group, i.e. if null space are penalized
+#' @param penalize_null do we penalize the null space, i.e. do we fit the null space into group parameter in bglm group parameter.
 #' @param shared_null  A indicator if the null space have a shared indicator with the penalized space
 #'
 #' @return
@@ -106,38 +107,44 @@ construct_smooth_data <- function(sm_df, dat){
 #'
 #' make_group(names(dsn_mat))
 make_group <- function(.names,
-                       null_group = TRUE,
+                       penalize_null = TRUE,
+                       # null_group = TRUE,
                        shared_null = FALSE
 ){
 
   # null_group & shared_null should not be set at TRUE at the same time
-
-  # TODO: current algorithm only works for cubic spline now by hard-coding to remove null space.
-  ret <- data.frame(names = .names, stringsAsFactors = FALSE) %>%
-    unglue::unglue_unnest(names, "{var}.base{ind}", remove=FALSE) %>%
+  data.frame(names = .names, stringsAsFactors = FALSE) %>%
+    unglue::unglue_unnest(names, "{var}.{part=pen|null}{ind=\\d*}", remove=FALSE) %>%
     mutate(ind = as.numeric(ind)) %>%
-    group_by(var) %>%
-    arrange(ind) %>%{
-      if(!shared_null)
-        slice(., -n())
+    {
+      if(shared_null){
+        group_by(., var)
+      }
+      else{
+        group_by(., var, part)
+      }
+    } %>%
+    {
+      if(!penalize_null)
+        filter(., part == "pen")
       else
         .
     } %>%
     summarize(res =  list(names), .groups = "drop") %>%
     pull(res)
 
-  if(null_group & !shared_null) {
-    concat_list <- data.frame(names = .names, stringsAsFactors = FALSE) %>%
-      unglue::unglue_unnest(names, "{var}.base{ind}", remove=FALSE) %>%
-      mutate(ind = as.numeric(ind)) %>%
-      group_by(var) %>%
-      arrange(ind) %>%
-      slice(., n()) %>%
-      summarize(res =  list(names), .groups = "drop") %>%
-      pull(res)
-  }
+  # if(null_group & !shared_null) {
+  #   concat_list <- data.frame(names = .names, stringsAsFactors = FALSE) %>%
+  #     unglue::unglue_unnest(names, "{var}.base{ind}", remove=FALSE) %>%
+  #     mutate(ind = as.numeric(ind)) %>%
+  #     group_by(var) %>%
+  #     arrange(ind) %>%
+  #     slice(., n()) %>%
+  #     summarize(res =  list(names), .groups = "drop") %>%
+  #     pull(res)
+  # }
 
-  ret <- c(ret, concat_list)
+  # ret <- c(ret, concat_list)
 }
 
 #' Title
@@ -156,6 +163,9 @@ make_predict_dat <- function(Smooth, dat){
   map_dfc(Smooth,
           .f= function(sm, .dat){
             ret <- mgcv::PredictMat(sm, data = .dat)
+
+            # TODO: fix the naming of this part as well.
+
             colnames(ret) <- paste0(sm$term, ".base",1:ncol(sm$X))
             ret %>% data.frame
           },

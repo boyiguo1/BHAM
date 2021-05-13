@@ -24,15 +24,16 @@ in sm_df. The spline design matrix is created using smoothCon from the pacakge m
 }
 \examples{
 
-raw_dat <- sim_Bai(10, )
+raw_dat <- sim_Bai(100, 5)$dat \%>\% data.frame
 
 sm_df <- data.frame(
- Var = setdiff(names(dat), "y"),
+ Var = setdiff(names(raw_dat), "y"),
  Func = "s",
- Args ="bs='cr', k=27"
+ Args ="bs='cr', k=5"
 )
 
-contruct_smooth_data(sm_df, raw_dat)
+
+construct_smooth_data(sm_df, raw_dat)
 
 
 }
