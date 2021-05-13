@@ -132,18 +132,19 @@
     <p>Create grouping for spline design matrix</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_group</span><span class='op'>(</span><span class='va'>.names</span>, null_group <span class='op'>=</span> <span class='cn'>TRUE</span>, shared_null <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_group</span><span class='op'>(</span><span class='va'>.names</span>, penalize_null <span class='op'>=</span> <span class='cn'>TRUE</span>, shared_null <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.names</th>
-      <td><p>spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data</p></td>
+      <td><p>spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data
+#param null_group A indicator if the null space are in its own group, i.e. if null space are penalized</p></td>
     </tr>
     <tr>
-      <th>null_group</th>
-      <td><p>A indicator if the null space are in its own group, i.e. if null space are penalized</p></td>
+      <th>penalize_null</th>
+      <td><p>do we penalize the null space, i.e. do we fit the null space into group parameter in bglm group parameter.</p></td>
     </tr>
     <tr>
       <th>shared_null</th>
@@ -157,6 +158,19 @@
 
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>raw_dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sim_Bai.html'>sim_Bai</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>$</span><span class='va'>dat</span> <span class='op'>%&gt;%</span> <span class='va'>data.frame</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in sim_Bai(100, 5)$dat %&gt;% data.frame: could not find function "%&gt;%"</span></div><div class='input'>
+<span class='va'>sm_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
+ Var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>raw_dat</span><span class='op'>)</span>, <span class='st'>"y"</span><span class='op'>)</span>,
+ Func <span class='op'>=</span> <span class='st'>"s"</span>,
+ Args <span class='op'>=</span><span class='st'>"bs='cr', k=5"</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in as.vector(x): object 'raw_dat' not found</span></div><div class='input'>
+<span class='va'>dsn_mat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='construct_smooth_data.html'>construct_smooth_data</a></span><span class='op'>(</span><span class='va'>sm_df</span>, <span class='va'>raw_dat</span><span class='op'>)</span><span class='op'>$</span><span class='va'>data</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in glue::glue_data(., "{Func}( {Var}{ifelse(is.na(Args)||Args=='', '', paste0(', ', Args))})"): object 'sm_df' not found</span></div><div class='input'>
+<span class='fu'>make_group</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>dsn_mat</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in data.frame(names = .names, stringsAsFactors = FALSE): object 'dsn_mat' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
