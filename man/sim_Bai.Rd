@@ -25,15 +25,15 @@ a list contains `dat`, `eta`, `mu`
 }
 }
 \description{
-
+Simulation functions for binomial, gaussian and poisson outcomes. The simulation equations follow Bai
 }
 \examples{
 # Binomial Outcome
 sim_Bai(100, 4)
 
 # Logistic Outcome
-sim_Bai(100, 4, family = poisson)
+sim_Bai(100, 4, family = poisson())
 
 # Gaussian Outcome with measurement error variance = 1
-sim_Bai(100, 4, family = gaussian, dispersion = 1 )
+sim_Bai(100, 4, family = gaussian(), dispersion = 1 )
 }

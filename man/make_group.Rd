@@ -15,12 +15,13 @@ make_group(.names, penalize_null = TRUE, shared_null = FALSE)
 \item{shared_null}{A indicator if the null space have a shared indicator with the penalized space}
 }
 \value{
-
+A vector of lists, where each element list contains variables that belong to the same group
 }
 \description{
 Create grouping for spline design matrix
 }
 \examples{
+
 raw_dat <- sim_Bai(100, 5)$dat \%>\% data.frame
 
 sm_df <- data.frame(

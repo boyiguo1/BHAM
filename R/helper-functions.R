@@ -17,7 +17,7 @@
 #'
 #' @importFrom glue glue_data
 #' @import mgcv
-#' @importFrom  rlang parse_expr
+#' @importFrom  rlang parse_expr .data
 #'
 #' @examples
 #'
@@ -30,13 +30,24 @@
 #' )
 #'
 #'
+#'
 #' construct_smooth_data(sm_df, raw_dat)
 #'
 #'
 construct_smooth_data <- function(sm_df, dat){
 
+  break_point <- TRUE
+
   # To construct a list of expression
-  fml_df <- sm_df %>% glue::glue_data("{Func}( {Var}{ifelse(is.na(Args)||Args=='', '', paste0(', ', Args))})")
+  fml_df <- sm_df %>%
+    mutate(no_args = is.na(.data$Args)|.data$Args=='',
+           arg_str = paste0(', ',.data$Args)) %>%
+    # dplyr::rowwise() %>%
+    glue::glue_data("{Func}( {Var}{ifelse(no_args, '', arg_str)})")
+
+
+  # %>%
+    # dplyr::ungroup()
 
   .dat <- data.frame(id = 1:nrow(dat))
 
@@ -60,7 +71,7 @@ construct_smooth_data <- function(sm_df, dat){
       colnames(raw_sm$X) <- paste0(raw_sm$term, ".base", 1:ncol(raw_sm$X))
       warning("Abnormal behaviour when creating spline design matrix. No null space.")
     } else{
-      error("Fail to create spline design matrix. Rank length > 2")
+      stop("Fail to create spline design matrix. Rank length > 2")
     }
 
 
@@ -87,14 +98,15 @@ construct_smooth_data <- function(sm_df, dat){
 #' @param penalize_null do we penalize the null space, i.e. do we fit the null space into group parameter in bglm group parameter.
 #' @param shared_null  A indicator if the null space have a shared indicator with the penalized space
 #'
-#' @return
+#' @return A vector of lists, where each element list contains variables that belong to the same group
 #' @export
 #'
 #' @importFrom unglue unglue_unnest
 #' @import dplyr
-#' @importFrom magrittr `%>%`
+#' @importFrom rlang .data
 #'
 #' @examples
+#'
 #' raw_dat <- sim_Bai(100, 5)$dat %>% data.frame
 #'
 #' sm_df <- data.frame(
@@ -115,23 +127,23 @@ make_group <- function(.names,
   # null_group & shared_null should not be set at TRUE at the same time
   data.frame(names = .names, stringsAsFactors = FALSE) %>%
     unglue::unglue_unnest(names, "{var}.{part=pen|null}{ind=\\d*}", remove=FALSE) %>%
-    mutate(ind = as.numeric(ind)) %>%
+    mutate(ind = as.numeric(.data$ind)) %>%
     {
       if(shared_null){
-        group_by(., var)
+        group_by(., .data$var)
       }
       else{
-        group_by(., var, part)
+        group_by(., .data$var, .data$part)
       }
     } %>%
     {
       if(!penalize_null)
-        filter(., part == "pen")
+        dplyr::filter(., .data$part == "pen")
       else
         .
     } %>%
-    summarize(res =  list(names), .groups = "drop") %>%
-    pull(res)
+    dplyr::summarize(res =  list(.data$names), .groups = "drop") %>%
+    dplyr::pull(.data$res)
 
   # if(null_group & !shared_null) {
   #   concat_list <- data.frame(names = .names, stringsAsFactors = FALSE) %>%
@@ -149,15 +161,28 @@ make_group <- function(.names,
 
 #' Title
 #'
-#' @param Smooth
-#' @param dat
+#' @param Smooth The smooth object from construct_smooth_data
+#' @param dat The testing data to construct the new design matrix.
 #'
-#' @return
+#' @return a data frame containing the trasnformed desgin matrix for the testing data
 #' @export
 #'
 #' @import purrr
 #'
 #' @examples
+#' raw_dat <- sim_Bai(100, 5)$dat %>% data.frame
+#' test_dat <- sim_Bai(100, 5)$dat %>% data.frame
+#'
+#' sm_df <- data.frame(
+#'  Var = setdiff(names(raw_dat), "y"),
+#'  Func = "s",
+#'  Args ="bs='cr', k=5"
+#' )
+#'
+#' dsn_smooth <- construct_smooth_data(sm_df, raw_dat)$Smooth
+#'
+#' make_predict_dat(dsn_smooth, test_dat)
+#'
 make_predict_dat <- function(Smooth, dat){
 
   map_dfc(Smooth,

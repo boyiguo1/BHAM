@@ -29,7 +29,8 @@ BugReports: https://github.com/boyiguo1/BHAM/issues
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 
     glue,
@@ -41,3 +42,4 @@ Imports:
     unglue,
     MASS,
     stats
+Config/testthat/edition: 3
