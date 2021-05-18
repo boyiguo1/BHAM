@@ -36,7 +36,7 @@
 #'
 construct_smooth_data <- function(sm_df, dat){
 
-  break_point <- TRUE
+  # break_point <- TRUE
 
   # To construct a list of expression
   fml_df <- sm_df %>%
