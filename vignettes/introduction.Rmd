@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 
 library(BHAM)
+library(tibble)
 ```
 
 ### Dependency
@@ -35,11 +36,11 @@ p <- 10
 
 # Train Data
 train_dat <- sim_Bai(n_train, p)
-dat <- train_dat$data %>% data.frame
+dat <- train_dat$dat %>% data.frame
 theta <- train_dat$theta
 
 # Test Data
-test_tmp <- sim_Bai_logistic(n_test, p)
+test_tmp <- sim_Bai(n_test, p)
 test_dat <- test_tmp$dat %>% data.frame
 test_theta <- test_tmp$theta
 ```
@@ -93,13 +94,14 @@ test_sm_dat <- make_predict_dat(train_sm_dat$Smooth, dat = test_dat)
 ## Fitting the model
 The model fitting  function is similar to 
 
-```{r}
+```{r eval = F}
 library(BhGLM)
 ```
 
 
-```{r}
-bglm_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
+```{r eval = F}
+bglm_spline(y~.-y,
+         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
 bmlasso_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
 ```
 

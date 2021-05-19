@@ -30,7 +30,8 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tibble
 VignetteBuilder: knitr
 Imports: 
     glue,
@@ -41,5 +42,6 @@ Imports:
     rlang,
     unglue,
     MASS,
-    stats
+    stats,
+    BhGLM
 Config/testthat/edition: 3
