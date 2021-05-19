@@ -1,5 +1,7 @@
 #' Creating design matrix based on spline configuration
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @description contruct_smooth_data creates the design matrix according to the spline function defined
 #' in sm_df. The spline design matrix is created using smoothCon from the pacakge mgcv.
 #'
@@ -74,6 +76,7 @@ construct_smooth_data <- function(sm_df, dat){
 
 
 #' Create grouping for spline design matrix
+#'  `r lifecycle::badge("experimental")`
 #'
 #' @param .names spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data
 #' #param null_group A indicator if the null space are in its own group, i.e. if null space are penalized
@@ -142,6 +145,7 @@ make_group <- function(.names,
 }
 
 #' Title
+#'  `r lifecycle::badge("experimental")`
 #'
 #' @param Smooth The smooth object from construct_smooth_data
 #' @param dat The testing data to construct the new design matrix.
@@ -179,6 +183,7 @@ make_predict_dat <- function(Smooth, dat){
 
 
 #' Create Smooth Design Matrix Column Names
+#'  `r lifecycle::badge("experimental")`
 #'
 #' @description Internal function for creating names for Smooth design matrix
 #'

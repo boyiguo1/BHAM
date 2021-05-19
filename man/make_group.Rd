@@ -2,7 +2,8 @@
 % Please edit documentation in R/helper-functions.R
 \name{make_group}
 \alias{make_group}
-\title{Create grouping for spline design matrix}
+\title{Create grouping for spline design matrix
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}`}
 \usage{
 make_group(.names, penalize_null = TRUE, shared_null = FALSE)
 }
@@ -19,6 +20,7 @@ A vector of lists, where each element list contains variables that belong to the
 }
 \description{
 Create grouping for spline design matrix
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}`
 }
 \examples{
 

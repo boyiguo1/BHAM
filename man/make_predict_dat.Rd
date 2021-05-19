@@ -2,7 +2,8 @@
 % Please edit documentation in R/helper-functions.R
 \name{make_predict_dat}
 \alias{make_predict_dat}
-\title{Title}
+\title{Title
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}`}
 \usage{
 make_predict_dat(Smooth, dat)
 }
@@ -16,6 +17,7 @@ a data frame containing the trasnformed desgin matrix for the testing data
 }
 \description{
 Title
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}`
 }
 \examples{
 raw_dat <- sim_Bai(100, 5)$dat \%>\% data.frame

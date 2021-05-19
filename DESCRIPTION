@@ -30,6 +30,7 @@ RoxygenNote: 7.1.1
 Suggests: 
     BhGLM,
     knitr,
+    lifecycle,
     rmarkdown,
     testthat (>= 3.0.0),
     tibble
@@ -45,3 +46,4 @@ Imports:
     MASS,
     stats
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)

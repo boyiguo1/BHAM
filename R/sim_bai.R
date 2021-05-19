@@ -1,5 +1,7 @@
 #' Simulate Spline Data
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @description Simulation functions for binomial, gaussian and poisson outcomes. The simulation equations follow Bai
 #'
 #' @param n Integer, sample size
