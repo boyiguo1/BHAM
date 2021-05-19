@@ -36,51 +36,33 @@
 #'
 construct_smooth_data <- function(sm_df, dat){
 
-  # break_point <- TRUE
-
   # To construct a list of expression
   fml_df <- sm_df %>%
     mutate(no_args = is.na(.data$Args)|.data$Args=='',
            arg_str = paste0(', ',.data$Args)) %>%
-    # dplyr::rowwise() %>%
     glue::glue_data("{Func}( {Var}{ifelse(no_args, '', arg_str)})")
-
-
-  # %>%
-    # dplyr::ungroup()
 
   .dat <- data.frame(id = 1:nrow(dat))
 
   SMs <- list()
 
   for(i in 1:length(fml_df)){
-    raw_sm <- (fml_df[i] %>% rlang::parse_expr() %>% eval() %>%
-                 smoothCon(object = ., data = dat,
-                           scale.penalty = TRUE,
-                           absorb.cons = TRUE,
-                           null.space.penalty = TRUE,
-                           diagonal.penalty = TRUE))[[1]]
+    raw_sm <- (
+      fml_df[i] %>%
+        rlang::parse_expr() %>%
+        eval() %>%
+        smoothCon(object = ., data = dat,
+                  scale.penalty = TRUE,
+                  absorb.cons = TRUE,
+                  null.space.penalty = TRUE,
+                  diagonal.penalty = TRUE)
+    )[[1]]
 
-
-    if(length(raw_sm$rank) ==2 ){
-      pen.ind <- colSums(raw_sm$S[[1]])!=0
-      null.ind <- colSums(raw_sm$S[[2]])!=0
-      colnames(raw_sm$X)[pen.ind] <- paste0(raw_sm$term, ".pen", 1:sum(pen.ind))
-      colnames(raw_sm$X)[null.ind] <- paste0(raw_sm$term, ".null", 1:sum(null.ind))
-    } else if(length(raw_sm$rank) == 1 ){
-      colnames(raw_sm$X) <- paste0(raw_sm$term, ".base", 1:ncol(raw_sm$X))
-      warning("Abnormal behaviour when creating spline design matrix. No null space.")
-    } else{
-      stop("Fail to create spline design matrix. Rank length > 2")
-    }
-
-
+    colnames(raw_sm$X) <- create_smooth_name(raw_sm)
 
     .dat <- cbind(.dat,
                   raw_sm$X)
     SMs[[raw_sm$term]] <- raw_sm
-
-    # expr(`$`(SMs, !!raw_sm$term)<-raw_sm) %>% eval()
   }
 
 
@@ -188,16 +170,54 @@ make_predict_dat <- function(Smooth, dat){
   map_dfc(Smooth,
           .f= function(sm, .dat){
             ret <- mgcv::PredictMat(sm, data = .dat)
-
-            # TODO: fix the naming of this part as well.
-
-            colnames(ret) <- paste0(sm$term, ".base",1:ncol(sm$X))
+            colnames(ret) <- create_smooth_name(sm)
             ret %>% data.frame
           },
           .dat = dat
   )
-
 }
+
+
+#' Create Smooth Design Matrix Column Names
+#'
+#' @description Internal function for creating names for Smooth design matrix
+#'
+#' @param smth the Smooth object, created from smoothCon of mgcv
+#'
+#' @return a vector of string, containing the column names of the spline design matrix
+#'
+#' @import mgcv
+#'
+#' @examples
+#'  smth <- (
+#'   mgcv::smoothCon(object = mgcv::s(x), data = data.frame(x = rnorm(100)),
+#'             scale.penalty = TRUE,
+#'             absorb.cons = TRUE,
+#'             null.space.penalty = TRUE,
+#'             diagonal.penalty = TRUE)
+#' )[[1]]
+#'
+#' BHAM:::create_smooth_name(smth)
+
+create_smooth_name <- function(smth) {
+
+  ret_name <- rep(NA_character_, ncol(smth$X))
+
+  if(length(smth$rank) ==2 ){
+    pen.ind <- colSums(smth$S[[1]])!=0
+    null.ind <- colSums(smth$S[[2]])!=0
+    ret_name[pen.ind] <- paste0(smth$term, ".pen", 1:sum(pen.ind))
+    ret_name[null.ind] <- paste0(smth$term, ".null", 1:sum(null.ind))
+  } else if(length(smth$rank) == 1 ){
+    ret_name <- paste0(smth$term, ".base", 1:ncol(smth$X))
+    warning("Abnormal behaviour when creating spline design matrix. No null space.")
+  } else{
+    stop("Fail to create spline design matrix. Rank length > 2")
+  }
+
+  return(ret_name)
+}
+
 
 # coef <- coefficients(bgam_local)
 # cov <- vcov.bh(bgam_local)

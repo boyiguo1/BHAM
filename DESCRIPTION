@@ -31,7 +31,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    tibble
+    tibble,
+    BhGLM
 VignetteBuilder: knitr
 Imports: 
     glue,
@@ -43,5 +44,5 @@ Imports:
     unglue,
     MASS,
     stats,
-    BhGLM
+
 Config/testthat/edition: 3
