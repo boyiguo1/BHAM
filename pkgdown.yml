@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2021-05-19T15:26Z
+last_built: 2021-05-19T15:33Z
 urls:
   reference: https://boyiguo1.github.io/BHAM/reference
   article: https://boyiguo1.github.io/BHAM/articles
