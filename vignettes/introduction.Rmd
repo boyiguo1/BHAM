@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 
 library(BHAM)
-library(tibble)
 ```
 
 ### Dependency
@@ -52,7 +51,7 @@ Since our models are primarily designed for high-dimensional applications. Hence
 
 ```{r}
 # Low-dimensional setting
-mgcv_df <- tribble(
+mgcv_df <- dplyr::tribble(
     ~Var, ~Func, ~Args,
     "X1",  "s",     "bs='cr', k=5",
     "X2",  "s",     NA,
@@ -100,7 +99,7 @@ library(BhGLM)
 
 
 ```{r eval = F}
-bglm_spline(y~.-y,
+mdl1 <- bglm_spline(y~.-y,
          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
 bmlasso_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
 ```
