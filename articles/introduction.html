@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/functional_selection.html">Functional Selection</a>
+    </li>
+    <li>
       <a href="../articles/introduction.html">Introduction to BHAM</a>
     </li>
   </ul>
@@ -128,7 +131,7 @@
 <p>Since our models are primarily designed for high-dimensional applications. Hence, we are mindful about how to formulate the regression equation. Our solution here is to use a data frame which contains the necessary components of a spline function, in the format of <code>Var</code> <code>Func</code>, <code>Args</code>, which later passed to a parser function, which will assemble the regression equation for you. We believe such automation process, implemented in <code>construct_smooth_data</code>, will ease the task load to set up the regression formula, when the number of spline components grows to tens or hundreds.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Low-dimensional setting</span>
-<span class="va">mgcv_df</span> <span class="op">&lt;-</span> <span class="fu">tribble</span><span class="op">(</span>
+<span class="va">mgcv_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span>
     <span class="op">~</span><span class="va">Var</span>, <span class="op">~</span><span class="va">Func</span>, <span class="op">~</span><span class="va">Args</span>,
     <span class="st">"X1"</span>,  <span class="st">"s"</span>,     <span class="st">"bs='cr', k=5"</span>,
     <span class="st">"X2"</span>,  <span class="st">"s"</span>,     <span class="cn">NA</span>,
@@ -167,7 +170,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">bglm_spline</span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
+<code class="sourceCode R"><span class="va">mdl1</span> <span class="op">&lt;-</span> <span class="fu">bglm_spline</span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
          data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">bmlasso_spline</span><span class="op">(</span>x <span class="op">=</span> <span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
