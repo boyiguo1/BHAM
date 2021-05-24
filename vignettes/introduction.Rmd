@@ -100,9 +100,17 @@ library(BhGLM)
 
 ```{r eval = F}
 mdl1 <- bglm_spline(y~.-y,
-         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
+         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
 bmlasso_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
 ```
 
 
 ## Model Results Summary
+### Functional Selection
+
+```{r}
+df.adj(mdl1, names(train_smooth_data)[grep("x1[.]pen", names(train_smooth_data))])
+calculate_EDF(mdl1, names(train_smooth_data)[grep("x1[.]pen", names(train_smooth_data))])
+
+
+```

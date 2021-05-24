@@ -34,6 +34,11 @@ $$
 $$
 where A is $X(X^TX+S_\lambda)^{-1}X^T$ and $S_\lambda = \sum_j \lambda_j S_j$.
 
+As our Bayesian model is not a penalized model, the penalty parameter $\lambda_j$ is not directly available, and hence needed to be estimate. Following our mixture normal model specification, we can write the SS prior as a $l_2$ penalty following Equation X
+
+$$
+log(p(\beta_j|\gamma_j)) = 
+$$
 
 ## Appendix
 
