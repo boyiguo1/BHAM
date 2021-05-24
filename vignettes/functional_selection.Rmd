@@ -26,4 +26,36 @@ Overall, using hypothesis testing for function selection has two-fold challenges
 
 
 ### Effective Degree of Freedom
-Estimating effective degree of freedom (EDF) is a prevalent problem encountered in complicated models, such as penalized models and Bayesian hierarchical models, to establish the complexity of a model. Hence, the problem is well studied. Previous work on estimating EDF include
+Estimating effective degree of freedom (EDF) is a common problem encountered in complex models, such as penalized models and Bayesian hierarchical models. It is used to establish the complexity of a model. The problem of estimating EDF is well studied. Previous work on estimating EDF include. In our GAM model, we follow Wood (2017, PP. 252) to estimate EDF.
+
+The estimated EDF of a GAM model is 
+$$
+\tau = \text{tr}(2A-AA),
+$$
+where A is $X(X^TX+S_\lambda)^{-1}X^T$ and $S_\lambda = \sum_j \lambda_j S_j$.
+
+
+## Appendix
+
+# Test matrix trace calcualtion
+```{r}
+n <- 100
+p_1 <- 5
+p_2 <- 10
+
+
+x_1 <- MASS::mvrnorm(n,rep(0, p_1), diag(p_1))
+x_2 <- MASS::mvrnorm(n,rep(0, p_2), diag(p_2))
+
+x <- cbind(x_1, x_2)
+
+A <- x%*%solve(crossprod(x) + diag(p_1+p_2))%*%t(x)
+
+A_1 <- x_1%*%solve(crossprod(x_1) + diag(p_1))%*%t(x_1)
+
+A_2 <- x_2%*%solve(crossprod(x_2) + diag(p_2))%*%t(x_2)
+
+tau <- sum(diag(2*A))-sum(diag(A%*%A))
+tau_1 <- sum(diag(2*A_1))-sum(diag(A_1%*%A_1))
+tau_2 <- sum(diag(2*A_2))-sum(diag(A_2%*%A_2))
+```
