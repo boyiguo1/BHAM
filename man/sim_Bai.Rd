@@ -11,29 +11,32 @@ sim_Bai(n, p, family = binomial(), dispersion = 1)
 
 \item{p}{Integer, number of predictors. The minimum number of predictors is default to 4. If user input p<4, p changes to 4 with a warning message}
 
-\item{family}{Family object, one of `binomial` (default), `gaussian` , `poisson`. Please see \code{\link[stats]{family}} for more detail}
+\item{family}{Family object, one of \code{binomial} (default), \code{gaussian} , \code{poisson}. Please see \code{\link[stats]{family}} for more detail}
 
 \item{dispersion}{Double, required for gaussian distribution, match to sd parameter.}
 }
 \value{
-a list contains `dat`, `eta`, `mu`
+a list contains \code{dat}, \code{eta}, \code{mu}
 \itemize{
-    \item{dat}{ a numeric matrix, contains predictors `x1` to `xp` where p is replaced by the integer value. The outcome variable is named `y`}
-    \item{eta}{the linear predictor of the simulated data}
-    \item{mu}{the mean of the simulated data}
+\item{dat}{ a numeric matrix, contains predictors \code{x1} to \code{xp} where p is replaced by the integer value. The outcome variable is named \code{y}}
+\item{eta}{the linear predictor of the simulated data}
+\item{mu}{the mean of the simulated data}
 
 }
 }
 \description{
-
+Simulation functions for binomial, gaussian and poisson outcomes. The simulation equations follow Bai
+}
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 # Binomial Outcome
 sim_Bai(100, 4)
 
 # Logistic Outcome
-sim_Bai(100, 4, family = poisson)
+sim_Bai(100, 4, family = poisson())
 
 # Gaussian Outcome with measurement error variance = 1
-sim_Bai(100, 4, family = gaussian, dispersion = 1 )
+sim_Bai(100, 4, family = gaussian(), dispersion = 1 )
 }

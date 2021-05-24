@@ -1,0 +1,29 @@
+---
+title: "Functional Selection"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Functional Selection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BHAM)
+```
+
+
+## Hypothesis Testing
+The smoothing spline models are considered as penalized model, and hence, hypothesis testing of the regression coefficients becomes more complicated due to the shrinkage imposed on the coefficients. Similarly, when jointly testing more than one coefficients, for example testing the penalized part of a spline function, the degree of freedom is unclear. Defaulting to the number of coefficients will overestimate the degree of freedom, and hence introduce under-powered test. Using the well established concept "effective degree of freedom" can alleviate the problem, but introduce another one. When using Wald type of test, the test statistics follows a $\chi^2$ distribution with degree of freedom $k$, where $k$ is a positive integer. However, this does not applied to the effective degree of freedom which is not necessarily an integer. Hence, establishing the limiting distribution of the test statistics becomes a new challenge.
+
+Overall, using hypothesis testing for function selection has two-fold challenges: first of all, establish the effective degree of freedom; secondly, find the sampling distribution of the test statistics.
+
+
+### Effective Degree of Freedom
+Estimating effective degree of freedom (EDF) is a prevalent problem encountered in complicated models, such as penalized models and Bayesian hierarchical models, to establish the complexity of a model. Hence, the problem is well studied. Previous work on estimating EDF include

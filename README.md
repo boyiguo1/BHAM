@@ -5,6 +5,9 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/boyiguo1/BHAM/workflows/R-CMD-check/badge.svg)](https://github.com/boyiguo1/BHAM/actions)
 <!-- badges: end -->
 
 The goal of BHAM is …
@@ -47,4 +50,4 @@ up-to-date.
 You can also embed plots, for example:
 
 In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!
+files, so they display on GitHub!

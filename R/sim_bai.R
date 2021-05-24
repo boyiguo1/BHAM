@@ -1,6 +1,8 @@
 #' Simulate Spline Data
 #'
-#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' @description Simulation functions for binomial, gaussian and poisson outcomes. The simulation equations follow Bai
 #'
 #' @param n Integer, sample size
 #' @param p Integer, number of predictors. The minimum number of predictors is default to 4. If user input p<4, p changes to 4 with a warning message
@@ -18,16 +20,17 @@
 #'
 #' @importFrom MASS mvrnorm
 #' @importFrom stats rpois rbinom rnorm
+#' @importFrom stats family binomial poisson gaussian
 #'
 #' @examples
 #' # Binomial Outcome
 #' sim_Bai(100, 4)
 #'
 #' # Logistic Outcome
-#' sim_Bai(100, 4, family = poisson)
+#' sim_Bai(100, 4, family = poisson())
 #'
 #' # Gaussian Outcome with measurement error variance = 1
-#' sim_Bai(100, 4, family = gaussian, dispersion = 1 )
+#' sim_Bai(100, 4, family = gaussian(), dispersion = 1 )
 sim_Bai <- function(n, p, family = binomial(), dispersion = 1){
   if(p < 4){
     p <- 4

@@ -7,32 +7,37 @@
 construct_smooth_data(sm_df, dat)
 }
 \arguments{
-\item{sm_df}{a data frame that has three columns, _Func_, _Var_, _Args_ (case sensitive). See example}
+\item{sm_df}{a data frame that has three columns, \emph{Func}, \emph{Var}, \emph{Args} (case sensitive). See example}
 
 \item{dat}{the raw data set}
 }
 \value{
 a list contains
 \itemize{
-  \item{data}{the contructed design matrix, the intercept and outcome is not included}
-  \item{Smooth}{}
+\item{data}{the contructed design matrix, the intercept and outcome is not included}
+\item{Smooth}{}
 }
 }
 \description{
 contruct_smooth_data creates the design matrix according to the spline function defined
 in sm_df. The spline design matrix is created using smoothCon from the pacakge mgcv.
 }
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
 \examples{
 
-raw_dat <- sim_Bai(10, )
+raw_dat <- sim_Bai(100, 5)$dat \%>\% data.frame
 
 sm_df <- data.frame(
- Var = setdiff(names(dat), "y"),
+ Var = setdiff(names(raw_dat), "y"),
  Func = "s",
- Args ="bs='cr', k=27"
+ Args ="bs='cr', k=5"
 )
 
-contruct_smooth_data(sm_df, raw_dat)
+
+
+construct_smooth_data(sm_df, raw_dat)
 
 
 }

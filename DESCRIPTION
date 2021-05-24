@@ -1,7 +1,7 @@
 Package: BHAM
 Type: Package
 Title: Bayesian Hierarchical Additive Model
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person(given = "Boyi",
            family = "Guo",
@@ -28,8 +28,11 @@ URL: https://boyiguo1.github.io/BHAM, https://github.com/boyiguo1/BHAM
 BugReports: https://github.com/boyiguo1/BHAM/issues
 RoxygenNote: 7.1.1
 Suggests: 
+    BhGLM,
     knitr,
-    rmarkdown
+    lifecycle,
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 
     glue,
@@ -41,3 +44,5 @@ Imports:
     unglue,
     MASS,
     stats
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
