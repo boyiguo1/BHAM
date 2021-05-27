@@ -39,6 +39,10 @@ sim_Bai <- function(n, p, family = binomial(), dispersion = 1){
 
   x <- MASS::mvrnorm(n=n, mu= rep(0, p), Sigma = diag(p))
   eta <- 5*sin(2*pi*x[,1]) - 4*cos(2*pi*x[,2]-0.5) + 6*(x[,3]-0.5)-5*(x[,4]^2-0.3)
+
+  if(family$family=="poisson")
+    eta <- sin(2*pi*x[,1]) - cos(2*pi*x[,2]-0.5) + 0.4*exp(x[,3])-2*(x[,4]^2-0.5)
+
   # theta <- exp(lp)/(1+exp(lp))
   mu <- family$linkinv(eta)
 
