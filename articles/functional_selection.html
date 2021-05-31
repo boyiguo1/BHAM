@@ -105,8 +105,43 @@
 <div id="effective-degree-of-freedom" class="section level3">
 <h3 class="hasAnchor">
 <a href="#effective-degree-of-freedom" class="anchor"></a>Effective Degree of Freedom</h3>
-<p>Estimating effective degree of freedom (EDF) is a prevalent problem encountered in complicated models, such as penalized models and Bayesian hierarchical models, to establish the complexity of a model. Hence, the problem is well studied. Previous work on estimating EDF include</p>
+<p>Estimating effective degree of freedom (EDF) is a common problem encountered in complex models, such as penalized models and Bayesian hierarchical models. It is used to establish the complexity of a model. The problem of estimating EDF is well studied. Previous work on estimating EDF include. In our GAM model, we follow Wood (2017, PP. 252) to estimate EDF.</p>
+<p>The estimated EDF of a GAM model is <span class="math display">\[
+\tau = \text{tr}(2A-AA),
+\]</span> where A is <span class="math inline">\(X(X^TX+S_\lambda)^{-1}X^T\)</span> and <span class="math inline">\(S_\lambda = \sum_j \lambda_j S_j\)</span>.</p>
+<p>As our Bayesian model is not a penalized model, the penalty parameter <span class="math inline">\(\lambda_j\)</span> is not directly available, and hence needed to be estimate. Following our mixture normal model specification, we can write the SS prior as a <span class="math inline">\(l_2\)</span> penalty following Equation X</p>
+<p><span class="math display">\[
+log(p(\beta_j|\gamma_j)) = 
+\]</span></p>
 </div>
+</div>
+<div id="appendix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#appendix" class="anchor"></a>Appendix</h2>
+</div>
+<div id="test-matrix-trace-calcualtion" class="section level1">
+<h1 class="hasAnchor">
+<a href="#test-matrix-trace-calcualtion" class="anchor"></a>Test matrix trace calcualtion</h1>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
+<span class="va">p_1</span> <span class="op">&lt;-</span> <span class="fl">5</span>
+<span class="va">p_2</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+
+
+<span class="va">x_1</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x_2</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">x_1</span>, <span class="va">x_2</span><span class="op">)</span>
+
+<span class="va">A</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">+</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="va">A_1</span> <span class="op">&lt;-</span> <span class="va">x_1</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html">crossprod</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span>
+
+<span class="va">A_2</span> <span class="op">&lt;-</span> <span class="va">x_2</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html">crossprod</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span>
+
+<span class="va">tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op">%*%</span><span class="va">A</span><span class="op">)</span><span class="op">)</span>
+<span class="va">tau_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A_1</span><span class="op">%*%</span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">tau_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A_2</span><span class="op">%*%</span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
