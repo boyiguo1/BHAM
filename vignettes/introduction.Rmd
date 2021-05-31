@@ -108,7 +108,7 @@ bmlasso_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = ma
 ## Model Results Summary
 ### Functional Selection
 
-```{r}
+```{r eval = F}
 df.adj(mdl1, names(train_smooth_data)[grep("x2[.]pen", names(train_smooth_data))])
 df.adj(mdl1, names(train_smooth_data)[grep("x20[.]pen", names(train_smooth_data))])
 calculate_EDF(mdl1, names(train_smooth_data)[grep("x2[.]pen", names(train_smooth_data))])
