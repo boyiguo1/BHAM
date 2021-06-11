@@ -1,0 +1,193 @@
+---
+title: "Examine Prior Update"
+author: "Boyi Guo"
+date: "6/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(BhGLM)
+library(BHAM)
+```
+
+# Problem Statement
+
+When I was studying for the problem of estimating effect degree of freedom, I dug down to the rabit hole and tried to understand more about the /regularization/shrinkage/penalty from a Bayesian hierarchical model, specifically spike-and-slab mixture normal distribution.
+
+To my understanding, we can write the mixture normal prior to a $l_2$ norm assuming the density (bernoulli($\pi$)) of the indicator variable and the scale parameter (s_0, s_1) are given. Specifically, 
+
+$$
+\lambda_{l_2} = \text{[TODO: add equation]},
+$$
+where the regularization parameter $\lambda$ is in an inverse relationship with the scale parameter of (mixture) normal distribution. In the bglm function, the returning vector `prior.scale` should match to this penalty parameter. The function returns the regularization parameter $\lambda$ as well as `prior.scale` as an starting value for Bayesian hierarchical counterparts.
+
+## K=100
+```{r}
+N = 1000
+K = 100
+x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
+h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
+nz = as.integer(seq(5, K, by=K/length(h))); nz
+yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5, sigma=1.6) # simulate responses
+yy$coefs
+
+y = yy$y.normal; fam = "gaussian"; y = scale(y)
+# y = yy$y.ordinal; fam = "binomial"
+# y = yy$y.surv; fam = "cox" 
+
+f1 = glmNet(x, y, family = fam, ncv = 1) 
+c(f1$lambda, f1$prior.scale)
+```
+
+## K=1000
+```{r}
+K = 1000
+x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
+h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
+nz = as.integer(seq(5, K, by=K/length(h))); nz
+yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5, sigma=1.6) # simulate responses
+yy$coefs
+
+y = yy$y.normal; fam = "gaussian"; y = scale(y)
+# y = yy$y.ordinal; fam = "binomial"
+# y = yy$y.surv; fam = "cox" 
+
+f2 = glmNet(x, y, family = fam, ncv = 1) 
+c(f2$lambda, f2$prior.scale)
+```
+
+
+Via the example, we can see that lambda and prior.scale increase and decrease respectivelly when the number of predictors increase from 100 to 1000 while the number of effective predictors remains the same.
+
+
+To further explain `prior.scale`, when the effect is small, the prior.scale is small, and hence the shrinkage impose on the variable are large. On the contrary, prior.scale is large when the effect is large, and hence the shrinkage is small.
+
+
+# Problem 2: How does the group statement work for `bglm`
+
+## First Senario: I am grouping each predictors together VS not grouping
+In this part, I would like to analyze if grouping each individual predictors will change the prediction. I am hypothesizing it will not change by adding the grouping arguments
+
+```{r}
+N = 1000
+K = 100
+x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
+h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
+nz = as.integer(seq(5, K, by=K/length(h))); nz
+yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5, sigma=1.6) # simulate responses
+yy$coefs
+
+y = yy$y.normal; fam = "gaussian"; y = scale(y)
+# y = yy$y.ordinal; fam = "binomial"
+# y = yy$y.surv; fam = "cox" 
+
+f2 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf))
+
+f3 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = 1)
+```
+
+
+### Coefficients
+```{r}
+head(coef(f2))
+head(coef(f3))
+```
+
+### Inclusion Probabilities
+```{r}
+head(data.frame(f2$p, f3$p))
+```
+
+### Hyper Prior for inclusion probability
+```{r}
+head(data.frame(f2$ptheta, f3$ptheta))
+```
+
+### Scale
+
+```{r}
+head(data.frame(f2$prior.scale, f3$prior.scale))
+```
+
+### Prior.sd
+```{r}
+head(data.frame(f2$prior.sd, f3$prior.sd))
+```
+
+
+## Second Scenario: Variables that are not in a group arguments
+In this scenario, I would like to study the behaviour when some of the covariates are included in the model, but not included in a group argument. The main quesiton of mine is that if these covariates of adjustment will be penalized or not.
+
+```{r}
+N = 1000
+K = 100
+x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
+h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
+nz = as.integer(seq(5, K, by=K/length(h))); nz
+yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5, sigma=1.6) # simulate responses
+yy$coefs
+
+y = yy$y.normal; fam = "gaussian"; y = scale(y)
+# y = yy$y.ordinal; fam = "binomial"
+# y = yy$y.surv; fam = "cox" 
+
+
+## Screening
+# feature_name <- 
+gam_screening_res <- x %>% 
+  names() %>% 
+map_dfr(#feature_name[1:2],
+        .f = function(name, y, .dat){
+  # name <- feature_name[1]
+  # y <- .dat %>% pull(death3yr)D
+  x <- .dat %>% pull({{name}})
+  mgcv::gam(y ~ s(x, bs = "cr", k = 10), family = gaussian(),
+            data = data.frame(x, y)) %>% 
+    broom::tidy() %>% 
+    filter(term == "s(x)") %>% 
+    select(p.value) %>% 
+    mutate(var = name,
+           p.value)
+  
+},
+  y = y,
+.dat = x)
+
+data.frame(
+gam_screening_res,
+p.adj = p.adjust(gam_screening_res$p.value, "BH")
+) %>% arrange(p.adj)
+
+
+f2 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf))
+
+f3 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = purrr::map(5:K, ~.x))
+```
+
+What is wrong in this case? Why the warning messages?
+
+
+### Inclusion Probabilities
+```{r}
+head(data.frame(f2$p, f3$p))
+```
+
+### Hyper Prior for inclusion probability
+```{r}
+head(data.frame(f2$ptheta, f3$ptheta))
+```
+
+### Scale
+
+```{r}
+head(data.frame(f2$prior.scale, f3$prior.scale))
+```
+
+### Prior.sd
+```{r}
+head(data.frame(f2$prior.sd, f3$prior.sd))
+```
+
+

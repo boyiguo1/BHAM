@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+author: "Boyi Guo"
+date: "6/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(BhGLM)
+library(tidyverse)
+```
+
+# Test if marginal fitting is similar
+
+# Simulate desgin matrix
+
+
+```{r}
+N = 1000
+K = 10
+x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
+h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
+nz = as.integer(seq(5, K, by=K/length(h))); nz
+yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5, sigma=1.6) # simulate responses
+yy$coefs
+
+# y = yy$y.normal; fam = "gaussian"; y = scale(y)
+y = yy$y.ordinal; fam = "binomial"
+# y = yy$y.surv; fam = "cox" 
+
+f1 = glmNet(x, y, family = fam, ncv = 1) 
+c(f1$lambda, f1$prior.scale)
+
+
+f2 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf))
+
+# f3 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = 2)
+f3 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = 1)
+
+f4 <- bglm_spline(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = 10)
+
+f5 <- bmlasso_spline(x, y, family = fam, group = 10)
+f6 <- bmlasso(x, y ,  family = fam, group = 10)
+
+calculate_EDF(f2, vars = names(x))
+calculate_EDF(f3, vars = names(x))
+calculate_EDF(f4, vars = names(x))
+
+
+df.adj(f2)
+df.adj(f3)
+df.adj(f4)
+```
+
+
+
+

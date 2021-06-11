@@ -9,6 +9,18 @@
 #'
 #' @docType package
 #' @name BHAM
+#'
+#' @importFrom glmnet glmnet
+#'
+#' @importFrom MASS theta.ml
+#'
+#' @importFrom tibble enframe
+#'
+#' @importFrom stats glm.control sd optimize is.empty.model coef deviance fitted
+#' @importFrom stats .getXlevels make.link
+#' @importFrom stats model.matrix model.offset model.extract model.response model.weights
+#' @importFrom  rlang .data
+#'
 NULL
 #> NULL
 

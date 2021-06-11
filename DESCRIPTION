@@ -29,10 +29,12 @@ BugReports: https://github.com/boyiguo1/BHAM/issues
 RoxygenNote: 7.1.1
 Suggests: 
     BhGLM,
+    devtools,
     knitr,
     lifecycle,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyverse
 VignetteBuilder: knitr
 Imports: 
     glue,
@@ -43,6 +45,9 @@ Imports:
     rlang,
     unglue,
     MASS,
-    stats
+    stats,
+    glmnet,
+    survival,
+    tibble
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

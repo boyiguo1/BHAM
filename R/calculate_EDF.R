@@ -1,5 +1,5 @@
 calculate_EDF <- function(object, vars = 1:length(object$coefficients)){
-  x <- model.matrix(object)[, vars, drop = FALSE]
+  x <- stats::model.matrix(object)[, vars, drop = FALSE]
 
   # TODO: matching dimension
   # S_lambda <- diag(object$prior.scale[vars-1])
