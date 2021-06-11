@@ -3,13 +3,13 @@ parse_var_name <- function(vec){
   # fit %>% `$`({{name}}) %>%
     vec %>%
     tibble::enframe() %>%
-    unglue::unglue_unnest(name, "{var}.{part=pen|null}{ind=\\d*}", remove = FALSE) %>%
-    group_by(var, part) %>%
+    unglue::unglue_unnest(.data$name, "{var}.{part=pen|null}{ind=\\d*}", remove = FALSE) %>%
+    group_by(.data$var, .data$part) %>%
     slice_head(n = 1) %>%
     ungroup() %>%
-    dplyr::select(-name, -ind) %>%
+    dplyr::select(-.data$name, -.data$ind) %>%
     # dplyr::rename("{{name}}"=value) %>%
-    dplyr::select(var, part, value)
+    dplyr::select(.data$var, .data$part, .data$value)
                   #{{name}})
 }
 
@@ -29,8 +29,8 @@ summarize_ancillary_parameters <- function(fit){
   #      prior.scale) %>%
     purrr::map(parse_var_name) %>%
     purrr::reduce(full_join, by = c("var", "part")) %>%
-    dplyr::rename(ptheta = value.x,
-           prior.scale = value.y)
+    dplyr::rename(ptheta = .data$value.x,
+           prior.scale = .data$value.y)
 
   # theta <- fit$ptheta %>%
   #
