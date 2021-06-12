@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-library(tidyverse)
+
 library(BHAM)
 ```
 
@@ -95,20 +95,12 @@ test_sm_dat <- make_predict_dat(train_sm_dat$Smooth, dat = test_dat)
 The model fitting  function is similar to 
 
 ```{r}
-if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
-library(devtools)
-if (!requireNamespace("BhGLM", quietly = TRUE)) install_github("boyiguo1/BhGLM@spline")
-library(BhGLM)
-```
-
-
-```{r eval = F}
 # 
 # lasso_mdl <- cv.glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial")
 # lasso_mdl <- glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial", lambda=lasso_mdl$lambda.min)
 
-mdl1 <- bglm_spline(y~.-y,
-         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
+# mdl1 <- bglm_spline(y~.-y,
+#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
 
 # mdl1_margin <- bglm(y~.-y,
 #          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
@@ -116,25 +108,39 @@ mdl1 <- bglm_spline(y~.-y,
 # mdl1_scale <- bglm_spline(y~.-y,
 #          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
 # 
-mdl1 <- bglm_spline(y~.-y,
+
+
+
+
+# mdl1 <- bglm_spline(y~.-y,
+ mdl1 <- bgam(y~.-y,
          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
 
-mdl1_margin <- bglm(y~.-y,
-         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
+c
 
-mdl1_scale <- bglm_spline(y~.-y,
+mdl1_scale <- bgam(y~.-y,
          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
 
 
 
-mdl3 <- bglm_spline(y~.-y,
+mdl3 <- bgam(y~.-y,
          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data), penalize_null = FALSE))
 
 
-mdl2 <- bmlasso_spline(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
+mdl2 <- bamlasso(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
 ```
 ## Cross-validation
-```{r eval = F}
+
+Many of the functionalities in the R package `BhGLM` can be directly applied to the `bgam` and `bamlasso` models, for example cross validations
+
+```{r eval=F}
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+library(devtools)
+if (!requireNamespace("BhGLM", quietly = TRUE)) install_github("boyiguo1/BhGLM@spline")
+library(BhGLM)
+if (!requireNamespace("pROC", quietly = TRUE)) install.packages("pROC")
+
+
 cv.bh(mdl1)
 ```
 

@@ -29,7 +29,19 @@ bgam(
 )
 }
 \arguments{
-\item{verbose}{}
+\item{formula, data, offset, weights, family, offset, weights, subset, na.action, start, etastart, mustart, control}{These arguments are the same as in \code{\link{glm}}}
+
+\item{family}{can be all the standard families defined in glm. also can be Negative Binomial (NegBin or "NegBin").}
+
+\item{prior}{Prior distribustions for the coefficents. Four types of priors can be used; Student-t: Student(mean, scale, df, autoscale) (default: mean=0, scale=0.5, df=1, autoscale=TRUE), Double-exponetial: De(mean, scale, autoscale) (default: mean=0, scale=0.5, autoscale=TRUE), mixture double-exponential: mde(mean, s0, s1, b), and mixture Student-t: mt(mean, s0, s1, df, b), s0 < s1, default: mean=0, s0=0.04, s1=0.5, df=1, b=1. The mean, scale, df and b can be a vector. For example, scale = c(a1,a2,...,ak); if k < the total number of predictors, it is internally expanded to c(a1,a2,...,ak, rep(ak,J-k)). If autoscale=TRUE, scale will be modified internally (see details).}
+
+\item{group}{a numeric vector, or an integer, or a list definining the groups of predictors. Only used for mde or mt priors. If group = NULL, all the predictors form a single group. If group = K, the predictors are evenly divided into groups each with K predictors. If group is a numberic vector, it defines groups as follows: Group 1: (group\link{1}+1):group\link{2}, Group 2: (group\link{2}+1):group\link{3}, Group 3: (group\link{3}+1):group\link{4}, ..... If group is a list of variable names, group[\link{k}] includes variables in the k-th group.}
+
+\item{method.coef}{jointly updating all coefficients or updating coefficients group by group. The default is jointly updating. If method.coef = NULL or method.coef is missing, jointly updating. If method.coef = K, update K coefficients at a time. method.coef can be a numeric vector or a list of variable names (as defined by group) that defines groups. If the number of coefficients is large, the group-by-group updating method can be much faster than the jointly updating.}
+
+\item{Warning}{logical. If TRUE, show the error messages of not convergence and identifiability.}
+
+\item{verbose}{logical. If TRUE, print out number of iterations and computational time.}
 }
 \value{
 This function returns an object of class "glm", including all outputs from the function \code{\link{glm}}, and also results for the additional parameters in the hierarchical models.

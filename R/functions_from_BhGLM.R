@@ -77,6 +77,7 @@ update.theta.weights <- function (gvars, theta.weights, inter.hierarchy, inter.p
 
 
 # from MASS
+#' @export
 NegBin <- function (theta=3, link="log")
 {
   linktemp <- substitute(link)
@@ -129,23 +130,30 @@ NegBin <- function (theta=3, link="log")
             class = "family")
 }
 
+#' @export
 Student <- function(mean=0, scale=0.5, df=1, autoscale=TRUE)
 {
   if (any(scale < 0)) stop("'scale' cannot be negative")
   if (any(df < 0)) stop("'df' cannot be negative")
   list(prior="t", mean=mean, scale=scale, df=df, autoscale=autoscale)
 }
+
+#' @export
 De <- function(mean=0, scale=0.5, autoscale=TRUE)
 {
   if (any(scale < 0)) stop("'scale' cannot be negative")
   list(prior="de", mean=mean, scale=scale, autoscale=autoscale)
 }
+
+#' @export
 mde <- function(mean=0, s0=0.04, s1=0.5, b=1)
 {
   if (s0 < 0 | s1 < 0) stop("scale cannot be negative")
   if (s0 > s1) stop("s0 should be smaller than s1")
   list(prior="mde", mean=mean, ss=c(s0,s1), b=b)
 }
+
+#' @export
 mt <- function(mean=0, s0=0.04, s1=0.5, df=1, b=1)
 {
   if (s0 < 0 | s1 < 0) stop("scale cannot be negative")
