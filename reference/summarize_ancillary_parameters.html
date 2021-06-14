@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Smooth Design Matrix Column Names
-` — create_smooth_name • BHAM</title>
+<title>Summarize ancillary parameters — summarize_ancillary_parameters • BHAM</title>
 
 
 <!-- jquery -->
@@ -40,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Create Smooth Design Matrix Column Names
-` — create_smooth_name" />
-<meta property="og:description" content="Internal function for creating names for Smooth design matrix" />
+<meta property="og:title" content="Summarize ancillary parameters — summarize_ancillary_parameters" />
+<meta property="og:description" content="Summarize ancillary parameters" />
 
 
 
@@ -134,43 +132,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Smooth Design Matrix Column Names
-<a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a>`</h1>
-    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/helper-functions.R'><code>R/helper-functions.R</code></a></small>
-    <div class="hidden name"><code>create_smooth_name.Rd</code></div>
+    <h1>Summarize ancillary parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/summarize.R'><code>R/summarize.R</code></a></small>
+    <div class="hidden name"><code>summarize_ancillary_parameters.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Internal function for creating names for Smooth design matrix</p>
+    <p>Summarize ancillary parameters</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>summarize_ancillary_parameters</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>smth</th>
-      <td><p>the Smooth object, created from smoothCon of mgcv</p></td>
+      <th>fit</th>
+      <td><p>the fitted object from bglm_spline or bmlasso_spline</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a vector of string, containing the column names of the spline design matrix</p>
+    <p>a data frame contains summarized ancillary parameters for spline components of each variable</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='va'>smth</span> <span class='op'>&lt;-</span> <span class='op'>(</span>
-  <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/smoothCon.html'>smoothCon</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>,
-            scale.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            absorb.cons <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            null.space.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            diagonal.penalty <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='fu'>BHAM</span><span class='fu'>:::</span><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "x.pen1"  "x.pen2"  "x.pen3"  "x.pen4"  "x.pen5"  "x.pen6"  "x.pen7" 
-#&gt; [8] "x.pen8"  "x.null1"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

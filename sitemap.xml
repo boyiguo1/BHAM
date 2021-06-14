@@ -7,6 +7,12 @@
     <loc>https://boyiguo1.github.io/BHAM/reference/BHAM.html</loc>
   </url>
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/bamlasso.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/bgam.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/construct_smooth_data.html</loc>
   </url>
   <url>
@@ -23,6 +29,15 @@
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/sim_Bai.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/summarize_ancillary_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/Explaination Piece.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/Validate_bglm_spline.html</loc>
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/feature_selection.html</loc>

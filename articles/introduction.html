@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BHAM</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -54,6 +54,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Explaination%20Piece.html">Examine Prior Update</a>
+    </li>
+    <li>
+      <a href="../articles/Validate_bglm_spline.html">Untitled</a>
+    </li>
+    <li>
       <a href="../articles/feature_selection.html">feature_selection</a>
     </li>
     <li>
@@ -145,7 +151,7 @@
 <span class="va">mgcv_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   Var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, <span class="st">"y"</span><span class="op">)</span>,
   Func <span class="op">=</span> <span class="st">"s"</span>,
-  Args <span class="op">=</span><span class="st">"bs='cr', k=27"</span>
+  Args <span class="op">=</span><span class="st">"bs='cr', k=7"</span>
 <span class="op">)</span></code></pre></div>
 </div>
 <div id="make-design-matrix-1" class="section level4">
@@ -171,11 +177,54 @@
 <a href="#fitting-the-model" class="anchor"></a>Fitting the model</h2>
 <p>The model fitting function is similar to</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># </span>
+<span class="co"># lasso_mdl &lt;- cv.glmnet(train_smooth_data %&gt;% as.matrix, dat$y, family = "binomial")</span>
+<span class="co"># lasso_mdl &lt;- glmnet(train_smooth_data %&gt;% as.matrix, dat$y, family = "binomial", lambda=lasso_mdl$lambda.min)</span>
+
+<span class="co"># mdl1 &lt;- bglm_spline(y~.-y,</span>
+<span class="co">#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))</span>
+
+<span class="co"># mdl1_margin &lt;- bglm(y~.-y,</span>
+<span class="co">#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))</span>
+<span class="co"># </span>
+<span class="co"># mdl1_scale &lt;- bglm_spline(y~.-y,</span>
+<span class="co">#          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))</span>
+<span class="co"># </span>
+
+
+
+
+<span class="co"># mdl1 &lt;- bglm_spline(y~.-y,</span>
+ <span class="va">mdl1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bgam.html">bgam</a></span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
+         data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">c</span>
+<span class="co">#&gt; function (...)  .Primitive("c")</span>
+
+<span class="va">mdl1_scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bgam.html">bgam</a></span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
+         data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span>  <span class="fu">mde</span><span class="op">(</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+
+
+<span class="va">mdl3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bgam.html">bgam</a></span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
+         data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span>, penalize_null <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+
+
+<span class="va">mdl2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bamlasso.html">bamlasso</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="cross-validation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cross-validation" class="anchor"></a>Cross-validation</h2>
+<p>Many of the functionalities in the R package <code>BhGLM</code> can be directly applied to the <code>bgam</code> and <code>bamlasso</code> models, for example cross validations</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl1</span> <span class="op">&lt;-</span> <span class="fu">bglm_spline</span><span class="op">(</span><span class="va">y</span><span class="op">~</span><span class="va">.</span><span class="op">-</span><span class="va">y</span>,
-         data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">bmlasso_spline</span><span class="op">(</span>x <span class="op">=</span> <span class="va">train_smooth_data</span>, y <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">y</span>, family <span class="op">=</span> <span class="st">"binomial"</span>, group <span class="op">=</span> <span class="fu"><a href="../reference/make_group.html">make_group</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BhGLM"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"boyiguo1/BhGLM@spline"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"pROC"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pROC"</span><span class="op">)</span>
+
+
+<span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/cv.bh.html">cv.bh</a></span><span class="op">(</span><span class="va">mdl1</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="model-results-summary" class="section level2">
 <h2 class="hasAnchor">
@@ -184,8 +233,8 @@
 <h3 class="hasAnchor">
 <a href="#functional-selection" class="anchor"></a>Functional Selection</h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">df.adj</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu">df.adj</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/df.adj.html">df.adj</a></span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/df.adj.html">df.adj</a></span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 

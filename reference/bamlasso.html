@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Smooth Design Matrix Column Names
-` — create_smooth_name • BHAM</title>
+<title>Bauesian Spike-and-Slab Lasso Additive Model — bamlasso • BHAM</title>
 
 
 <!-- jquery -->
@@ -40,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Create Smooth Design Matrix Column Names
-` — create_smooth_name" />
-<meta property="og:description" content="Internal function for creating names for Smooth design matrix" />
+<meta property="og:title" content="Bauesian Spike-and-Slab Lasso Additive Model — bamlasso" />
+<meta property="og:description" content="Bauesian Spike-and-Slab Lasso Additive Model" />
 
 
 
@@ -134,43 +132,102 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Smooth Design Matrix Column Names
-<a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a>`</h1>
-    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/helper-functions.R'><code>R/helper-functions.R</code></a></small>
-    <div class="hidden name"><code>create_smooth_name.Rd</code></div>
+    <h1>Bauesian Spike-and-Slab Lasso Additive Model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/bamlasso.R'><code>R/bamlasso.R</code></a></small>
+    <div class="hidden name"><code>bamlasso.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Internal function for creating names for Smooth design matrix</p>
+    <p>Bauesian Spike-and-Slab Lasso Additive Model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>bamlasso</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
+  family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"gaussian"</span>, <span class='st'>"binomial"</span>, <span class='st'>"poisson"</span>, <span class='st'>"cox"</span><span class='op'>)</span>,
+  offset <span class='op'>=</span> <span class='cn'>NULL</span>,
+  epsilon <span class='op'>=</span> <span class='fl'>1e-04</span>,
+  maxit <span class='op'>=</span> <span class='fl'>50</span>,
+  init <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,
+  ss <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.04</span>, <span class='fl'>0.5</span><span class='op'>)</span>,
+  b <span class='op'>=</span> <span class='fl'>1</span>,
+  group <span class='op'>=</span> <span class='cn'>NULL</span>,
+  theta.weights <span class='op'>=</span> <span class='cn'>NULL</span>,
+  inter.hierarchy <span class='op'>=</span> <span class='cn'>NULL</span>,
+  inter.parents <span class='op'>=</span> <span class='cn'>NULL</span>,
+  Warning <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>smth</th>
-      <td><p>the Smooth object, created from smoothCon of mgcv</p></td>
+      <th>x</th>
+      <td><p>input matrix, of dimension nobs x nvars; each row is an observation vector.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>response variable. Quantitative for family="gaussian", or family="poisson" (non-negative counts).
+For family="binomial", y should be either a factor with two levels, or a two-column matrix of counts or proportions (the second column is treated as the target class; for a factor, the last level in alphabetical order is the target class).
+For family="cox", y should be a two-column matrix with columns named 'time' and 'status'. The latter is a binary variable, with '1' indicating death, and '0' indicating right censored. The function Surv() in package <b>survival</b> produces such a matrix.</p></td>
+    </tr>
+    <tr>
+      <th>family</th>
+      <td><p>Response type (see above).</p></td>
+    </tr>
+    <tr>
+      <th>offset</th>
+      <td><p>A vector of length nobs that is included in the linear predictor.</p></td>
+    </tr>
+    <tr>
+      <th>epsilon</th>
+      <td><p>positive convergence tolerance e; the iterations converge when |dev - dev_old|/(|dev| + 0.1) &lt; e.</p></td>
+    </tr>
+    <tr>
+      <th>maxit</th>
+      <td><p>integer giving the maximal number of EM iterations.</p></td>
+    </tr>
+    <tr>
+      <th>init</th>
+      <td><p>vector of initial values for all coefficients (not for intercept). If not given, it will be internally produced.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p><code>alpha=1</code>: mixture double-exponential prior; <code>alpha=0</code>: mixture normal prior.</p></td>
+    </tr>
+    <tr>
+      <th>ss</th>
+      <td><p>a vector of two positive scale values (ss1 &lt; ss2) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.</p></td>
+    </tr>
+    <tr>
+      <th>b</th>
+      <td><p>group-specific inclusion probabilities follow beta(1,b). The tuning parameter <code>b</code> can be a vector of group-specific values.</p></td>
+    </tr>
+    <tr>
+      <th>inter.parents</th>
+      <td><p>a numeric vector, or an integer, or a list defining the groups of predictors.
+If <code>group = NULL</code>, all the predictors form a single group.
+If <code>group = K</code>, the predictors are evenly divided into groups each with <code>K</code> predictors.
+If <code>group</code> is a numberic vector, it defines groups as follows: Group 1: <code>(group[1]+1):group[2]</code>, Group 2: <code>(group[2]+1):group[3]</code>, Group 3: <code>(group[3]+1):group[4]</code>, .....
+If <code>group</code> is a list of variable names, <code>group[[k]]</code> includes variables in the k-th group.
+The mixture prior is only used for grouped predictors. For ungrouped predictors, the prior is double-exponential or normal with scale <code>ss[2]</code> and mean 0.</p></td>
+    </tr>
+    <tr>
+      <th>Warning</th>
+      <td><p>logical. If <code>TRUE</code>, show the error messages of not convergence and identifiability.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical. If <code>TRUE</code>, print out number of iterations and computational time.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a vector of string, containing the column names of the spline design matrix</p>
+    <p>This function returns all outputs from the function <code>glmnet</code>, and some other values used in Bayesian hierarchical models.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='va'>smth</span> <span class='op'>&lt;-</span> <span class='op'>(</span>
-  <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/smoothCon.html'>smoothCon</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>,
-            scale.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            absorb.cons <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            null.space.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            diagonal.penalty <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='fu'>BHAM</span><span class='fu'>:::</span><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "x.pen1"  "x.pen2"  "x.pen3"  "x.pen4"  "x.pen5"  "x.pen6"  "x.pen7" 
-#&gt; [8] "x.pen8"  "x.null1"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
