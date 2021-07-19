@@ -29,7 +29,7 @@ bgam(
 )
 }
 \arguments{
-\item{formula, data, offset, weights, family, offset, weights, subset, na.action, start, etastart, mustart, control}{These arguments are the same as in \code{\link{glm}}}
+\item{formula, data, offset, weights, subset, na.action, start, etastart, mustart, control}{These arguments are the same as in \code{\link{glm}}}
 
 \item{family}{can be all the standard families defined in glm. also can be Negative Binomial (NegBin or "NegBin").}
 

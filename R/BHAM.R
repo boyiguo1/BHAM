@@ -16,10 +16,12 @@
 #'
 #' @importFrom tibble enframe
 #'
-#' @importFrom stats glm.control sd optimize is.empty.model coef deviance fitted
-#' @importFrom stats .getXlevels make.link
+#' @importFrom stats glm.control sd optimize is.empty.model coef deviance fitted terms
+#' @importFrom stats .getXlevels make.link makepredictcall nobs
 #' @importFrom stats model.matrix model.offset model.extract model.response model.weights
 #' @importFrom  rlang .data
+#' @importFrom survival coxph.control aeqSurv untangle.specials strata Surv attrassign coxph
+#' @importFrom utils methods
 #'
 NULL
 #> NULL
