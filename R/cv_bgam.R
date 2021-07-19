@@ -36,7 +36,7 @@ tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=
   map_dfr(s0, .f = function(.s0, .mdl, .foldid){
     # set.seed(1)
     # browser()
-    tmp <- cv.bgam(.mdl, s0 = .s0, foldid = .foldid)
+    tmp <- call("cv.bgam", .mdl, s0 = .s0, foldid = .foldid) %>% eval
     tmp$measures %>% t() %>% data.frame
   },
   .mdl = object, .foldid = fol$foldid) %>%
@@ -171,8 +171,18 @@ cv.gam.glm <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group 
     if (is.null(object$data)) stop("'data' not given in object")
   }
 
+
+  prior <- object$prior
   if(is.null(s0)) prior <- object$prior
-  else prior <- call("mde", s0 = s0) %>% eval
+  else if(! prior$prior %in% c("mde", "mt")){
+    cat(prior$prior, "\n")
+    stop("Does not support the prior family")
+  } else if(prior$prior ==  "mde") {
+    prior <- call("mde", s0 = s0) %>% eval
+  } else{
+    prior <- call("mt", df = prior$df, s0 = s0) %>% eval
+  }
+
 
   if (verbose) cat("Fitting", "ncv*nfolds =", ncv*nfolds, "models: \n")
   for (k in 1:ncv) {
@@ -183,7 +193,8 @@ cv.gam.glm <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group 
       subset1 <- rep(TRUE, n)
       omit <- which(foldid[, k] == i)
       subset1[omit] <- FALSE
-      fit <- update(object, data = object$data, subset = subset1, prior = prior, group = group)
+      fit <- update(object, data = object$data[subset1, ,drop = FALSE], #subset = subset1,
+                    prior = prior, group = group)
 
       lp[omit] <- predict(fit, newdata=data.obj[omit, , drop=FALSE])
       y.fitted[omit] <- object$family$linkinv(lp[omit])
