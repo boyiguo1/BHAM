@@ -16,9 +16,13 @@
 #'
 #' @importFrom tibble enframe
 #'
-#' @importFrom stats glm.control sd optimize is.empty.model coef deviance fitted
+#' @importFrom stats glm.control sd optimize is.empty.model coef deviance fitted update predict.glm
 #' @importFrom stats .getXlevels make.link
-#' @importFrom stats model.matrix model.offset model.extract model.response model.weights
+#' @importFrom stats model.matrix model.offset model.frame model.extract model.response model.weights
+#' @importFrom stats dbinom dnbinom dnorm dpois
+#' @importFrom stats var predict
+#' @importFrom pROC auc
+#'
 #' @importFrom  rlang .data
 #'
 NULL
