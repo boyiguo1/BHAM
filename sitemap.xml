@@ -19,6 +19,18 @@
     <loc>https://boyiguo1.github.io/BHAM/reference/create_smooth_name.html</loc>
   </url>
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/cv.bgam.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/cv.gam.glm.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/cv.gam.lasso.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/generate.foldid.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/make_group.html</loc>
   </url>
   <url>
@@ -34,13 +46,13 @@
     <loc>https://boyiguo1.github.io/BHAM/reference/summarize_ancillary_parameters.html</loc>
   </url>
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/tune.bgam.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/Explaination Piece.html</loc>
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/Validate_bglm_spline.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/feature_selection.html</loc>
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/functional_selection.html</loc>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application — BHAM • BHAM</title>
+<title>Internal function for cross validation of bgam model — cv.gam.glm • BHAM</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application — BHAM" />
-<meta property="og:description" content="// TODO: Update this page
-The foo package provides three categories of important functions:
-foo, bar and baz." />
+<meta property="og:title" content="Internal function for cross validation of bgam model — cv.gam.glm" />
+<meta property="og:description" content="Internal function for cross validation of bgam model" />
 
 
 
@@ -131,24 +129,39 @@ foo, bar and baz." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application</h1>
-    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/BHAM.R'><code>R/BHAM.R</code></a></small>
-    <div class="hidden name"><code>BHAM.Rd</code></div>
+    <h1>Internal function for cross validation of bgam model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/boyiguo1/BHAM/blob/master/R/cv_bgam.R'><code>R/cv_bgam.R</code></a></small>
+    <div class="hidden name"><code>cv.gam.glm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>// TODO: Update this page
-The foo package provides three categories of important functions:
-foo, bar and baz.</p>
+    <p>Internal function for cross validation of bgam model</p>
     </div>
 
+    <pre class="usage"><span class='fu'>cv.gam.glm</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  nfolds <span class='op'>=</span> <span class='fl'>10</span>,
+  foldid <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ncv <span class='op'>=</span> <span class='fl'>1</span>,
+  s0 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  group <span class='op'>=</span> <span class='va'>group</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>verbose</th>
+      <td></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="foo-functions"><a class="anchor" href="#foo-functions"></a>Foo functions</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
 
-<p>The foo functions ...</p>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
