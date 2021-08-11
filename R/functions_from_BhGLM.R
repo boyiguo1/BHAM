@@ -284,7 +284,59 @@ Grouping <- function(all.var, group)
        group.new=group.new, var.new=var.new)
 }
 
+measure.glm <- function(y, y.fitted, family, dispersion = 1)
+{
+  if (NROW(y)!=NROW(y.fitted))
+    stop("y and y.fitted should be of the same length", call. = FALSE)
+  if (is.null(dispersion)) dispersion <- 1
 
+  mu <- y.fitted
+  if (substr(family, 1, 6)=="NegBin" | substr(family, 1, 17)=="Negative Binomial"
+      | family=="nb")
+    family <- "NegBin"
+  fam <- c("gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "NegBin")
+  if (! family %in% fam)
+    stop("Measures for this family have not been implemented yet")
+
+  if (family=="gaussian")
+    logL <- dnorm(y, mean=mu, sd=sqrt(dispersion), log=TRUE)
+  if (family=="binomial" | family=="quasibinomial"){
+    if (is.factor(y)) y <- as.numeric(y) - 1
+    L <- dbinom(y, size=1, prob=mu, log=FALSE)
+    L <- ifelse(L==0, 1e-04, L)
+    logL <- log(L)
+  }
+  if (family=="poisson" | family=="quasipoisson")
+    logL <- dpois(y, lambda=mu, log=TRUE)
+  if (family == "NegBin")
+    logL <- dnbinom(y, size=dispersion, mu=mu, log=TRUE)
+
+  logL <- sum(logL, na.rm=TRUE)
+  deviance <- -2 * logL
+
+  mse <- mean((y - mu)^2, na.rm = TRUE)
+  mae <- mean(abs(y - mu), na.rm = TRUE)
+  measures <- list(deviance=deviance, mse=mse, mae=mae)
+  if (family=="gaussian") {
+    R2 <- (var(y, na.rm = TRUE) - mse)/var(y, na.rm = TRUE)
+    measures <- list(deviance=deviance, R2=R2, mse=mse, mae=mae)
+  }
+  if (family=="binomial" | family=="quasibinomial") {
+    # stop("Not implemented")
+
+    # if (!requireNamespace("pROC")) install.packages("pROC")
+    # require(pROC)
+    if (length(unique(y)) > 1)
+      AUC <- suppressMessages( pROC::auc(y, mu) )
+    else AUC <- NULL
+    AUC <- as.numeric(AUC)
+    misclassification <- mean(abs(y - mu) >= 0.5, na.rm = TRUE)
+    measures <- list(deviance=deviance, auc=AUC, mse=mse, mae=mae,
+                     misclassification=misclassification)
+  }
+
+  round(unlist(measures), digits=3)
+}
 
 # only used in simulation
 link.vars <- function(group.vars) {
