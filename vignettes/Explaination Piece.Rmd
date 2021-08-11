@@ -6,9 +6,12 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = F)
 
 library(tidyverse)
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+library(devtools)
+if (!requireNamespace("BhGLM", quietly = TRUE)) install_github("boyiguo1/BhGLM@spline")
 library(BhGLM)
 library(BHAM)
 ```
@@ -137,29 +140,29 @@ y = yy$y.normal; fam = "gaussian"; y = scale(y)
 
 ## Screening
 # feature_name <- 
-gam_screening_res <- x %>% 
-  names() %>% 
-map_dfr(#feature_name[1:2],
-        .f = function(name, y, .dat){
-  # name <- feature_name[1]
-  # y <- .dat %>% pull(death3yr)D
-  x <- .dat %>% pull({{name}})
-  mgcv::gam(y ~ s(x, bs = "cr", k = 10), family = gaussian(),
-            data = data.frame(x, y)) %>% 
-    broom::tidy() %>% 
-    filter(term == "s(x)") %>% 
-    select(p.value) %>% 
-    mutate(var = name,
-           p.value)
-  
-},
-  y = y,
-.dat = x)
-
-data.frame(
-gam_screening_res,
-p.adj = p.adjust(gam_screening_res$p.value, "BH")
-) %>% arrange(p.adj)
+# gam_screening_res <- x %>% 
+#   names() %>% 
+# map_dfr(#feature_name[1:2],
+#         .f = function(name, y, .dat){
+#   # name <- feature_name[1]
+#   # y <- .dat %>% pull(death3yr)D
+#   x <- .dat %>% pull({{name}})
+#   mgcv::gam(y ~ s(x, bs = "cr", k = 10), family = gaussian(),
+#             data = data.frame(x, y)) %>% 
+#     broom::tidy() %>% 
+#     filter(term == "s(x)") %>% 
+#     select(p.value) %>% 
+#     mutate(var = name,
+#            p.value)
+#   
+# },
+#   y = y,
+# .dat = x)
+# 
+# data.frame(
+# gam_screening_res,
+# p.adj = p.adjust(gam_screening_res$p.value, "BH")
+# ) %>% arrange(p.adj)
 
 
 f2 <- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf))
