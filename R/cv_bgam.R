@@ -286,7 +286,8 @@ cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
         #               lambda=object$lambda, verbose=FALSE)
       if (any(class(object) %in% "bmlasso"))
         fit <- update(object, x=x.obj[-omit, ], y=y.obj[-omit], offset=offset[-omit],
-                      init=init, verbose=FALSE, ss = ss, group = group)
+                      # init=init,
+                      verbose=FALSE, ss = ss, group = group)
       if (is.null(fit$offset)) fit$offset <- FALSE
       else fit$offset <- TRUE
       xx <- x.obj[omit, , drop=FALSE]
