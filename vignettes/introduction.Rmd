@@ -116,7 +116,6 @@ The model fitting  function is similar to
  mdl1 <- bgam(y~.-y,
          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
 
-c
 
 mdl1_scale <- bgam(y~.-y,
          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
@@ -129,6 +128,48 @@ mdl3 <- bgam(y~.-y,
 
 mdl2 <- bamlasso(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
 ```
+## Tuning via Cross-validation
+```{r}
+s0_seq <- seq(0.005, 0.1, 0.01)
+```
+
+
+### bgam
+
+```{r}
+set.seed(1)
+tmp <- cv.bgam(mdl1)
+# Validation
+# set.seed(1)
+# tmp2 <- cv.bh(mdl1)
+
+res <- tune.bgam(mdl1, s0 = s0_seq)
+
+
+# res <- map_dfr(s0_seq, .f = function(.s0, .mdl){
+#  set.seed(1)
+#  tmp <- cv.bgam(.mdl, s0 = .s0) 
+#  tmp$measures %>% t() %>% data.frame 
+# },
+# .mdl = mdl1) %>% 
+#   data.frame(s0 = s0_seq,.)
+
+
+
+
+```
+
+### bamlasso
+```{r}
+set.seed(1)
+tmp <- cv.bgam(mdl2)
+# set.seed(1)
+# tmp2 <- cv.bh(mdl2)
+
+res <- tune.bgam(mdl2, s0 = s0_seq)
+
+```
+
 ## Cross-validation
 
 Many of the functionalities in the R package `BhGLM` can be directly applied to the `bgam` and `bamlasso` models, for example cross validations

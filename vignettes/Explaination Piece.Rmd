@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = F)
 
+library(tidyverse)
 if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
 library(devtools)
 if (!requireNamespace("BhGLM", quietly = TRUE)) install_github("boyiguo1/BhGLM@spline")
