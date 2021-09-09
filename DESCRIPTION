@@ -32,7 +32,6 @@ Suggests:
     devtools,
     knitr,
     lifecycle,
-    pROC,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyverse
@@ -48,8 +47,9 @@ Imports:
     MASS,
     stats,
     glmnet,
+    survival,
     tibble,
-    utils,
-    survival
+    pROC,
+    utils
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
