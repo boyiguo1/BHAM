@@ -1,3 +1,4 @@
+## usethis namespace: start
 #' BHAM: A package to fit Bayesian Hierarchical Additive Models for High Dimensional Application
 #'
 #'// TODO: Update this page
@@ -23,6 +24,9 @@
 #' @importFrom survival coxph.control aeqSurv untangle.specials strata Surv attrassign coxph
 #' @importFrom utils methods
 #'
+#' @useDynLib BHAM, .registration = TRUE
+## usethis namespace: end
+NULL
 NULL
 #> NULL
 

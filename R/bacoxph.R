@@ -129,7 +129,7 @@ bacoxph <- function (formula, data, weights, subset, na.action, init,
       }
       if (storage.mode(Y) != "double")
         storage.mode(Y) <- "double"
-      counts <- .Call(survival:::Ccoxcount1, Y[sorted, ], as.integer(newstrat))
+      counts <- .Call(Ccoxcount1, Y[sorted, ], as.integer(newstrat))
       tindex <- sorted[counts$index]
     }
     else {
