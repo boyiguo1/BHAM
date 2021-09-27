@@ -37,7 +37,16 @@ tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=
     # set.seed(1)
     # browser()
     tmp <- call("cv.bgam", .mdl, s0 = .s0, foldid = .foldid) %>% eval
-    tmp$measures %>% t() %>% data.frame
+    if(ncol(.foldid)==1)
+      tmp$measures %>% t() %>% data.frame
+    else {
+      mean_row <- tmp$measures[1,]
+      names(mean_row) <- paste0(names(mean_row), "_mean")
+      sd_row <- tmp$measures[2,]
+      names(sd_row) <- paste0(names(sd_row), "_sd")
+      data.frame(c(mean_row, sd_row) %>% t)
+    }
+
   },
   .mdl = object, .foldid = fol$foldid) %>%
     data.frame(s0 = s0,.)
