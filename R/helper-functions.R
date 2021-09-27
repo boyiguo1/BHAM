@@ -115,6 +115,11 @@ make_group <- function(.names,
     mutate(ind = as.numeric(.data$ind)) %>%
     {
       if(shared_null){
+        stop("Not Implemented yet")
+        # TODO: need have this change reflected in the model and also passing onto the var_selection problem
+        # TODO: idea:
+        # TODO: 1. set this as an attribute of the output
+        # TODO: 1. when constructing variable selection check with this attribute.
         group_by(., .data$var)
       }
       else{
