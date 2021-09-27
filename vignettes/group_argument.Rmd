@@ -1,8 +1,10 @@
 ---
-title: "Examine Prior Update"
-author: "Boyi Guo"
-date: "6/1/2021"
-output: html_document
+title: "Understand `group` argument"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{group_argument}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

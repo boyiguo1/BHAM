@@ -1,0 +1,30 @@
+---
+title: "Additive Model with Covariates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Additive Model with Covariates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BHAM)
+```
+
+# Problem Statement
+
+
+
+## Covariate Adjustment
+
+## `glmnet`
+
+## Implementation with BHAM
+
