@@ -23,11 +23,12 @@
 #' @importFrom stats dbinom dnbinom dnorm dpois
 #' @importFrom stats var predict
 #' @importFrom pROC auc
-#' @importFrom  rlang .data
+#' @importFrom rlang .data
 #' @importFrom survival coxph.control aeqSurv untangle.specials strata Surv attrassign coxph
 #' @importFrom utils methods
 #'
 #' @useDynLib BHAM, .registration = TRUE
+#'
 ## usethis namespace: end
 NULL
 NULL

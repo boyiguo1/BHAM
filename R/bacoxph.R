@@ -11,7 +11,8 @@
 #' @export
 #'
 
-#'
+#' @useDynLib BHAM Ccoxcount1
+#' @useDynLib BHAM Ccoxcount2
 #' @examples
 bacoxph <- function (formula, data, weights, subset, na.action, init,
                     control=coxph.control(eps=1e-04, iter.max=50), ties=c("breslow", "efron"), tt,
