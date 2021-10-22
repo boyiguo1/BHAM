@@ -4,9 +4,6 @@
     <loc>https://boyiguo1.github.io/BHAM/index.html</loc>
   </url>
   <url>
-    <loc>https://boyiguo1.github.io/BHAM/reference/BHAM.html</loc>
-  </url>
-  <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/bamlasso.html</loc>
   </url>
   <url>
@@ -14,6 +11,9 @@
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/bgam.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/BHAM.html</loc>
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/construct_smooth_data.html</loc>
@@ -52,15 +52,21 @@
     <loc>https://boyiguo1.github.io/BHAM/reference/tune.bgam.html</loc>
   </url>
   <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/Explaination Piece.html</loc>
+    <loc>https://boyiguo1.github.io/BHAM/articles/comparison_BhGLM.html</loc>
   </url>
   <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/Validate_bglm_spline.html</loc>
+    <loc>https://boyiguo1.github.io/BHAM/articles/covariate_model.html</loc>
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/functional_selection.html</loc>
   </url>
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/group_argument.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/articles/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/model_assessment.html</loc>
   </url>
 </urlset>

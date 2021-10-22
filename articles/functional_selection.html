@@ -54,16 +54,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Explaination%20Piece.html">Examine Prior Update</a>
+      <a href="../articles/comparison_BhGLM.html">Comparison with BhGLM</a>
     </li>
     <li>
-      <a href="../articles/Validate_bglm_spline.html">Untitled</a>
+      <a href="../articles/covariate_model.html">Additive Model with Covariates</a>
     </li>
     <li>
       <a href="../articles/functional_selection.html">Functional Selection</a>
     </li>
     <li>
+      <a href="../articles/group_argument.html">Understand `group` argument</a>
+    </li>
+    <li>
       <a href="../articles/introduction.html">Introduction to BHAM</a>
+    </li>
+    <li>
+      <a href="../articles/model_assessment.html">Empirical Model Diagnostic</a>
     </li>
   </ul>
 </li>
@@ -85,7 +91,7 @@
 
       
 
-      </header><script src="functional_selection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="functional_selection_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Functional Selection</h1>
@@ -100,11 +106,19 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span></code></pre></div>
-<div id="hypothesis-testing" class="section level2">
+<div id="bham-ssl-with-em-coordinate-descent" class="section level2">
 <h2 class="hasAnchor">
-<a href="#hypothesis-testing" class="anchor"></a>Hypothesis Testing</h2>
+<a href="#bham-ssl-with-em-coordinate-descent" class="anchor"></a>BHAM-SSL with EM-Coordinate Descent</h2>
+</div>
+<div id="bham-ssl-with-em-iterative-weighted-least-squares-algorithm" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bham-ssl-with-em-iterative-weighted-least-squares-algorithm" class="anchor"></a>BHAM-SSL with EM-Iterative Weighted Least Squares Algorithm</h2>
+<div id="hypothesis-testing" class="section level3">
+<h3 class="hasAnchor">
+<a href="#hypothesis-testing" class="anchor"></a>Hypothesis Testing</h3>
 <p>The smoothing spline models are considered as penalized model, and hence, hypothesis testing of the regression coefficients becomes more complicated due to the shrinkage imposed on the coefficients. Similarly, when jointly testing more than one coefficients, for example testing the penalized part of a spline function, the degree of freedom is unclear. Defaulting to the number of coefficients will overestimate the degree of freedom, and hence introduce under-powered test. Using the well established concept “effective degree of freedom” can alleviate the problem, but introduce another one. When using Wald type of test, the test statistics follows a <span class="math inline">\(\chi^2\)</span> distribution with degree of freedom <span class="math inline">\(k\)</span>, where <span class="math inline">\(k\)</span> is a positive integer. However, this does not applied to the effective degree of freedom which is not necessarily an integer. Hence, establishing the limiting distribution of the test statistics becomes a new challenge.</p>
 <p>Overall, using hypothesis testing for function selection has two-fold challenges: first of all, establish the effective degree of freedom; secondly, find the sampling distribution of the test statistics.</p>
+</div>
 <div id="effective-degree-of-freedom" class="section level3">
 <h3 class="hasAnchor">
 <a href="#effective-degree-of-freedom" class="anchor"></a>Effective Degree of Freedom</h3>
