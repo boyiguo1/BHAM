@@ -1,0 +1,26 @@
+---
+title: "Cox Proportional Hazard Additive Model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cox Proportional Hazard Additive Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# if(!requireNamespace(BhGLM))
+# TODO: install BhGLM
+
+library(BhGLM)
+library(BHAM)
+```
+
+## Construct Testing Data
+
