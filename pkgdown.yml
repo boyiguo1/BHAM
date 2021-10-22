@@ -2,13 +2,14 @@ pandoc: 2.11.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  BHAM: BHAM.html
   comparison_BhGLM: comparison_BhGLM.html
   covariate_model: covariate_model.html
   functional_selection: functional_selection.html
   group_argument: group_argument.html
   introduction: introduction.html
   model_assessment: model_assessment.html
-last_built: 2021-10-22T15:10Z
+last_built: 2021-10-22T15:15Z
 urls:
   reference: https://boyiguo1.github.io/BHAM/reference
   article: https://boyiguo1.github.io/BHAM/articles
