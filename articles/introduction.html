@@ -76,6 +76,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -229,7 +232,7 @@
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cv.bgam.html">cv.bgam</a></span><span class="op">(</span><span class="va">mdl1</span><span class="op">)</span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.016 minutes</span>
+<span class="co">#&gt;  Cross-validation time: 0.014 minutes</span>
 <span class="co"># Validation</span>
 <span class="co"># set.seed(1)</span>
 <span class="co"># tmp2 &lt;- cv.bh(mdl1)</span>
@@ -237,28 +240,28 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tune.bgam.html">tune.bgam</a></span><span class="op">(</span><span class="va">mdl1</span>, s0 <span class="op">=</span> <span class="va">s0_seq</span><span class="op">)</span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.019 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.013 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.015 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.021 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.018 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.02 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.02 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.016 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.016 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.014 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.019 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.019 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.022 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.017 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.019 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.014 minutes </span>
@@ -293,9 +296,6 @@
 <span class="co">#&gt;  Cross-validation time: 0.008 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.008 minutes </span>
-<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
-<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.009 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
@@ -303,6 +303,9 @@
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.009 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.008 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.008 minutes </span>
@@ -311,10 +314,10 @@
 <span class="co">#&gt;  Cross-validation time: 0.011 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.011 minutes </span>
+<span class="co">#&gt;  Cross-validation time: 0.01 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
-<span class="co">#&gt;  Cross-validation time: 0.009 minutes </span>
+<span class="co">#&gt;  Cross-validation time: 0.011 minutes </span>
 <span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
 <span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
 <span class="co">#&gt;  Cross-validation time: 0.009 minutes</span></code></pre></div>
