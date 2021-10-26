@@ -207,3 +207,4 @@ calculate_EDF(mdl1, names(train_smooth_data)[grep("x20[.]pen", names(train_smoot
 
 calculate_EDF(mdl1, names(train_smooth_data)[grep("x1[.]null", names(train_smooth_data))])
 ```
+=======
