@@ -7,7 +7,7 @@ url: https://boyiguo1.github.io/BHAM
 
 
 navbar:
-  title: "brms"
+  title: "BHAM"
   left:
     - text: "Vignettes"
       href: articles/index.html
