@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BHAM</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9002</span>
       </span>
     </div>
 
@@ -126,12 +126,12 @@
 <span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="co"># simulate responses</span>
 <span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
 <span class="co">#&gt;         x5         x7        x10 </span>
-<span class="co">#&gt; -0.3950360  0.3736961  0.3841573</span>
+<span class="co">#&gt;  0.3855966  0.3890834 -0.3877180</span>
 
 <span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.surv</span>
 <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>; <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># cencoring proportion</span>
-<span class="co">#&gt;    0 </span>
-<span class="co">#&gt; 0.51</span>
+<span class="co">#&gt;     0 </span>
+<span class="co">#&gt; 0.511</span>
 
 
 <span class="co"># jointly update</span>
