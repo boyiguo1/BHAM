@@ -13,8 +13,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -81,13 +81,37 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/index.html">Vignettes</a>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../reference/index.html">Functions</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Explaination Piece.html">Examine Prior Update</a>
+    </li>
+    <li>
+      <a href="../articles/Validate_bglm_spline.html">Untitled</a>
+    </li>
+    <li>
+      <a href="../articles/functional_selection.html">Functional Selection</a>
+    </li>
+    <li>
+      <a href="../articles/introduction.html">Introduction to BHAM</a>
+    </li>
+    <li>
+      <a href="../articles/pham.html">Cox Proportional Hazard Additive Model</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -136,17 +160,18 @@
     <p>a vector of string, containing the column names of the spline design matrix</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='va'>smth</span> <span class='op'>&lt;-</span> <span class='op'>(</span>
-  <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/smoothCon.html'>smoothCon</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>,
-            scale.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            absorb.cons <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            null.space.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,
-            diagonal.penalty <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='fu'>BHAM</span><span class='fu'>:::</span><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "x.pen1"  "x.pen2"  "x.pen3"  "x.pen4"  "x.pen5"  "x.pen6"  "x.pen7" 
-#&gt; [8] "x.pen8"  "x.null1"</div></pre>
+    <pre class="examples"><span class='r-in'> <span class='va'>smth</span> <span class='op'>&lt;-</span> <span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/smoothCon.html'>smoothCon</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='fu'>mgcv</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>            scale.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>            absorb.cons <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>            null.space.penalty <span class='op'>=</span> <span class='cn'>TRUE</span>,</span>
+<span class='r-in'>            diagonal.penalty <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>BHAM</span><span class='fu'>:::</span><span class='fu'>create_smooth_name</span><span class='op'>(</span><span class='va'>smth</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "x.pen1"  "x.pen2"  "x.pen3"  "x.pen4"  "x.pen5"  "x.pen6"  "x.pen7" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [8] "x.pen8"  "x.null1"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

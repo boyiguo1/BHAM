@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untitled • BHAM</title>
+<title>Cox Proportional Hazard Additive Model • BHAM</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Untitled">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Cox Proportional Hazard Additive Model">
 <meta property="og:description" content="BHAM">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -88,63 +88,63 @@
 
       
 
-      </header><script src="Validate_bglm_spline_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="pham_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Untitled</h1>
-                        <h4 class="author">Boyi Guo</h4>
+      <h1 data-toc-skip>Cox Proportional Hazard Additive Model</h1>
             
-            <h4 class="date">6/1/2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/master/vignettes/Validate_bglm_spline.Rmd"><code>vignettes/Validate_bglm_spline.Rmd</code></a></small>
-      <div class="hidden name"><code>Validate_bglm_spline.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/master/vignettes/pham.Rmd"><code>vignettes/pham.Rmd</code></a></small>
+      <div class="hidden name"><code>pham.Rmd</code></div>
 
     </div>
 
     
     
-<div id="test-if-marginal-fitting-is-similar" class="section level1">
-<h1 class="hasAnchor">
-<a href="#test-if-marginal-fitting-is-similar" class="anchor"></a>Test if marginal fitting is similar</h1>
-</div>
-<div id="simulate-desgin-matrix" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simulate-desgin-matrix" class="anchor"></a>Simulate desgin matrix</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># if(!requireNamespace(BhGLM))</span>
+<span class="co"># TODO: install BhGLM</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'BHAM'</span>
+<span class="co">#&gt; The following objects are masked from 'package:BhGLM':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     De, mde, mt, NegBin, Student</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></code></pre></div>
+<div id="construct-testing-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#construct-testing-data" class="anchor"></a>Construct Testing Data</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
 <span class="va">K</span> <span class="op">=</span> <span class="fl">10</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
 <span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
 <span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
-<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span>
+<span class="co">#&gt; [1]  5  7 10</span>
+<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="co"># simulate responses</span>
 <span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
+<span class="co">#&gt;         x5         x7        x10 </span>
+<span class="co">#&gt; -0.3950360  0.3736961  0.3841573</span>
 
-<span class="co"># y = yy$y.normal; fam = "gaussian"; y = scale(y)</span>
-<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.ordinal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"binomial"</span>
-<span class="co"># y = yy$y.surv; fam = "cox" </span>
-
-<span class="va">f1</span> <span class="op">=</span> <span class="fu">glmNet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, ncv <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> 
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">f1</span><span class="op">$</span><span class="va">lambda</span>, <span class="va">f1</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span>
-
-
-<span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu">bglm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># f3 &lt;- bglm(y ~ ., data= x, family = fam, prior = mt(df=Inf), group = 2)</span>
-<span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu">bglm</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="va">f4</span> <span class="op">&lt;-</span> <span class="fu">bglm_spline</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-<span class="va">f5</span> <span class="op">&lt;-</span> <span class="fu">bmlasso_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, group <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="va">f6</span> <span class="op">&lt;-</span> <span class="fu">bmlasso</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span> ,  family <span class="op">=</span> <span class="va">fam</span>, group <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-<span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">f2</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">f3</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">f4</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.surv</span>
+<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>; <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># cencoring proportion</span>
+<span class="co">#&gt;    0 </span>
+<span class="co">#&gt; 0.51</span>
 
 
-<span class="fu">df.adj</span><span class="op">(</span><span class="va">f2</span><span class="op">)</span>
-<span class="fu">df.adj</span><span class="op">(</span><span class="va">f3</span><span class="op">)</span>
-<span class="fu">df.adj</span><span class="op">(</span><span class="va">f4</span><span class="op">)</span></code></pre></div>
+<span class="co"># jointly update</span>
+<span class="co"># Compare with conventional and ridge Cox model</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, cex.axis <span class="op">=</span> <span class="fl">1</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="va">gap</span> <span class="op">=</span> <span class="fl">10</span>
+
+<span class="va">ps</span> <span class="op">=</span> <span class="fl">0.05</span>
+<span class="va">ss</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.5</span><span class="op">)</span> 
+<span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bcoxph.html">bcoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+
+
+<span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="../reference/bacoxph.html">bacoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
