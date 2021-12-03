@@ -80,6 +80,7 @@ cv.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TR
   group <- object$group
   if (!"gam" %in% class(object))
   {
+    stop("Please use the package `BhGLM`")
     if (any(class(object) %in% "glm"))
       out <- cv.gam.glm(object=object, nfolds=nfolds, foldid=foldid,
                         ncv=ncv, s0 = s0, group = group, verbose=verbose)
@@ -111,7 +112,7 @@ cv.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TR
 
     if (fam == "Cox PH")
       stop("Not implemented yet")
-      # out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, verbose=verbose)
+      out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, verbose=verbose)
   }
 
   stop.time <- Sys.time()
@@ -337,6 +338,79 @@ cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
   out$y.obs <- y.obj
   out$lp <- lp0
   if (any(class(object) %in% "GLM")) out$y.fitted <- y.fitted0
+  out$foldid <- foldid
+
+  out
+}
+
+
+
+cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group = group, verbose=TRUE)
+{
+  data.obj <- model.frame(object)
+  y.obj <- model.response(data.obj)
+  n <- NROW(y.obj)
+
+  fol <- generate.foldid(nobs=n, nfolds=nfolds, foldid=foldid, ncv=ncv)
+  foldid <- fol$foldid
+  nfolds <- fol$nfolds
+  ncv <- fol$ncv
+  measures0 <- lp0 <- NULL
+  j <- 0
+
+  if (!is.null(object$offset)) {
+    data.obj <- object$data
+    if (is.null(object$data)) stop("'data' not given in object")
+  }
+
+  prior <- object$prior
+  if(is.null(s0)) prior <- object$prior
+  else if(! prior$prior %in% c("mde", "mt")){
+    cat(prior$prior, "\n")
+    stop("Curernt function oes not support this prior family")
+  } else if(prior$prior ==  "mde") {
+    prior <- call("mde", s0 = s0) %>% eval
+  } else{
+    prior <- call("mt", df = prior$df, s0 = s0) %>% eval
+  }
+
+  if (verbose) cat("Fitting", "ncv*nfolds =", ncv*nfolds, "models: \n")
+  for (k in 1:ncv) {  # start outer for loop
+    lp <- rep(NA, n)
+
+    for (i in 1:nfolds) { # Start inner for loop
+      # subset1 <- rep(TRUE, n)
+      omit <- which(foldid[, k] == i)
+      # subset1[omit] <- FALSE
+      # TODO: need add other arguments
+      fit <- update(object, x=data.obj[-omit, ], y=y.obj[-omit], offset=offset[-omit],
+                    # init=init,
+                    prior = prior,
+                    verbose=FALSE, group = group)
+      lp[omit] <- predict(fit, newdata=data.obj[omit, , drop=FALSE])
+
+      if (verbose) {
+        j <- j + 1
+        cat(j, "")
+      }
+    } # End inner for loop
+
+    measures <- measure.cox(y.obj, lp)
+    measures0 <- rbind(measures0, measures)
+    lp0 <- cbind(lp0, lp)
+  }   # End outer for loop
+
+
+  # Prepare output
+  out <- list()
+  if (nrow(measures0) == 1) out$measures <- colMeans(measures0, na.rm = TRUE)
+  else {
+    out$measures <- rbind(colMeans(measures0, na.rm = TRUE), apply(measures0, 2, sd, na.rm = TRUE))
+    rownames(out$measures) <- c("mean", "sd")
+  }
+  out$measures <- round(out$measures, digits=3)
+  out$y.obs <- y.obj
+  out$lp <- lp0
   out$foldid <- foldid
 
   out
