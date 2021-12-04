@@ -15,18 +15,15 @@
 #'
 tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TRUE){
 
-  # browser()
   if(any(class(object) %in% "glm")){
     data.obj <- model.frame(object)
     y.obj <- model.response(data.obj)
   } else if(any(class(object) %in% "bmlasso")){
     y.obj <- object$y
   }  else if(any(class(object) %in% "coxph")){
-    stop("Not Implemented Yet")
-
+    y.obj <- model.response(model.frame(object))
   } else
     stop("Does not support")
-
 
 
   n <- NROW(y.obj)
@@ -34,8 +31,7 @@ tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=
 
 
   map_dfr(s0, .f = function(.s0, .mdl, .foldid){
-    # set.seed(1)
-    # browser()
+
     tmp <- call("cv.bgam", .mdl, s0 = .s0, foldid = .foldid) %>% eval
     if(ncol(.foldid)==1)
       tmp$measures %>% t() %>% data.frame
@@ -77,21 +73,20 @@ tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=
 cv.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TRUE)
 {
   start.time <- Sys.time()
-  group <- object$group
+  # browser()
+  .group <- object$group
   if (!"gam" %in% class(object))
   {
-    stop("Please use the package `BhGLM`")
     if (any(class(object) %in% "glm"))
       out <- cv.gam.glm(object=object, nfolds=nfolds, foldid=foldid,
-                        ncv=ncv, s0 = s0, group = group, verbose=verbose)
+                        ncv=ncv, s0 = s0, group = .group, verbose=verbose)
 
     if (any(class(object) %in% "coxph"))
-      stop("Not implemented yet")
-      # out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, verbose=verbose)
+      out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, group = .group, verbose=verbose)
 
     if (any(class(object) %in% "glmNet") | any(class(object) %in% "bmlasso"))
       out <- cv.gam.lasso(object=object, nfolds=nfolds, foldid=foldid,
-                          ncv=ncv, s0 = s0, group = group, verbose=verbose)
+                          ncv=ncv, s0 = s0, group = .group, verbose=verbose)
 
     if (any(class(object) %in% "polr"))
       stop("Not implemented yet")
@@ -107,12 +102,11 @@ cv.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TR
       stop("Cross-validation for this family has not been implemented yet")
     if (fam %in% gam.fam[1:6]){
       out <- cv.gam.glm(object=object, nfolds=nfolds, foldid=foldid,
-                        ncv=ncv, s0 = s0, group = group, verbose=verbose)
+                        ncv=ncv, s0 = s0, group = .group, verbose=verbose)
     }
 
-    if (fam == "Cox PH")
-      stop("Not implemented yet")
-      out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, verbose=verbose)
+    if (fam == "coxph")
+      out <- cv.gam.coxph(object=object, nfolds=nfolds, foldid=foldid, ncv=ncv, s0 = s0, group = .group, verbose=verbose)
   }
 
   stop.time <- Sys.time()
@@ -226,7 +220,7 @@ cv.gam.glm <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group 
     y.fitted0 <- cbind(y.fitted0, y.fitted)
 
   }
-  # browser()
+  #
   out <- list()
   if (nrow(measures0) == 1) out$measures <- colMeans(measures0, na.rm = TRUE)
   else {
@@ -274,7 +268,7 @@ cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
   measures0 <- lp0 <- y.fitted0 <- NULL
   j <- 0
 
-  # browser()
+  #
 
   if(is.null(s0)) ss <- object$ss
   # else if (is.list(prior)) {
@@ -357,7 +351,7 @@ cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
   ncv <- fol$ncv
   measures0 <- lp0 <- NULL
   j <- 0
-
+  #
   if (!is.null(object$offset)) {
     data.obj <- object$data
     if (is.null(object$data)) stop("'data' not given in object")
@@ -383,10 +377,12 @@ cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
       omit <- which(foldid[, k] == i)
       # subset1[omit] <- FALSE
       # TODO: need add other arguments
-      fit <- update(object, x=data.obj[-omit, ], y=y.obj[-omit], offset=offset[-omit],
+      # browser()
+
+      fit <- update(object, data=data.obj[-omit,], #x=data.obj[-omit, ], y=y.obj[-omit], #offset=offset[-omit],
                     # init=init,
-                    prior = prior,
-                    verbose=FALSE, group = group)
+                    prior = prior, group = group,
+                    verbose=FALSE)
       lp[omit] <- predict(fit, newdata=data.obj[omit, , drop=FALSE])
 
       if (verbose) {

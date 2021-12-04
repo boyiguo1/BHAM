@@ -49,4 +49,8 @@ f1 = bcoxph(y ~ ., data = x, prior = mde(0, ss[1], ss[2]))
 
 
 f2 = bacoxph(y ~ ., data = x, prior = mde(0, ss[1], ss[2]), group = 1)
+
+
+tune.bgam(f2, s0 = c(0.04, 0.05))
+
 ```
