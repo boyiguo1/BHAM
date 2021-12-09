@@ -341,8 +341,12 @@ cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
 
 cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group = group, verbose=TRUE)
 {
+  # browser()s
   data.obj <- model.frame(object)
+  # data.obj <- data.obj %>% select(-`Surv(time, status)`)
   y.obj <- model.response(data.obj)
+  data.obj <- data.obj %>% select(-starts_with("Surv(")) %>%
+    cbind(data.matrix(y.obj), .)
   n <- NROW(y.obj)
 
   fol <- generate.foldid(nobs=n, nfolds=nfolds, foldid=foldid, ncv=ncv)
