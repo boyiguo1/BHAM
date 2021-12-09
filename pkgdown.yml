@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   Explaination Piece: Explaination Piece.html
@@ -7,7 +7,7 @@ articles:
   functional_selection: functional_selection.html
   introduction: introduction.html
   pham: pham.html
-last_built: 2021-12-04T16:26Z
+last_built: 2021-12-09T18:02Z
 urls:
   reference: https://boyiguo1.github.io/BHAM/reference
   article: https://boyiguo1.github.io/BHAM/articles

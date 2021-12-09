@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BHAM</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9002</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/boyiguo1/BHAM/">
+  <a href="https://github.com/boyiguo1/BHAM/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -94,7 +90,7 @@
       <h1 data-toc-skip>Cox Proportional Hazard Additive Model</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/master/vignettes/pham.Rmd"><code>vignettes/pham.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/HEAD/vignettes/pham.Rmd" class="external-link"><code>vignettes/pham.Rmd</code></a></small>
       <div class="hidden name"><code>pham.Rmd</code></div>
 
     </div>
@@ -105,46 +101,58 @@
 <code class="sourceCode R"><span class="co"># if(!requireNamespace(BhGLM))</span>
 <span class="co"># TODO: install BhGLM</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BhGLM</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'BHAM'</span>
 <span class="co">#&gt; The following objects are masked from 'package:BhGLM':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     De, mde, mt, NegBin, Student</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></code></pre></div>
-<div id="construct-testing-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#construct-testing-data" class="anchor"></a>Construct Testing Data</h2>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="construct-testing-data">Construct Testing Data<a class="anchor" aria-label="anchor" href="#construct-testing-data"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
 <span class="va">K</span> <span class="op">=</span> <span class="fl">10</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
-<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
-<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
+<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
+<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
 <span class="co">#&gt; [1]  5  7 10</span>
 <span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="co"># simulate responses</span>
 <span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
 <span class="co">#&gt;         x5         x7        x10 </span>
-<span class="co">#&gt;  0.3762833  0.3765972 -0.3589720</span>
+<span class="co">#&gt;  0.3934350  0.3801829 -0.3785535</span>
 
 <span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.surv</span>
-<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>; <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># cencoring proportion</span>
+<span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>; <span class="va">d</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="co"># cencoring proportion</span>
 <span class="co">#&gt;     0 </span>
-<span class="co">#&gt; 0.529</span>
+<span class="co">#&gt; 0.481</span>
 
 
 <span class="co"># jointly update</span>
 <span class="co"># Compare with conventional and ridge Cox model</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, cex.axis <span class="op">=</span> <span class="fl">1</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, cex.axis <span class="op">=</span> <span class="fl">1</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="va">gap</span> <span class="op">=</span> <span class="fl">10</span>
 
 <span class="va">ps</span> <span class="op">=</span> <span class="fl">0.05</span>
-<span class="va">ss</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.5</span><span class="op">)</span> 
-<span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bcoxph.html">bcoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ss</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.5</span><span class="op">)</span> 
+<span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bcoxph.html" class="external-link">bcoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 
 
-<span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="../reference/bacoxph.html">bacoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="../reference/bacoxph.html">bacoxph</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">x</span>, prior <span class="op">=</span> <span class="fu">mde</span><span class="op">(</span><span class="fl">0</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">ss</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/tune.bgam.html">tune.bgam</a></span><span class="op">(</span><span class="va">f2</span>, s0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.05 minutes </span>
+<span class="co">#&gt; Fitting ncv*nfolds = 10 models: </span>
+<span class="co">#&gt; 1 2 3 4 5 6 7 8 9 10 </span>
+<span class="co">#&gt;  Cross-validation time: 0.046 minutes</span>
+<span class="co">#&gt;     s0 deviance Cindex</span>
+<span class="co">#&gt; 1 0.04 3108.077  0.997</span>
+<span class="co">#&gt; 2 0.05 2918.475  0.997</span></code></pre></div>
 </div>
   </div>
 
@@ -159,11 +167,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Boyi Guo, Nengjun Yi.</p>
+  <p></p>
+<p>Developed by Boyi Guo, Nengjun Yi.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -171,6 +181,8 @@
 
   
 
+
+  
 
   </body>
 </html>

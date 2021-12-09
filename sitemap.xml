@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/404.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/Explaination Piece.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/Validate_bglm_spline.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/functional_selection.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/articles/pham.html</loc>
+  </url>
+  <url>
+    <loc>https://boyiguo1.github.io/BHAM/authors.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/index.html</loc>
   </url>
   <url>
@@ -37,6 +67,9 @@
     <loc>https://boyiguo1.github.io/BHAM/reference/generate.foldid.html</loc>
   </url>
   <url>
+    <loc>https://boyiguo1.github.io/BHAM/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/make_group.html</loc>
   </url>
   <url>
@@ -53,20 +86,5 @@
   </url>
   <url>
     <loc>https://boyiguo1.github.io/BHAM/reference/tune.bgam.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/Explaination Piece.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/Validate_bglm_spline.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/functional_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>https://boyiguo1.github.io/BHAM/articles/pham.html</loc>
   </url>
 </urlset>
