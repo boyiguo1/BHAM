@@ -212,4 +212,9 @@ test_sm_dat <- BHAM::make_predict_dat(train_sm_dat$Smooth, dat = test_dat)
 bamlasso_raw_mdl <- bamlasso( x = train_smooth_data, y = Surv(train_dat$time, event = train_dat$status),
                               family = "cox", group = make_group(names(train_smooth_data)),
                               ss = c(0.04, 0.5))
-
+s0_seq <- seq(0.005, 0.1, length.out = 20)    # TODO: need to be optimized
+cv_res <- tune.bgam(bamlasso_raw_mdl, nfolds = 5, s0= s0_seq, verbose = FALSE)
+s0_min <- cv_res$s0[which.min(cv_res$deviance)]
+bamlasso_mdl <- bamlasso( x = train_smooth_data, y = Surv(train_dat$time, event = train_dat$status),
+                          family = "cox", group = make_group(names(train_smooth_data)),
+                          ss = c(s0_min, 0.5))
