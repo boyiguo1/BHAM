@@ -1,6 +1,6 @@
 library(tidyverse)
 library(mgcv)
-library(BHAM)
+# library(BHAM)
 library(BhGLM)
 library(survival)
 library(simsurv)
