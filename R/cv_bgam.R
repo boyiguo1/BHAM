@@ -355,8 +355,8 @@ cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
   ncv <- fol$ncv
   measures0 <- lp0 <- NULL
   j <- 0
-  #
-  if (!is.null(object$offset)) {
+  # browser()
+  if (!is.null(object$offset) && any(object$offset!=0)) {
     data.obj <- object$data
     if (is.null(object$data)) stop("'data' not given in object")
   }
