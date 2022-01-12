@@ -586,7 +586,7 @@ update.scale.p.group <- function(prior="mde", df=1, b0, ss, theta, group.vars)
       stop("More than one cofficients for linear parts. Not implemented yet.")
 
     if(length(vars.non.lnr)!=0){ #TODO(boyiguo1): Update p for the remaining part.
-      p[vars.non.lnr] <- (tmp_theta^2 * prod(den1[vars.non.lnr])) / (tmp_theta^2 * prod(den1[vars.non.lnr]) + ((1 - tmp_theta^2) * prod(den0[vars.non.lnr])) + 1e-10)
+      p[vars.non.lnr] <- (tmp_theta * prod(den1[vars.non.lnr])) / (tmp_theta * prod(den1[vars.non.lnr]) + ((1 - tmp_theta) * prod(den0[vars.non.lnr])) + 1e-10)
     }
   }
 
