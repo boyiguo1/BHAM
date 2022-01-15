@@ -21,10 +21,10 @@
 #'
 #' @examples
 bgam <- function (formula, family=gaussian, data, offset, weights, subset, na.action,
-                         start=NULL, etastart, mustart, control=stats::glm.control(epsilon=1e-04, maxit=50),
-                         prior=Student(), group=NULL, method.coef,
-                         theta.weights=NULL, inter.hierarchy=NULL, inter.parents=NULL,
-                         prior.sd=0.5, dispersion=1, Warning=FALSE, verbose=FALSE)
+                  start=NULL, etastart, mustart, control=stats::glm.control(epsilon=1e-04, maxit=50),
+                  prior=Student(), group=NULL, method.coef,
+                  theta.weights=NULL, inter.hierarchy=NULL, inter.parents=NULL,
+                  prior.sd=0.5, dispersion=1, Warning=FALSE, verbose=FALSE)
 {
   start.time <- Sys.time()
 
@@ -562,12 +562,36 @@ update.scale.p.group <- function(prior="mde", df=1, b0, ss, theta, group.vars)
   names(p) <- names(b0)
 
   for(j in 1:length(group.vars)){
+    # browser()
     vars <- group.vars[[j]]
     if(length(unique(theta[vars]))!=1)
       stop("Posterior Probability of indicator for a group should be the same")
     tmp_theta <- unique(theta[vars])
-    p[vars] <- tmp_theta * prod(den1[vars]) / (tmp_theta * prod(den1[vars]) + (1 - tmp_theta) * prod(den0[vars]) + 1e-10)
+
+    #TODO(boyiguo1): Isolate linear and non-linear using name
+    vars.lnr <- grep(pattern = ".null\\d+$", x = vars, value = TRUE)
+    vars.non.lnr <- grep(pattern = ".pen\\d+$", x = vars, value = TRUE)
+
+    # TODO(boyiguo1): Treating covariates as lnr terms
+    if(length(vars.lnr) + length(vars.non.lnr) == 0)
+      vars.lnr <- vars
+
+    if(length(vars.lnr) + length(vars.non.lnr) != length(vars) | length(vars.lnr) < 1)
+      stop("Not updating all components when updating p and scale")
+
+    #TODO(boyiguo1): Check how many linear cofficients: 1) one, update p 2) more than 1, stop ("not implemented)
+    if(length(vars.lnr) == 1){
+      p[vars.lnr] <-  tmp_theta * prod(den1[vars.lnr]) / (tmp_theta * prod(den1[vars.lnr]) + (1 - tmp_theta) * prod(den0[vars.lnr]) + 1e-10)
+    } else
+      stop("More than one cofficients for linear parts. Not implemented yet.")
+
+    if(length(vars.non.lnr)!=0){ #TODO(boyiguo1): Update p for the remaining part.
+      p[vars.non.lnr] <- (tmp_theta^2 * prod(den1[vars.non.lnr])) / (tmp_theta^2 * prod(den1[vars.non.lnr]) + ((1 - tmp_theta^2) * prod(den0[vars.non.lnr])) + 1e-10)
+    }
   }
+
+  if(any(is.na(p)))
+    stop("Failed to update p. NA values exist among p")
 
   scale <- 1/((1 - p)/ss[1] + p/ss[2] + 1e-10)
 

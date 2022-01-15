@@ -106,7 +106,7 @@ construct_smooth_data <- function(sm_df, dat){
 make_group <- function(.names,
                        penalize_null = TRUE,
                        # null_group = TRUE,
-                       shared_null = FALSE
+                       shared_null = TRUE
 ){
 
   # null_group & shared_null should not be set at TRUE at the same time
@@ -115,7 +115,7 @@ make_group <- function(.names,
     mutate(ind = as.numeric(.data$ind)) %>%
     {
       if(shared_null){
-        stop("Not Implemented yet")
+        # stop("Not Implemented yet")
         # TODO: need have this change reflected in the model and also passing onto the var_selection problem
         # TODO: idea:
         # TODO: 1. set this as an attribute of the output
@@ -123,6 +123,7 @@ make_group <- function(.names,
         group_by(., .data$var)
       }
       else{
+        # stop("Not Implemented yet. Does not support when lienar and non-linear have different theta")
         group_by(., .data$var, .data$part)
       }
     } %>%
