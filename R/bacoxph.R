@@ -277,6 +277,9 @@ bacoxph <- function (formula, data, weights, subset, na.action, init,
   fit$formula <- formula(Terms)
   if (length(xlevels) > 0) fit$xlevels <- xlevels
   fit$contrasts <- contr.save
+
+  # browser()
+
   if (any(offset != 0)) fit$offset <- offset
   fit$call <- Call
 
@@ -391,6 +394,7 @@ bacoxph.fit <- function(x, y, offset=rep(0, nobs), weights=rep(1, nobs), init=0,
         if (any(offset0 != 0))
           formula <- y ~ offset(offset0) + b.ridge(x, theta = 1/prior.sd^2, prior.mean = prior.mean) + strata(strats)
       }
+      # browser()
       fit <- coxph(formula = formula, init = init, weights = weights,
                    control = coxph.control(iter.max=1, outer.max=1), ties = ties, method = ties)
       init <- coefs.hat <- fit$coefficients
@@ -415,6 +419,10 @@ bacoxph.fit <- function(x, y, offset=rep(0, nobs), weights=rep(1, nobs), init=0,
           }
           fit <- coxph(formula = formula, init = init[vars], weights = weights,
                        control = coxph.control(iter.max=1, outer.max=1), ties = ties, method = ties)
+
+          # offset was updated due to the new internal formula, hence, need to change back
+          fit$offset <- offset0
+
           init[vars] <- coefs.hat[vars] <- fit$coefficients
           eta <- eta0 + x0 %*% coefs.hat[vars]
           means[vars] <- fit$means

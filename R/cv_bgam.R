@@ -315,8 +315,8 @@ cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
       y.fitted0 <- cbind(y.fitted0, y.fitted)
     }
     if (any(class(object) %in% "COXPH"))
-      stop("not implmented yet")
-      # measures <- measure.cox(y.obj, lp)
+      # stop("not implmented yet")
+      measures <- measure.cox(y.obj, lp)
 
     measures0 <- rbind(measures0, measures)
     lp0 <- cbind(lp0, lp)
@@ -355,8 +355,8 @@ cv.gam.coxph <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, grou
   ncv <- fol$ncv
   measures0 <- lp0 <- NULL
   j <- 0
-  #
-  if (!is.null(object$offset)) {
+  # browser()
+  if (!is.null(object$offset) && any(object$offset!=0)) {
     data.obj <- object$data
     if (is.null(object$data)) stop("'data' not given in object")
   }

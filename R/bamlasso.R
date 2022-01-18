@@ -178,7 +178,10 @@ bmlasso_spline.fit <- function(x, y, family="gaussian", offset=NULL, epsilon=1e-
 
   f$coefficients <- as.numeric(coef(f))
   names(f$coefficients) <- rownames(coef(f))
-  f$linear.predictors <- glmnet::predict.glmnet(f, newx = x, type = "link", offset = offset)
+
+  # browser()
+  # if("coxnet" %in% class(f)) f$linear.predictors <- predict(f, newx = x, type = "link", offset = offset)
+  f$linear.predictors <- predict(f, newx = x, type = "link", offset = offset)
   if (family == "gaussian")
     f$dispersion <- bgam(y ~ f$linear.predictors-1, start=1, prior=De(1,0), verbose=FALSE)$dispersion
 
