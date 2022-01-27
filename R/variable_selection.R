@@ -1,4 +1,12 @@
 generate_var_table <- function(var_vec){
+  # browser()
+
+  if(length(var_vec) == 0)
+    return(list(
+      `Parametric` = vector(),
+      `Non-parametric` = data.frame()
+    )
+    )
 
   # Find Non-parametric Variables
   non_par_idx <- grepl("((\\.null\\d*))|(\\.pen\\d*)$", var_vec)
@@ -6,22 +14,37 @@ generate_var_table <- function(var_vec){
   # Parametric Variables
   par_list <- var_vec[!non_par_idx]
 
-  # Non-parametric Variables
-  non_par_df <- var_vec[non_par_idx] %>%
-    # Form 3-by-2 table
-    unglue::unglue_data( "{var}.{part=pen|null}") %>%
-    mutate(ext = TRUE) %>%
-    reshape(direction = "wide",
-            idvar = "var", timevar = "part",
-            v.names = "ext") %>%
-    # Rename Table
-    transmute(
-      Variable = var,
-      Linear = replace(.data$ext.null, is.na(.data$ext.null), FALSE),
-      Nonlinear = replace(.data$ext.pen, is.na(.data$ext.pen), FALSE)
-    ) %>%
+  if(any(non_par_idx)){
+    # Non-parametric Variables
+    non_par_df <- var_vec[non_par_idx] %>%
+      # Form 3-by-2 table
+      unglue::unglue_data( "{var}.{part=pen|null}") %>%
+      mutate(ext = TRUE) %>%
+      reshape(
+        direction = "wide",
+        idvar = "var", timevar = "part",
+        v.names = "ext")
+
+
+    if(ncol(non_par_df)!=3){
+      if(!("ext.null" %in% names(non_par_df)))
+        non_par_df <- non_par_df %>% mutate( ext.null = NA)
+      if(!("ext.pen" %in% names(non_par_df)))
+        non_par_df <- non_par_df %>% mutate( ext.pen = NA)
+    }
+
+    # Rename Tablenon_par_df
+    non_par_df <- non_par_df %>%
+      transmute(
+        Variable = var,
+        Linear = replace(.data$ext.null, is.na(.data$ext.null), FALSE),
+        Nonlinear = replace(.data$ext.pen, is.na(.data$ext.pen), FALSE)
+      ) #%>%
     # Analytically Remove Functions without Linear components
-    filter(.data$Linear == TRUE)
+    #filter(.data$Linear == TRUE)
+  } else {
+    non_par_df <- data.frame()
+  }
 
   return(
     list(
