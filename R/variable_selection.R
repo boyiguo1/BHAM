@@ -4,7 +4,10 @@ generate_var_table <- function(var_vec){
   if(length(var_vec) == 0)
     return(list(
       `Parametric` = vector(),
-      `Non-parametric` = data.frame()
+      `Non-parametric` = data.frame(
+        Variable = character(),
+        Linear = logical(),
+        Nonlinear = logical())
     )
     )
 
@@ -43,7 +46,10 @@ generate_var_table <- function(var_vec){
     # Analytically Remove Functions without Linear components
     #filter(.data$Linear == TRUE)
   } else {
-    non_par_df <- data.frame()
+    non_par_df <- data.frame(
+      Variable = character(),
+      Linear = logical(),
+      Nonlinear = logical())
   }
 
   return(
