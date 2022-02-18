@@ -5,7 +5,7 @@
 \title{Create grouping for spline design matrix
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}`}
 \usage{
-make_group(.names, penalize_null = TRUE, shared_null = FALSE)
+make_group(.names, penalize_null = TRUE, shared_null = TRUE)
 }
 \arguments{
 \item{.names}{spline matrix names, always in the format "var_name.baseX". Directly from Construct_Smooth_Data

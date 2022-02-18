@@ -18,39 +18,6 @@ knitr::opts_chunk$set(
 # if(!requireNamespace(BhGLM))
 # TODO: install BhGLM
 
-library(BhGLM)
 library(BHAM)
 library(survival)
-```
-
-## Construct Testing Data
-
-```{r}
-N = 1000
-K = 10
-x = sim.x(n=N, m=K, corr=0.6) # simulate correlated continuous variables  
-h = rep(0.1, 4) # assign four non-zero main effects to have the assumed heritabilty 
-nz = as.integer(seq(5, K, by=K/length(h))); nz
-yy = sim.y(x=x[, nz], mu=0, herit=h, p.neg=0.5) # simulate responses
-yy$coefs
-
-y = yy$y.surv
-d = table(y[,2]); d[1]/sum(d) # cencoring proportion
-
-
-# jointly update
-# Compare with conventional and ridge Cox model
-par(mfrow = c(2, 2), cex.axis = 1, mar = c(3, 4, 4, 4))
-gap = 10
-
-ps = 0.05
-ss = c(0.04, 0.5) 
-f1 = bcoxph(y ~ ., data = x, prior = mde(0, ss[1], ss[2]))
-
-
-f2 = bacoxph(y ~ ., data = x, prior = mde(0, ss[1], ss[2]), group = 1)
-
-
-tune.bgam(f2, s0 = c(0.04, 0.05))
-
 ```
