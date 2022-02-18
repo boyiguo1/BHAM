@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Functional Selection • BHAM</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -40,31 +40,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/index.html">Vignettes</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Explaination%20Piece.html">Examine Prior Update</a>
-    </li>
-    <li>
-      <a href="../articles/Validate_bglm_spline.html">Untitled</a>
-    </li>
-    <li>
-      <a href="../articles/functional_selection.html">Functional Selection</a>
-    </li>
-    <li>
-      <a href="../articles/introduction.html">Introduction to BHAM</a>
-    </li>
-    <li>
-      <a href="../articles/pham.html">Cox Proportional Hazard Additive Model</a>
-    </li>
-  </ul>
+  <a href="../reference/index.html">Functions</a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -99,14 +81,22 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="hypothesis-testing">Hypothesis Testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
-</h2>
+<div class="section level3">
+<h3 id="bham-ssl-with-em-coordinate-descent">BHAM-SSL with EM-Coordinate Descent<a class="anchor" aria-label="anchor" href="#bham-ssl-with-em-coordinate-descent"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="bham-ssl-with-em-iterative-weighted-least-squares-algorithm">BHAM-SSL with EM-Iterative Weighted Least Squares Algorithm<a class="anchor" aria-label="anchor" href="#bham-ssl-with-em-iterative-weighted-least-squares-algorithm"></a>
+</h3>
+<div class="section level4">
+<h4 id="hypothesis-testing">Hypothesis Testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
+</h4>
 <p>The smoothing spline models are considered as penalized model, and hence, hypothesis testing of the regression coefficients becomes more complicated due to the shrinkage imposed on the coefficients. Similarly, when jointly testing more than one coefficients, for example testing the penalized part of a spline function, the degree of freedom is unclear. Defaulting to the number of coefficients will overestimate the degree of freedom, and hence introduce under-powered test. Using the well established concept “effective degree of freedom” can alleviate the problem, but introduce another one. When using Wald type of test, the test statistics follows a <span class="math inline">\(\chi^2\)</span> distribution with degree of freedom <span class="math inline">\(k\)</span>, where <span class="math inline">\(k\)</span> is a positive integer. However, this does not applied to the effective degree of freedom which is not necessarily an integer. Hence, establishing the limiting distribution of the test statistics becomes a new challenge.</p>
 <p>Overall, using hypothesis testing for function selection has two-fold challenges: first of all, establish the effective degree of freedom; secondly, find the sampling distribution of the test statistics.</p>
-<div class="section level3">
-<h3 id="effective-degree-of-freedom">Effective Degree of Freedom<a class="anchor" aria-label="anchor" href="#effective-degree-of-freedom"></a>
-</h3>
+</div>
+<div class="section level4">
+<h4 id="effective-degree-of-freedom">Effective Degree of Freedom<a class="anchor" aria-label="anchor" href="#effective-degree-of-freedom"></a>
+</h4>
 <p>Estimating effective degree of freedom (EDF) is a common problem encountered in complex models, such as penalized models and Bayesian hierarchical models. It is used to establish the complexity of a model. The problem of estimating EDF is well studied. Previous work on estimating EDF include. In our GAM model, we follow Wood (2017, PP. 252) to estimate EDF.</p>
 <p>The estimated EDF of a GAM model is <span class="math display">\[
 \tau = \text{tr}(2A-AA),
@@ -117,13 +107,13 @@ log(p(\beta_j|\gamma_j)) =
 \]</span></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="appendix">Appendix<a class="anchor" aria-label="anchor" href="#appendix"></a>
-</h2>
+<div class="section level3">
+<h3 id="appendix">Appendix<a class="anchor" aria-label="anchor" href="#appendix"></a>
+</h3>
 </div>
-<div class="section level1">
-<h1 id="test-matrix-trace-calcualtion">Test matrix trace calcualtion<a class="anchor" aria-label="anchor" href="#test-matrix-trace-calcualtion"></a>
-</h1>
+<div class="section level2">
+<h2 id="test-matrix-trace-calcualtion">Test matrix trace calcualtion<a class="anchor" aria-label="anchor" href="#test-matrix-trace-calcualtion"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
 <span class="va">p_1</span> <span class="op">&lt;-</span> <span class="fl">5</span>
@@ -164,7 +154,7 @@ log(p(\beta_j|\gamma_j)) =
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

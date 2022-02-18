@@ -66,33 +66,44 @@
 
       
 
-      </header><script src="introduction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="BHAM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to BHAM</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
-      <div class="hidden name"><code>introduction.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/boyiguo1/BHAM/blob/HEAD/vignettes/BHAM.Rmd" class="external-link"><code>vignettes/BHAM.Rmd</code></a></small>
+      <div class="hidden name"><code>BHAM.Rmd</code></div>
 
     </div>
 
     
     
-<div class="section level3">
-<h3 id="dependency">Dependency<a class="anchor" aria-label="anchor" href="#dependency"></a>
-</h3>
-<p>We use the spline functions and ancillary functions from the package <code>mgcv</code> to create spline data</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: nlme</span>
-<span class="co">#&gt; This is mgcv 1.8-38. For overview type 'help("mgcv-package")'.</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 </div>
-<div class="section level3">
-<h3 id="simulate-data">Simulate data<a class="anchor" aria-label="anchor" href="#simulate-data"></a>
-</h3>
-<p>We write a function that follows the data generating equation from Bai (citation). The outcome distribution could come from one of Gaussian, Poisson, or Binomial distributions. Please see (function link) here. Note here, the data output from the the simulation function is “raw” data. In order to have the final design matrix for analysis, you need to set up the spline functions of your preference via a data frame (see example in ), and use the function <code>construct_smooth_data</code>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<div class="section level4">
+<h4 id="dependency">Dependency<a class="anchor" aria-label="anchor" href="#dependency"></a>
+</h4>
+<p>We use the spline functions and ancillary functions from the package <code>mgcv</code> to create spline data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="simulate-data">Simulate data<a class="anchor" aria-label="anchor" href="#simulate-data"></a>
+</h4>
+<p>We write a function that follows the data generating equation from Bai (citation). The outcome distribution could come from one of Gaussian, Poisson, or Binomial distributions. Please see (function link) here. Note here, the data output from the the simulation function is “raw” data. In order to have the final design matrix for analysis, you need to set up the spline functions of your preference via a data frame (see example in ), and use the function <code>construct_smooth_data</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co">## simulate some data... </span>
 
 <span class="va">n_train</span> <span class="op">&lt;-</span> <span class="fl">500</span>
@@ -109,14 +120,14 @@
 <span class="va">test_dat</span> <span class="op">&lt;-</span> <span class="va">test_tmp</span><span class="op">$</span><span class="va">dat</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">data.frame</span>
 <span class="va">test_theta</span> <span class="op">&lt;-</span> <span class="va">test_tmp</span><span class="op">$</span><span class="va">theta</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="make-design-matrix">Make Design Matrix<a class="anchor" aria-label="anchor" href="#make-design-matrix"></a>
-</h3>
 <div class="section level4">
-<h4 id="set-up-spline-function">Set up Spline function<a class="anchor" aria-label="anchor" href="#set-up-spline-function"></a>
+<h4 id="make-design-matrix">Make Design Matrix<a class="anchor" aria-label="anchor" href="#make-design-matrix"></a>
 </h4>
+<div class="section level5">
+<h5 id="set-up-spline-function">Set up Spline function<a class="anchor" aria-label="anchor" href="#set-up-spline-function"></a>
+</h5>
 <p>Since our models are primarily designed for high-dimensional applications. Hence, we are mindful about how to formulate the regression equation. Our solution here is to use a data frame which contains the necessary components of a spline function, in the format of <code>Var</code> <code>Func</code>, <code>Args</code>, which later passed to a parser function, which will assemble the regression equation for you. We believe such automation process, implemented in <code>construct_smooth_data</code>, will ease the task load to set up the regression formula, when the number of spline components grows to tens or hundreds.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Low-dimensional setting</span>
 <span class="va">mgcv_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span>
     <span class="op">~</span><span class="va">Var</span>, <span class="op">~</span><span class="va">Func</span>, <span class="op">~</span><span class="va">Args</span>,
@@ -132,29 +143,29 @@
   Args <span class="op">=</span><span class="st">"bs='cr', k=7"</span>
 <span class="op">)</span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="make-design-matrix-1">Make Design Matrix<a class="anchor" aria-label="anchor" href="#make-design-matrix-1"></a>
-</h4>
+<div class="section level5">
+<h5 id="make-design-matrix-1">Make Design Matrix<a class="anchor" aria-label="anchor" href="#make-design-matrix-1"></a>
+</h5>
 <p>We use <code>smoothCon</code> from the package <code>mgcv</code> to construct the . Hence, our <code>construct_smooth_data</code> have the potential to work with user-defined spline functions as long as it follows <code>mgcv</code> standard.</p>
 <p>In our <code>construct_smooth_data</code>, we have taken multiple reparameterization steps via <code>smoothCon</code>: 1) linear constraints, 2) eigen decomposition of the smoothing matrix <span class="math inline">\(S\)</span> to isolate null and penalized spaces, 3) scaling of the design matrix to have unit variance for each column of the data set, i.e. bases of the design matrix.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">train_sm_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/construct_smooth_data.html">construct_smooth_data</a></span><span class="op">(</span><span class="va">mgcv_df</span>, <span class="va">dat</span><span class="op">)</span>
 <span class="va">train_smooth_data</span> <span class="op">&lt;-</span> <span class="va">train_sm_dat</span><span class="op">$</span><span class="va">data</span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="make-prediction-matrix">Make Prediction Matrix<a class="anchor" aria-label="anchor" href="#make-prediction-matrix"></a>
-</h4>
+<div class="section level5">
+<h5 id="make-prediction-matrix">Make Prediction Matrix<a class="anchor" aria-label="anchor" href="#make-prediction-matrix"></a>
+</h5>
 <p>Due to the reparameterization in the design matrix, it creates complication with setting up the design matrix for the test data. Hence, we write an wrapping function for <code>PredictMat</code> from <code>mgcv</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">train_smooth</span> <span class="op">&lt;-</span> <span class="va">train_sm_dat</span><span class="op">$</span><span class="va">Smooth</span>
 <span class="va">test_sm_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predict_dat.html">make_predict_dat</a></span><span class="op">(</span><span class="va">train_sm_dat</span><span class="op">$</span><span class="va">Smooth</span>, dat <span class="op">=</span> <span class="va">test_dat</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="fitting-the-model">Fitting the model<a class="anchor" aria-label="anchor" href="#fitting-the-model"></a>
-</h2>
+<div class="section level3">
+<h3 id="fitting-the-model">Fitting the model<a class="anchor" aria-label="anchor" href="#fitting-the-model"></a>
+</h3>
 <p>The model fitting function is similar to</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># </span>
 <span class="co"># lasso_mdl &lt;- cv.glmnet(train_smooth_data %&gt;% as.matrix, dat$y, family = "binomial")</span>
 <span class="co"># lasso_mdl &lt;- glmnet(train_smooth_data %&gt;% as.matrix, dat$y, family = "binomial", lambda=lasso_mdl$lambda.min)</span>
@@ -188,15 +199,15 @@
 <span class="co"># </span>
 <span class="co"># mdl2 &lt;- bamlasso(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="tuning-via-cross-validation">Tuning via Cross-validation<a class="anchor" aria-label="anchor" href="#tuning-via-cross-validation"></a>
-</h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># s0_seq &lt;- seq(0.005, 0.1, 0.01)</span></code></pre></div>
 <div class="section level3">
-<h3 id="bgam">bgam<a class="anchor" aria-label="anchor" href="#bgam"></a>
+<h3 id="tuning-via-cross-validation">Tuning via Cross-validation<a class="anchor" aria-label="anchor" href="#tuning-via-cross-validation"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">s0_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.005</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span><span class="op">)</span></code></pre></div>
+<div class="section level4">
+<h4 id="bgam">bgam<a class="anchor" aria-label="anchor" href="#bgam"></a>
+</h4>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cv.bgam.html">cv.bgam</a></span><span class="op">(</span><span class="va">mdl1</span><span class="op">)</span>
 <span class="co"># Validation</span>
@@ -214,10 +225,10 @@
 <span class="co"># .mdl = mdl1) %&gt;% </span>
 <span class="co">#   data.frame(s0 = s0_seq,.)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="bamlasso">bamlasso<a class="anchor" aria-label="anchor" href="#bamlasso"></a>
-</h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="bamlasso">bamlasso<a class="anchor" aria-label="anchor" href="#bamlasso"></a>
+</h4>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cv.bgam.html">cv.bgam</a></span><span class="op">(</span><span class="va">mdl2</span><span class="op">)</span>
 <span class="co"># set.seed(1)</span>
@@ -226,11 +237,11 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tune.bgam.html">tune.bgam</a></span><span class="op">(</span><span class="va">mdl2</span>, s0 <span class="op">=</span> <span class="va">s0_seq</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="cross-validation">Cross-validation<a class="anchor" aria-label="anchor" href="#cross-validation"></a>
-</h2>
+<div class="section level3">
+<h3 id="cross-validation">Cross-validation<a class="anchor" aria-label="anchor" href="#cross-validation"></a>
+</h3>
 <p>Many of the functionalities in the R package <code>BhGLM</code> can be directly applied to the <code>bgam</code> and <code>bamlasso</code> models, for example cross validations</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BhGLM"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"boyiguo1/BhGLM@spline"</span><span class="op">)</span>
@@ -238,22 +249,24 @@
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"pROC"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pROC"</span><span class="op">)</span>
 
 
-<span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/cv.bh.html" class="external-link">cv.bh</a></span><span class="op">(</span><span class="va">mdl1</span><span class="op">)</span></code></pre></div>
+<span class="fu">cv.bh</span><span class="op">(</span><span class="va">mdl1</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="model-results-summary">Model Results Summary<a class="anchor" aria-label="anchor" href="#model-results-summary"></a>
-</h2>
 <div class="section level3">
-<h3 id="functional-selection">Functional Selection<a class="anchor" aria-label="anchor" href="#functional-selection"></a>
+<h3 id="model-results-summary">Model Results Summary<a class="anchor" aria-label="anchor" href="#model-results-summary"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/df.adj.html" class="external-link">df.adj</a></span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/df.adj.html" class="external-link">df.adj</a></span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<div class="section level4">
+<h4 id="functional-selection">Functional Selection<a class="anchor" aria-label="anchor" href="#functional-selection"></a>
+</h4>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">df.adj</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu">df.adj</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x2[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x20[.]pen"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 
 
 <span class="fu">calculate_EDF</span><span class="op">(</span><span class="va">mdl1</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"x1[.]null"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_smooth_data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<p>=======</p>
+</div>
 </div>
 </div>
   </div>
