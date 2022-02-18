@@ -1,0 +1,210 @@
+---
+title: "Introduction to BHAM"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BHAM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BHAM)
+```
+
+
+# Overview
+
+
+# Installation
+
+
+# Usage
+
+### Dependency
+We use the spline functions and ancillary functions from the package `mgcv` to create spline data
+
+```{r}
+library(mgcv)
+```
+
+### Simulate data
+We write a function that follows the data generating equation from Bai (citation). The outcome distribution could come from one of Gaussian, Poisson, or Binomial distributions. Please see (function link) here. Note here, the data output from the the simulation function is "raw" data. In order to have the final design matrix for analysis, you need to set up the spline functions of your preference via a data frame (see example in ), and use the function `construct_smooth_data`.
+
+```{r}
+set.seed(1) ## simulate some data... 
+
+n_train <- 500
+n_test <- 1000
+p <- 10
+
+# Train Data
+train_dat <- sim_Bai(n_train, p)
+dat <- train_dat$dat %>% data.frame
+theta <- train_dat$theta
+
+# Test Data
+test_tmp <- sim_Bai(n_test, p)
+test_dat <- test_tmp$dat %>% data.frame
+test_theta <- test_tmp$theta
+```
+
+### Make Design Matrix
+#### Set up Spline function
+Since our models are primarily designed for high-dimensional applications. Hence, we are mindful about how to formulate the regression equation. Our solution here is to use a data frame which contains the necessary components of a spline function, in the format of `Var` `Func`, `Args`, which later passed to a parser function, which will assemble the regression equation for you. We believe such automation process, implemented in `construct_smooth_data`, will ease the task load to set up the regression formula, when the number of spline components grows to tens or hundreds.
+
+
+```{r}
+# Low-dimensional setting
+mgcv_df <- dplyr::tribble(
+    ~Var, ~Func, ~Args,
+    "X1",  "s",     "bs='cr', k=5",
+    "X2",  "s",     NA,
+    "X3",  "s",    "",
+  )
+
+# High-dimensional setting
+mgcv_df <- data.frame(
+  Var = setdiff(names(dat), "y"),
+  Func = "s",
+  Args ="bs='cr', k=7"
+)
+```
+
+#### Make Design Matrix
+We use `smoothCon` from the package `mgcv` to construct the . Hence, our `construct_smooth_data` have the potential to work with user-defined spline functions as long as it follows `mgcv` standard. 
+
+In our `construct_smooth_data`, we have taken multiple reparameterization steps via `smoothCon`: 1) linear constraints, 2) eigen decomposition of the smoothing matrix $S$ to isolate null and penalized spaces, 3) scaling of the design matrix to have unit variance for each column of the data set, i.e. bases of the design matrix.
+
+
+```{r}
+train_sm_dat <- construct_smooth_data(mgcv_df, dat)
+train_smooth_data <- train_sm_dat$data
+```
+
+
+
+
+#### Make Prediction Matrix
+Due to the reparameterization in the design matrix, it creates complication with setting up the design matrix for the test data. Hence, we write an wrapping function for `PredictMat` from `mgcv`.
+
+```{r}
+train_smooth <- train_sm_dat$Smooth
+test_sm_dat <- make_predict_dat(train_sm_dat$Smooth, dat = test_dat)
+```
+
+
+
+## Fitting the model
+The model fitting  function is similar to 
+
+```{r}
+# 
+# lasso_mdl <- cv.glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial")
+# lasso_mdl <- glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial", lambda=lasso_mdl$lambda.min)
+
+# mdl1 <- bglm_spline(y~.-y,
+#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
+
+# mdl1_margin <- bglm(y~.-y,
+#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
+# 
+# mdl1_scale <- bglm_spline(y~.-y,
+#          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
+# 
+
+
+
+
+# mdl1 <- bglm_spline(y~.-y,
+ mdl1 <- bgam(y~.-y,
+         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
+
+
+mdl1_scale <- bgam(y~.-y,
+         data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
+
+
+
+mdl3 <- bgam(y~.-y,
+         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data), penalize_null = FALSE))
+
+
+mdl2 <- bamlasso(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
+```
+## Tuning via Cross-validation
+```{r}
+s0_seq <- seq(0.005, 0.1, 0.01)
+```
+
+
+### bgam
+
+```{r}
+set.seed(1)
+tmp <- cv.bgam(mdl1)
+# Validation
+# set.seed(1)
+# tmp2 <- cv.bh(mdl1)
+
+res <- tune.bgam(mdl1, s0 = s0_seq)
+
+
+# res <- map_dfr(s0_seq, .f = function(.s0, .mdl){
+#  set.seed(1)
+#  tmp <- cv.bgam(.mdl, s0 = .s0) 
+#  tmp$measures %>% t() %>% data.frame 
+# },
+# .mdl = mdl1) %>% 
+#   data.frame(s0 = s0_seq,.)
+
+
+
+
+```
+
+### bamlasso
+```{r}
+set.seed(1)
+tmp <- cv.bgam(mdl2)
+# set.seed(1)
+# tmp2 <- cv.bh(mdl2)
+
+res <- tune.bgam(mdl2, s0 = s0_seq)
+
+```
+
+## Cross-validation
+
+Many of the functionalities in the R package `BhGLM` can be directly applied to the `bgam` and `bamlasso` models, for example cross validations
+
+```{r eval=F}
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools")
+library(devtools)
+if (!requireNamespace("BhGLM", quietly = TRUE)) install_github("boyiguo1/BhGLM@spline")
+library(BhGLM)
+if (!requireNamespace("pROC", quietly = TRUE)) install.packages("pROC")
+
+
+cv.bh(mdl1)
+```
+
+## Model Results Summary
+### Functional Selection
+
+```{r eval = F}
+df.adj(mdl1, names(train_smooth_data)[grep("x2[.]pen", names(train_smooth_data))])
+df.adj(mdl1, names(train_smooth_data)[grep("x20[.]pen", names(train_smooth_data))])
+calculate_EDF(mdl1, names(train_smooth_data)[grep("x2[.]pen", names(train_smooth_data))])
+calculate_EDF(mdl1, names(train_smooth_data)[grep("x20[.]pen", names(train_smooth_data))])
+
+
+calculate_EDF(mdl1, names(train_smooth_data)[grep("x1[.]null", names(train_smooth_data))])
+```
+=======

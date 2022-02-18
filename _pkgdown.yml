@@ -1,1 +1,31 @@
+template:
+  params:
+    bootswatch: cosmo
+
 url: https://boyiguo1.github.io/BHAM
+
+
+
+navbar:
+  title: "BHAM"
+  left:
+    - text: "Vignettes"
+      href: articles/index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+
+
+articles:
+  - title: "Getting Started"
+    desc: >
+       These vignettes demonstrate how to use various features of the **BHAM** package.
+    contents:
+      - BHAM
+      - comparison_BhGLM
+      - covariate_model
+      - functional_selection
+      - group_argument
+      - introduction
+      - model_assessment

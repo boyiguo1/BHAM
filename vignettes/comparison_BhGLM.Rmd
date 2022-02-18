@@ -1,8 +1,10 @@
 ---
-title: "Untitled"
-author: "Boyi Guo"
-date: "6/1/2021"
-output: html_document
+title: "Comparison with BhGLM"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{compare_to_BhGLM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
