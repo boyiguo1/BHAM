@@ -15,16 +15,34 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(BHAM)
-```
 
 
-# Overview
+
+# Introduction
+* What does this pacakge do?, what model does it fit. What is the model assumptions
+* What funcitons does this package include.
+* Why it is important
+* The theory and algorithms in this implementation are described xxx.
 
 
 # Installation
+To install the latest development version of `BHAM` package from **GitHub**, type the following command in R console:
 
+```r
+if (!require(devtools)) {
+  install.packages("devtools")
+}
+devtools::install_github("boyiguo1/BHAM", build_vignettes = FALSE)
+```
+
+You can also set `build_vignettes=TRUE` but this will slow down the installation drastically (the vignettes can always be accessed online anytime at [boyiguo1.github.io/BHAM/articles](https://boyiguo1.github.io/BHAM/articles)).
+
+# Quick Start
+In this section, we describe to the users the general sense of the package. We introduce how to 1) prepare the high-dimensional design matrix for fitting the proposed model, 2) fit generalized additive model and Cox proportional hazard additive model, 3) tune the model and assess the performance, and 4) visualize the bi-level variable selection.
+
+```{r setup}
+library(BHAM)
+```
 
 # Usage
 
@@ -110,31 +128,15 @@ The model fitting  function is similar to
 # lasso_mdl <- cv.glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial")
 # lasso_mdl <- glmnet(train_smooth_data %>% as.matrix, dat$y, family = "binomial", lambda=lasso_mdl$lambda.min)
 
-# mdl1 <- bglm_spline(y~.-y,
-#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
-
-# mdl1_margin <- bglm(y~.-y,
-#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
-# 
-# mdl1_scale <- bglm_spline(y~.-y,
-#          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data)))
-# 
-
-
-
-
-# mdl1 <- bglm_spline(y~.-y,
-#  mdl1 <- bgam(y~.-y,
-#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mde(), group = make_group(names(train_smooth_data)))
 # 
 # 
-# mdl1_scale <- bgam(y~.-y,
-#          data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
+mdl1_scale <- bgam(y~.-y,
+         data = data.frame(scale(train_smooth_data), y = dat$y), family = "binomial", prior =  mde(), group = make_group(names(train_smooth_data)))
 # 
 # 
 # 
-# mdl3 <- bgam(y~.-y,
-#          data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data), penalize_null = FALSE))
+mdl3 <- bgam(y~.-y,
+         data = data.frame(train_smooth_data, y = dat$y), family = "binomial", prior = mt(df=Inf), group = make_group(names(train_smooth_data), penalize_null = FALSE))
 # 
 # 
 # mdl2 <- bamlasso(x = train_smooth_data, y = dat$y, family = "binomial", group = make_group(names(train_smooth_data)))
