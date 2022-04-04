@@ -1,3 +1,7 @@
+# BHAM (development version 0.2.0.9000)
+## Add non-linear plotting functions
+* Currently implemented for bamlasso models, without error prevention mechanisms.
+
 # BHAM 0.2.0
 ## Model Change
 * Add hierarchical enforcement to the bi-level selection by imposing a dependency to the non-linear components inclusion indicator prior
