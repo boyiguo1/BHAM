@@ -11,9 +11,6 @@ plot_smooth_term(mdl, term, smooth, min, max, plot = TRUE)
 
 \item{terms}{a vector of characters containing the variable names}
 }
-\value{
-
-}
 \description{
 Plot non-linear functions for BHAM objects
 }

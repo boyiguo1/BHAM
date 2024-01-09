@@ -27,7 +27,7 @@ LazyData: true
 URL: https://boyiguo1.github.io/BHAM,
     https://github.com/boyiguo1/BHAM
 BugReports: https://github.com/boyiguo1/BHAM/issues
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     devtools,
     knitr,

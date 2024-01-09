@@ -9,12 +9,6 @@ cv.bgam(object, nfolds = 10, foldid = NULL, ncv = 1, s0 = NULL, verbose = TRUE)
 \arguments{
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Cross-validation & Tuning for \code{bgam} and \code{bamlasso}
-}
-\examples{
-
 }

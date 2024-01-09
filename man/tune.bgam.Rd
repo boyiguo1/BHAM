@@ -16,12 +16,6 @@ tune.bgam(
 \arguments{
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Title
-}
-\examples{
-
 }

@@ -9,9 +9,6 @@ generate.foldid(nobs, nfolds = 10, foldid = NULL, ncv = 1)
 \arguments{
 \item{ncv}{}
 }
-\value{
-
-}
 \description{
 Title
 }

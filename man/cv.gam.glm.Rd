@@ -17,9 +17,6 @@ cv.gam.glm(
 \arguments{
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Internal function for cross validation of bgam model
 }

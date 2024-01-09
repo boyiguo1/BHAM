@@ -17,9 +17,6 @@ cv.gam.lasso(
 \arguments{
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Title
 }
