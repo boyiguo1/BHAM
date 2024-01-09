@@ -56,40 +56,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">bacoxph</span><span class="op">(</span>
-  <span class="va">formula</span>,
-  <span class="va">data</span>,
-  <span class="va">weights</span>,
-  <span class="va">subset</span>,
-  <span class="va">na.action</span>,
-  <span class="va">init</span>,
-  control <span class="op">=</span> <span class="fu">coxph.control</span><span class="op">(</span>eps <span class="op">=</span> <span class="fl">1e-04</span>, iter.max <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,
-  ties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"breslow"</span>, <span class="st">"efron"</span><span class="op">)</span>,
-  <span class="va">tt</span>,
-  prior <span class="op">=</span> <span class="fu">Student</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>,
-  group <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">method.coef</span>,
-  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,
-  Warning <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bacoxph</span><span class="op">(</span></span>
+<span>  <span class="va">formula</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">weights</span>,</span>
+<span>  <span class="va">subset</span>,</span>
+<span>  <span class="va">na.action</span>,</span>
+<span>  <span class="va">init</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu">coxph.control</span><span class="op">(</span>eps <span class="op">=</span> <span class="fl">1e-04</span>, iter.max <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  ties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"breslow"</span>, <span class="st">"efron"</span><span class="op">)</span>,</span>
+<span>  <span class="va">tt</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu">Student</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">method.coef</span>,</span>
+<span>  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula, data, weights, subset, na.action, init, control, ties, tt</dt>
 <dd><p>These arguments are the same as in <code>coxph</code> in the package survival</p></dd>
+
+
 <dt>prior, group, method.coef, verbose</dt>
 <dd><p>These arguments are the same as in <code><a href="bgam.html">bgam</a></code></p></dd>
+
+
 <dt>...</dt>
 <dd></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function returns an object of class "coxph.penal" and "coxph", including all outputs from the function coxph and also results for the additional parameters in the hierarchical models.</p>
+    
+
+<p>This function returns an object of class "coxph.penal" and "coxph", including all outputs from the function coxph and also results for the additional parameters in the hierarchical models.</p>
     </div>
 
   </div>
@@ -104,7 +111,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

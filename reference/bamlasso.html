@@ -56,50 +56,70 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">bamlasso</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"binomial"</span>, <span class="st">"poisson"</span>, <span class="st">"cox"</span><span class="op">)</span>,
-  offset <span class="op">=</span> <span class="cn">NULL</span>,
-  epsilon <span class="op">=</span> <span class="fl">1e-04</span>,
-  maxit <span class="op">=</span> <span class="fl">50</span>,
-  init <span class="op">=</span> <span class="cn">NULL</span>,
-  alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
-  ss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.5</span><span class="op">)</span>,
-  b <span class="op">=</span> <span class="fl">1</span>,
-  group <span class="op">=</span> <span class="cn">NULL</span>,
-  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,
-  Warning <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bamlasso</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"binomial"</span>, <span class="st">"poisson"</span>, <span class="st">"cox"</span><span class="op">)</span>,</span>
+<span>  offset <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  epsilon <span class="op">=</span> <span class="fl">1e-04</span>,</span>
+<span>  maxit <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  init <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  ss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.04</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  b <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>input matrix, of dimension nobs x nvars; each row is an observation vector.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>response variable. Quantitative for family="gaussian", or family="poisson" (non-negative counts).
 For family="binomial", y should be either a factor with two levels, or a two-column matrix of counts or proportions (the second column is treated as the target class; for a factor, the last level in alphabetical order is the target class).
 For family="cox", y should be a two-column matrix with columns named 'time' and 'status'. The latter is a binary variable, with '1' indicating death, and '0' indicating right censored. The function Surv() in package <b>survival</b> produces such a matrix.</p></dd>
+
+
 <dt>family</dt>
 <dd><p>Response type (see above).</p></dd>
+
+
 <dt>offset</dt>
 <dd><p>A vector of length nobs that is included in the linear predictor.</p></dd>
+
+
 <dt>epsilon</dt>
 <dd><p>positive convergence tolerance e; the iterations converge when |dev - dev_old|/(|dev| + 0.1) &lt; e.</p></dd>
+
+
 <dt>maxit</dt>
 <dd><p>integer giving the maximal number of EM iterations.</p></dd>
+
+
 <dt>init</dt>
 <dd><p>vector of initial values for all coefficients (not for intercept). If not given, it will be internally produced.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p><code>alpha=1</code>: mixture double-exponential prior; <code>alpha=0</code>: mixture normal prior.</p></dd>
+
+
 <dt>ss</dt>
 <dd><p>a vector of two positive scale values (ss1 &lt; ss2) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.</p></dd>
+
+
 <dt>b</dt>
 <dd><p>group-specific inclusion probabilities follow beta(1,b). The tuning parameter <code>b</code> can be a vector of group-specific values.</p></dd>
+
+
 <dt>inter.parents</dt>
 <dd><p>a numeric vector, or an integer, or a list defining the groups of predictors.
 If <code>group = NULL</code>, all the predictors form a single group.
@@ -107,14 +127,21 @@ If <code>group = K</code>, the predictors are evenly divided into groups each wi
 If <code>group</code> is a numberic vector, it defines groups as follows: Group 1: <code>(group[1]+1):group[2]</code>, Group 2: <code>(group[2]+1):group[3]</code>, Group 3: <code>(group[3]+1):group[4]</code>, .....
 If <code>group</code> is a list of variable names, <code>group[[k]]</code> includes variables in the k-th group.
 The mixture prior is only used for grouped predictors. For ungrouped predictors, the prior is double-exponential or normal with scale <code>ss[2]</code> and mean 0.</p></dd>
+
+
 <dt>Warning</dt>
 <dd><p>logical. If <code>TRUE</code>, show the error messages of not convergence and identifiability.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical. If <code>TRUE</code>, print out number of iterations and computational time.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function returns all outputs from the function <code>glmnet</code>, and some other values used in Bayesian hierarchical models.</p>
+    
+
+<p>This function returns all outputs from the function <code>glmnet</code>, and some other values used in Bayesian hierarchical models.</p>
     </div>
 
   </div>
@@ -129,7 +156,7 @@ The mixture prior is only used for grouped predictors. For ungrouped predictors,
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

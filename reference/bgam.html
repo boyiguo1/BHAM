@@ -56,51 +56,66 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">bgam</span><span class="op">(</span>
-  <span class="va">formula</span>,
-  family <span class="op">=</span> <span class="va">gaussian</span>,
-  <span class="va">data</span>,
-  <span class="va">offset</span>,
-  <span class="va">weights</span>,
-  <span class="va">subset</span>,
-  <span class="va">na.action</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">etastart</span>,
-  <span class="va">mustart</span>,
-  control <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.control.html" class="external-link">glm.control</a></span><span class="op">(</span>epsilon <span class="op">=</span> <span class="fl">1e-04</span>, maxit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,
-  prior <span class="op">=</span> <span class="fu">Student</span><span class="op">(</span><span class="op">)</span>,
-  group <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">method.coef</span>,
-  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,
-  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,
-  prior.sd <span class="op">=</span> <span class="fl">0.5</span>,
-  dispersion <span class="op">=</span> <span class="fl">1</span>,
-  Warning <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bgam</span><span class="op">(</span></span>
+<span>  <span class="va">formula</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">gaussian</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">offset</span>,</span>
+<span>  <span class="va">weights</span>,</span>
+<span>  <span class="va">subset</span>,</span>
+<span>  <span class="va">na.action</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">etastart</span>,</span>
+<span>  <span class="va">mustart</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.control.html" class="external-link">glm.control</a></span><span class="op">(</span>epsilon <span class="op">=</span> <span class="fl">1e-04</span>, maxit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu">Student</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">method.coef</span>,</span>
+<span>  theta.weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.hierarchy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inter.parents <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prior.sd <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  dispersion <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  Warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula, data, offset, weights, subset, na.action, start, etastart, mustart, control</dt>
 <dd><p>These arguments are the same as in <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code></p></dd>
+
+
 <dt>family</dt>
 <dd><p>can be all the standard families defined in glm. also can be Negative Binomial (NegBin or "NegBin").</p></dd>
+
+
 <dt>prior</dt>
 <dd><p>Prior distribustions for the coefficents. Four types of priors can be used; Student-t: Student(mean, scale, df, autoscale) (default: mean=0, scale=0.5, df=1, autoscale=TRUE), Double-exponetial: De(mean, scale, autoscale) (default: mean=0, scale=0.5, autoscale=TRUE), mixture double-exponential: mde(mean, s0, s1, b), and mixture Student-t: mt(mean, s0, s1, df, b), s0 &lt; s1, default: mean=0, s0=0.04, s1=0.5, df=1, b=1. The mean, scale, df and b can be a vector. For example, scale = c(a1,a2,...,ak); if k &lt; the total number of predictors, it is internally expanded to c(a1,a2,...,ak, rep(ak,J-k)). If autoscale=TRUE, scale will be modified internally (see details).</p></dd>
+
+
 <dt>group</dt>
 <dd><p>a numeric vector, or an integer, or a list definining the groups of predictors. Only used for mde or mt priors. If group = NULL, all the predictors form a single group. If group = K, the predictors are evenly divided into groups each with K predictors. If group is a numberic vector, it defines groups as follows: Group 1: (group1+1):group2, Group 2: (group2+1):group3, Group 3: (group3+1):group4, ..... If group is a list of variable names, group[k] includes variables in the k-th group.</p></dd>
+
+
 <dt>method.coef</dt>
 <dd><p>jointly updating all coefficients or updating coefficients group by group. The default is jointly updating. If method.coef = NULL or method.coef is missing, jointly updating. If method.coef = K, update K coefficients at a time. method.coef can be a numeric vector or a list of variable names (as defined by group) that defines groups. If the number of coefficients is large, the group-by-group updating method can be much faster than the jointly updating.</p></dd>
+
+
 <dt>Warning</dt>
 <dd><p>logical. If TRUE, show the error messages of not convergence and identifiability.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical. If TRUE, print out number of iterations and computational time.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function returns an object of class "glm", including all outputs from the function <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code>, and also results for the additional parameters in the hierarchical models.</p>
+    
+
+<p>This function returns an object of class "glm", including all outputs from the function <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code>, and also results for the additional parameters in the hierarchical models.</p>
     </div>
 
   </div>
@@ -115,7 +130,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

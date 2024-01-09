@@ -66,7 +66,7 @@
 
       
 
-      </header><script src="functional_selection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Functional Selection</h1>
@@ -80,7 +80,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://boyiguo1.github.io/BHAM">BHAM</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="bham-ssl-with-em-coordinate-descent">BHAM-SSL with EM-Coordinate Descent<a class="anchor" aria-label="anchor" href="#bham-ssl-with-em-coordinate-descent"></a>
 </h3>
@@ -91,19 +91,42 @@
 <div class="section level4">
 <h4 id="hypothesis-testing">Hypothesis Testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
 </h4>
-<p>The smoothing spline models are considered as penalized model, and hence, hypothesis testing of the regression coefficients becomes more complicated due to the shrinkage imposed on the coefficients. Similarly, when jointly testing more than one coefficients, for example testing the penalized part of a spline function, the degree of freedom is unclear. Defaulting to the number of coefficients will overestimate the degree of freedom, and hence introduce under-powered test. Using the well established concept “effective degree of freedom” can alleviate the problem, but introduce another one. When using Wald type of test, the test statistics follows a <span class="math inline">\(\chi^2\)</span> distribution with degree of freedom <span class="math inline">\(k\)</span>, where <span class="math inline">\(k\)</span> is a positive integer. However, this does not applied to the effective degree of freedom which is not necessarily an integer. Hence, establishing the limiting distribution of the test statistics becomes a new challenge.</p>
-<p>Overall, using hypothesis testing for function selection has two-fold challenges: first of all, establish the effective degree of freedom; secondly, find the sampling distribution of the test statistics.</p>
+<p>The smoothing spline models are considered as penalized model, and
+hence, hypothesis testing of the regression coefficients becomes more
+complicated due to the shrinkage imposed on the coefficients. Similarly,
+when jointly testing more than one coefficients, for example testing the
+penalized part of a spline function, the degree of freedom is unclear.
+Defaulting to the number of coefficients will overestimate the degree of
+freedom, and hence introduce under-powered test. Using the well
+established concept “effective degree of freedom” can alleviate the
+problem, but introduce another one. When using Wald type of test, the
+test statistics follows a <span class="math inline">\(\chi^2\)</span>
+distribution with degree of freedom <span class="math inline">\(k\)</span>, where <span class="math inline">\(k\)</span> is a positive integer. However, this
+does not applied to the effective degree of freedom which is not
+necessarily an integer. Hence, establishing the limiting distribution of
+the test statistics becomes a new challenge.</p>
+<p>Overall, using hypothesis testing for function selection has two-fold
+challenges: first of all, establish the effective degree of freedom;
+secondly, find the sampling distribution of the test statistics.</p>
 </div>
 <div class="section level4">
 <h4 id="effective-degree-of-freedom">Effective Degree of Freedom<a class="anchor" aria-label="anchor" href="#effective-degree-of-freedom"></a>
 </h4>
-<p>Estimating effective degree of freedom (EDF) is a common problem encountered in complex models, such as penalized models and Bayesian hierarchical models. It is used to establish the complexity of a model. The problem of estimating EDF is well studied. Previous work on estimating EDF include. In our GAM model, we follow Wood (2017, PP. 252) to estimate EDF.</p>
+<p>Estimating effective degree of freedom (EDF) is a common problem
+encountered in complex models, such as penalized models and Bayesian
+hierarchical models. It is used to establish the complexity of a model.
+The problem of estimating EDF is well studied. Previous work on
+estimating EDF include. In our GAM model, we follow Wood (2017, PP. 252)
+to estimate EDF.</p>
 <p>The estimated EDF of a GAM model is <span class="math display">\[
 \tau = \text{tr}(2A-AA),
 \]</span> where A is <span class="math inline">\(X(X^TX+S_\lambda)^{-1}X^T\)</span> and <span class="math inline">\(S_\lambda = \sum_j \lambda_j S_j\)</span>.</p>
-<p>As our Bayesian model is not a penalized model, the penalty parameter <span class="math inline">\(\lambda_j\)</span> is not directly available, and hence needed to be estimate. Following our mixture normal model specification, we can write the SS prior as a <span class="math inline">\(l_2\)</span> penalty following Equation X</p>
+<p>As our Bayesian model is not a penalized model, the penalty parameter
+<span class="math inline">\(\lambda_j\)</span> is not directly
+available, and hence needed to be estimate. Following our mixture normal
+model specification, we can write the SS prior as a <span class="math inline">\(l_2\)</span> penalty following Equation X</p>
 <p><span class="math display">\[
-log(p(\beta_j|\gamma_j)) = 
+log(p(\beta_j|\gamma_j)) =
 \]</span></p>
 </div>
 </div>
@@ -115,25 +138,25 @@ log(p(\beta_j|\gamma_j)) =
 <h2 id="test-matrix-trace-calcualtion">Test matrix trace calcualtion<a class="anchor" aria-label="anchor" href="#test-matrix-trace-calcualtion"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-<span class="va">p_1</span> <span class="op">&lt;-</span> <span class="fl">5</span>
-<span class="va">p_2</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-
-
-<span class="va">x_1</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span>
-<span class="va">x_2</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x_1</span>, <span class="va">x_2</span><span class="op">)</span>
-
-<span class="va">A</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">+</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="va">A_1</span> <span class="op">&lt;-</span> <span class="va">x_1</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span>
-
-<span class="va">A_2</span> <span class="op">&lt;-</span> <span class="va">x_2</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span>
-
-<span class="va">tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="va">A</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tau_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A_1</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tau_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A_2</span><span class="op"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">%*%</a></span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="va">p_1</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="va">p_2</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span></span>
+<span></span>
+<span><span class="va">x_1</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">x_2</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html" class="external-link">mvrnorm</a></span><span class="op">(</span><span class="va">n</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p_2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x_1</span>, <span class="va">x_2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">A</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">+</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">A_1</span> <span class="op">&lt;-</span> <span class="va">x_1</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_1</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x_1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">A_2</span> <span class="op">&lt;-</span> <span class="va">x_2</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">p_2</span><span class="op">)</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">x_2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">A</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tau_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A_1</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">A_1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tau_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">A_2</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span><span class="va">A_2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -154,7 +177,7 @@ log(p(\beta_j|\gamma_j)) =
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

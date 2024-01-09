@@ -66,7 +66,7 @@
 
       
 
-      </header><script src="group_argument_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Understand <code>group</code> argument</h1>
@@ -82,178 +82,201 @@
 <div class="section level2">
 <h2 id="problem-statement">Problem Statement<a class="anchor" aria-label="anchor" href="#problem-statement"></a>
 </h2>
-<p>When I was studying for the problem of estimating effect degree of freedom, I dug down to the rabit hole and tried to understand more about the /regularization/shrinkage/penalty from a Bayesian hierarchical model, specifically spike-and-slab mixture normal distribution.</p>
-<p>To my understanding, we can write the mixture normal prior to a <span class="math inline">\(l_2\)</span> norm assuming the density (bernoulli(<span class="math inline">\(\pi\)</span>)) of the indicator variable and the scale parameter (s_0, s_1) are given. Specifically,</p>
+<p>When I was studying for the problem of estimating effect degree of
+freedom, I dug down to the rabit hole and tried to understand more about
+the /regularization/shrinkage/penalty from a Bayesian hierarchical
+model, specifically spike-and-slab mixture normal distribution.</p>
+<p>To my understanding, we can write the mixture normal prior to a <span class="math inline">\(l_2\)</span> norm assuming the density
+(bernoulli(<span class="math inline">\(\pi\)</span>)) of the indicator
+variable and the scale parameter (s_0, s_1) are given. Specifically,</p>
 <p><span class="math display">\[
 \lambda_{l_2} = \text{[TODO: add equation]},
-\]</span> where the regularization parameter <span class="math inline">\(\lambda\)</span> is in an inverse relationship with the scale parameter of (mixture) normal distribution. In the bglm function, the returning vector <code>prior.scale</code> should match to this penalty parameter. The function returns the regularization parameter <span class="math inline">\(\lambda\)</span> as well as <code>prior.scale</code> as an starting value for Bayesian hierarchical counterparts.</p>
+\]</span> where the regularization parameter <span class="math inline">\(\lambda\)</span> is in an inverse relationship
+with the scale parameter of (mixture) normal distribution. In the bglm
+function, the returning vector <code>prior.scale</code> should match to
+this penalty parameter. The function returns the regularization
+parameter <span class="math inline">\(\lambda\)</span> as well as
+<code>prior.scale</code> as an starting value for Bayesian hierarchical
+counterparts.</p>
 <div class="section level3">
 <h3 id="k100">K=100<a class="anchor" aria-label="anchor" href="#k100"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">K</span> <span class="op">=</span> <span class="fl">100</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
-<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
-<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
-<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span>
-<span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co"># y = yy$y.ordinal; fam = "binomial"</span>
-<span class="co"># y = yy$y.surv; fam = "cox" </span>
-
-<span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/glmNet.html" class="external-link">glmNet</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, ncv <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> 
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">f1</span><span class="op">$</span><span class="va">lambda</span>, <span class="va">f1</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">K</span> <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span></span>
+<span><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span></span>
+<span><span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span></span>
+<span><span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span></span>
+<span><span class="va">yy</span><span class="op">$</span><span class="va">coefs</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co"># y = yy$y.ordinal; fam = "binomial"</span></span>
+<span><span class="co"># y = yy$y.surv; fam = "cox" </span></span>
+<span></span>
+<span><span class="va">f1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/glmNet.html" class="external-link">glmNet</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, ncv <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">f1</span><span class="op">$</span><span class="va">lambda</span>, <span class="va">f1</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="k1000">K=1000<a class="anchor" aria-label="anchor" href="#k1000"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">K</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
-<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
-<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
-<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span>
-<span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co"># y = yy$y.ordinal; fam = "binomial"</span>
-<span class="co"># y = yy$y.surv; fam = "cox" </span>
-
-<span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/glmNet.html" class="external-link">glmNet</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, ncv <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> 
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">lambda</span>, <span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span></code></pre></div>
-<p>Via the example, we can see that lambda and prior.scale increase and decrease respectivelly when the number of predictors increase from 100 to 1000 while the number of effective predictors remains the same.</p>
-<p>To further explain <code>prior.scale</code>, when the effect is small, the prior.scale is small, and hence the shrinkage impose on the variable are large. On the contrary, prior.scale is large when the effect is large, and hence the shrinkage is small.</p>
+<code class="sourceCode R"><span><span class="va">K</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span></span>
+<span><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span></span>
+<span><span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span></span>
+<span><span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span></span>
+<span><span class="va">yy</span><span class="op">$</span><span class="va">coefs</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co"># y = yy$y.ordinal; fam = "binomial"</span></span>
+<span><span class="co"># y = yy$y.surv; fam = "cox" </span></span>
+<span></span>
+<span><span class="va">f2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/glmNet.html" class="external-link">glmNet</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="va">fam</span>, ncv <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">lambda</span>, <span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span></span></code></pre></div>
+<p>Via the example, we can see that lambda and prior.scale increase and
+decrease respectivelly when the number of predictors increase from 100
+to 1000 while the number of effective predictors remains the same.</p>
+<p>To further explain <code>prior.scale</code>, when the effect is
+small, the prior.scale is small, and hence the shrinkage impose on the
+variable are large. On the contrary, prior.scale is large when the
+effect is large, and hence the shrinkage is small.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="problem-2-how-does-the-group-statement-work-for-bglm">Problem 2: How does the group statement work for <code>bglm</code><a class="anchor" aria-label="anchor" href="#problem-2-how-does-the-group-statement-work-for-bglm"></a>
+<h2 id="problem-2-how-does-the-group-statement-work-for-bglm">Problem 2: How does the group statement work for
+<code>bglm</code><a class="anchor" aria-label="anchor" href="#problem-2-how-does-the-group-statement-work-for-bglm"></a>
 </h2>
 <div class="section level3">
-<h3 id="first-senario-i-am-grouping-each-predictors-together-vs-not-grouping">First Senario: I am grouping each predictors together VS not grouping<a class="anchor" aria-label="anchor" href="#first-senario-i-am-grouping-each-predictors-together-vs-not-grouping"></a>
+<h3 id="first-senario-i-am-grouping-each-predictors-together-vs-not-grouping">First Senario: I am grouping each predictors together VS not
+grouping<a class="anchor" aria-label="anchor" href="#first-senario-i-am-grouping-each-predictors-together-vs-not-grouping"></a>
 </h3>
-<p>In this part, I would like to analyze if grouping each individual predictors will change the prediction. I am hypothesizing it will not change by adding the grouping arguments</p>
+<p>In this part, I would like to analyze if grouping each individual
+predictors will change the prediction. I am hypothesizing it will not
+change by adding the grouping arguments</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">K</span> <span class="op">=</span> <span class="fl">100</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
-<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
-<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
-<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span>
-<span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co"># y = yy$y.ordinal; fam = "binomial"</span>
-<span class="co"># y = yy$y.surv; fam = "cox" </span>
-
-<span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">K</span> <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span></span>
+<span><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span></span>
+<span><span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span></span>
+<span><span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span></span>
+<span><span class="va">yy</span><span class="op">$</span><span class="va">coefs</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co"># y = yy$y.ordinal; fam = "binomial"</span></span>
+<span><span class="co"># y = yy$y.surv; fam = "cox" </span></span>
+<span></span>
+<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="coefficients">Coefficients<a class="anchor" aria-label="anchor" href="#coefficients"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="inclusion-probabilities">Inclusion Probabilities<a class="anchor" aria-label="anchor" href="#inclusion-probabilities"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">p</span>, <span class="va">f3</span><span class="op">$</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">p</span>, <span class="va">f3</span><span class="op">$</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="hyper-prior-for-inclusion-probability">Hyper Prior for inclusion probability<a class="anchor" aria-label="anchor" href="#hyper-prior-for-inclusion-probability"></a>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">ptheta</span>, <span class="va">f3</span><span class="op">$</span><span class="va">ptheta</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">ptheta</span>, <span class="va">f3</span><span class="op">$</span><span class="va">ptheta</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="scale">Scale<a class="anchor" aria-label="anchor" href="#scale"></a>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="prior-sd">Prior.sd<a class="anchor" aria-label="anchor" href="#prior-sd"></a>
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.sd</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.sd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.sd</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.sd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="second-scenario-variables-that-are-not-in-a-group-arguments">Second Scenario: Variables that are not in a group arguments<a class="anchor" aria-label="anchor" href="#second-scenario-variables-that-are-not-in-a-group-arguments"></a>
 </h3>
-<p>In this scenario, I would like to study the behaviour when some of the covariates are included in the model, but not included in a group argument. The main quesiton of mine is that if these covariates of adjustment will be penalized or not.</p>
+<p>In this scenario, I would like to study the behaviour when some of
+the covariates are included in the model, but not included in a group
+argument. The main quesiton of mine is that if these covariates of
+adjustment will be penalized or not.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span>
-<span class="va">K</span> <span class="op">=</span> <span class="fl">100</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span>
-<span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span>
-<span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span>
-<span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span>
-<span class="va">yy</span><span class="op">$</span><span class="va">coefs</span>
-
-<span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co"># y = yy$y.ordinal; fam = "binomial"</span>
-<span class="co"># y = yy$y.surv; fam = "cox" </span>
-
-
-<span class="co">## Screening</span>
-<span class="co"># feature_name &lt;- </span>
-<span class="co"># gam_screening_res &lt;- x %&gt;% </span>
-<span class="co">#   names() %&gt;% </span>
-<span class="co"># map_dfr(#feature_name[1:2],</span>
-<span class="co">#         .f = function(name, y, .dat){</span>
-<span class="co">#   # name &lt;- feature_name[1]</span>
-<span class="co">#   # y &lt;- .dat %&gt;% pull(death3yr)D</span>
-<span class="co">#   x &lt;- .dat %&gt;% pull({{name}})</span>
-<span class="co">#   mgcv::gam(y ~ s(x, bs = "cr", k = 10), family = gaussian(),</span>
-<span class="co">#             data = data.frame(x, y)) %&gt;% </span>
-<span class="co">#     broom::tidy() %&gt;% </span>
-<span class="co">#     filter(term == "s(x)") %&gt;% </span>
-<span class="co">#     select(p.value) %&gt;% </span>
-<span class="co">#     mutate(var = name,</span>
-<span class="co">#            p.value)</span>
-<span class="co">#   </span>
-<span class="co"># },</span>
-<span class="co">#   y = y,</span>
-<span class="co"># .dat = x)</span>
-<span class="co"># </span>
-<span class="co"># data.frame(</span>
-<span class="co"># gam_screening_res,</span>
-<span class="co"># p.adj = p.adjust(gam_screening_res$p.value, "BH")</span>
-<span class="co"># ) %&gt;% arrange(p.adj)</span>
-
-
-<span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="va">K</span>, <span class="op">~</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="va">K</span> <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">sim.x</span><span class="op">(</span>n<span class="op">=</span><span class="va">N</span>, m<span class="op">=</span><span class="va">K</span>, corr<span class="op">=</span><span class="fl">0.6</span><span class="op">)</span> <span class="co"># simulate correlated continuous variables  </span></span>
+<span><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># assign four non-zero main effects to have the assumed heritabilty </span></span>
+<span><span class="va">nz</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">K</span>, by<span class="op">=</span><span class="va">K</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>; <span class="va">nz</span></span>
+<span><span class="va">yy</span> <span class="op">=</span> <span class="fu">sim.y</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">[</span>, <span class="va">nz</span><span class="op">]</span>, mu<span class="op">=</span><span class="fl">0</span>, herit<span class="op">=</span><span class="va">h</span>, p.neg<span class="op">=</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">1.6</span><span class="op">)</span> <span class="co"># simulate responses</span></span>
+<span><span class="va">yy</span><span class="op">$</span><span class="va">coefs</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">=</span> <span class="va">yy</span><span class="op">$</span><span class="va">y.normal</span>; <span class="va">fam</span> <span class="op">=</span> <span class="st">"gaussian"</span>; <span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="co"># y = yy$y.ordinal; fam = "binomial"</span></span>
+<span><span class="co"># y = yy$y.surv; fam = "cox" </span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Screening</span></span>
+<span><span class="co"># feature_name &lt;- </span></span>
+<span><span class="co"># gam_screening_res &lt;- x %&gt;% </span></span>
+<span><span class="co">#   names() %&gt;% </span></span>
+<span><span class="co"># map_dfr(#feature_name[1:2],</span></span>
+<span><span class="co">#         .f = function(name, y, .dat){</span></span>
+<span><span class="co">#   # name &lt;- feature_name[1]</span></span>
+<span><span class="co">#   # y &lt;- .dat %&gt;% pull(death3yr)D</span></span>
+<span><span class="co">#   x &lt;- .dat %&gt;% pull({{name}})</span></span>
+<span><span class="co">#   mgcv::gam(y ~ s(x, bs = "cr", k = 10), family = gaussian(),</span></span>
+<span><span class="co">#             data = data.frame(x, y)) %&gt;% </span></span>
+<span><span class="co">#     broom::tidy() %&gt;% </span></span>
+<span><span class="co">#     filter(term == "s(x)") %&gt;% </span></span>
+<span><span class="co">#     select(p.value) %&gt;% </span></span>
+<span><span class="co">#     mutate(var = name,</span></span>
+<span><span class="co">#            p.value)</span></span>
+<span><span class="co">#   </span></span>
+<span><span class="co"># },</span></span>
+<span><span class="co">#   y = y,</span></span>
+<span><span class="co"># .dat = x)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># data.frame(</span></span>
+<span><span class="co"># gam_screening_res,</span></span>
+<span><span class="co"># p.adj = p.adjust(gam_screening_res$p.value, "BH")</span></span>
+<span><span class="co"># ) %&gt;% arrange(p.adj)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BhGLM/man/bglm.html" class="external-link">bglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span> <span class="va">x</span>, family <span class="op">=</span> <span class="va">fam</span>, prior <span class="op">=</span> <span class="fu">mt</span><span class="op">(</span>df<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span>, group <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="va">K</span>, <span class="op">~</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>What is wrong in this case? Why the warning messages?</p>
 <div class="section level4">
 <h4 id="inclusion-probabilities-1">Inclusion Probabilities<a class="anchor" aria-label="anchor" href="#inclusion-probabilities-1"></a>
 </h4>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">p</span>, <span class="va">f3</span><span class="op">$</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">p</span>, <span class="va">f3</span><span class="op">$</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="hyper-prior-for-inclusion-probability-1">Hyper Prior for inclusion probability<a class="anchor" aria-label="anchor" href="#hyper-prior-for-inclusion-probability-1"></a>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">ptheta</span>, <span class="va">f3</span><span class="op">$</span><span class="va">ptheta</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">ptheta</span>, <span class="va">f3</span><span class="op">$</span><span class="va">ptheta</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="scale-1">Scale<a class="anchor" aria-label="anchor" href="#scale-1"></a>
 </h4>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.scale</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.scale</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="prior-sd-1">Prior.sd<a class="anchor" aria-label="anchor" href="#prior-sd-1"></a>
 </h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.sd</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.sd</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="va">prior.sd</span>, <span class="va">f3</span><span class="op">$</span><span class="va">prior.sd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -276,7 +299,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
