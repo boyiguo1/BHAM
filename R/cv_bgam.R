@@ -1,11 +1,13 @@
-#' Title
+#' Cross-Validation for Bayesian Additive Hierarchical Models
+#'
+#' he function \code{\link[BhGLM]{cv.bh}} performs K-fold cross-validation and calculates cross-validated predictive measures for Bayesian hierarchical GLMs and Cox survival model, or for elastic net from the package \bold{glmnet}.
 #'
 #' @param object
 #' @param nfolds
 #' @param foldid
 #' @param ncv
 #' @param s0
-#' @param verbose
+#' @param verbose logical. If \code{TRUE}, print out the computational time and progress.
 #'
 #' @return
 #' @export
@@ -58,14 +60,7 @@ tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=
 
 #' Cross-validation & Tuning for `bgam` and `bamlasso`
 #'
-#' @param object
-#' @param nfolds
-#' @param foldid
-#' @param ncv
-#' @param s0
-#' @param verbose
-#'
-#' @return
+#' @rdname tune.bgam
 #' @export
 #'
 #' @examples
@@ -117,17 +112,8 @@ cv.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TR
   out
 }
 
+# Internal Functions ------------------------------------------------------
 
-#' Title
-#'
-#' @param nobs
-#' @param nfolds
-#' @param foldid
-#' @param ncv
-#'
-#' @return
-#'
-#' @examples
 generate.foldid <- function(nobs, nfolds=10, foldid=NULL, ncv=1)
 {
   if (nfolds > nobs) nfolds <- nobs
@@ -144,21 +130,6 @@ generate.foldid <- function(nobs, nfolds=10, foldid=NULL, ncv=1)
   list(foldid=foldid, nfolds=nfolds, ncv=ncv)
 }
 
-
-
-#' Internal function for cross validation of bgam model
-#'
-#' @param object
-#' @param nfolds
-#' @param foldid
-#' @param ncv
-#' @param s0
-#' @param group
-#' @param verbose
-#'
-#' @return
-#'
-#' @examples
 cv.gam.glm <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group = group, verbose=TRUE)
 {
   data.obj <- model.frame(object)
@@ -237,20 +208,6 @@ cv.gam.glm <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group 
 }
 
 
-
-#' Title
-#'
-#' @param object
-#' @param nfolds
-#' @param foldid
-#' @param ncv
-#' @param s0
-#' @param group
-#' @param verbose
-#'
-#' @return
-#'
-#' @examples
 cv.gam.lasso <- function(object, nfolds=10, foldid=NULL, ncv=1,  s0 = NULL, group = group, verbose=TRUE)
 {
   family <- object$family

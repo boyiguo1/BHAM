@@ -2,7 +2,8 @@
 % Please edit documentation in R/cv_bgam.R
 \name{tune.bgam}
 \alias{tune.bgam}
-\title{Title}
+\alias{cv.bgam}
+\title{Cross-Validation for Bayesian Additive Hierarchical Models}
 \usage{
 tune.bgam(
   object,
@@ -12,10 +13,12 @@ tune.bgam(
   s0 = NULL,
   verbose = TRUE
 )
+
+cv.bgam(object, nfolds = 10, foldid = NULL, ncv = 1, s0 = NULL, verbose = TRUE)
 }
 \arguments{
-\item{verbose}{}
+\item{verbose}{logical. If \code{TRUE}, print out the computational time and progress.}
 }
 \description{
-Title
+he function \code{\link[BhGLM]{cv.bh}} performs K-fold cross-validation and calculates cross-validated predictive measures for Bayesian hierarchical GLMs and Cox survival model, or for elastic net from the package \bold{glmnet}.
 }
