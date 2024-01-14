@@ -20,7 +20,16 @@ Maintainer@R: c(
            email = "boyiguo1992@gmail.com",
            comment = c(ORCID = "0000-0003-2950-2349"))
            )
-Description: TODO:: update thise section Functions for setting up and fitting various Bayesian hierarchical additive models, e.g. generalized additive model, additive Cox Model.
+Description: BHAM is a freely avaible R pakcage that implments Bayesian
+  hierarchical additive models for high-dimensional clinical and genomic data.
+  The package includes functions that generlized additive model, and Cox additive
+  model with the spike-and-slab LASSO prior. These functions implements scalable
+  and stable algorithms to estimate parameters. BHAM also provides utility
+  functions to construct additive models in high dimensional settings, 
+  select optimal models, summarize bi-level variable selection results, 
+  and visualize nonlinear effects. The package can facilitate flexible 
+  modeling of large-scale molecular data, i.e. detecting succeptable 
+  variables and inforing disease diagnostic and prognostic.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -34,7 +43,8 @@ Suggests:
     lifecycle,
     rmarkdown,
     testthat (>= 3.0.0),
-    tidyverse
+    tidyverse,
+    BhGLM
 VignetteBuilder: knitr
 Imports: 
     glue,
