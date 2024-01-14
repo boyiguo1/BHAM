@@ -5,11 +5,12 @@
 #' @param theta.weights
 #' @param inter.hierarchy
 #' @param inter.parents
-#' @param ...
+#' @param ... Reserved for future arguments.
 #'
 #' @return This function returns an object of class "coxph.penal" and "coxph", including all outputs from the function coxph and also results for the additional parameters in the hierarchical models.
 #' @export
 #'
+#' @importFrom stats terms
 
 #' @useDynLib BHAM Ccoxcount1
 #' @useDynLib BHAM Ccoxcount2

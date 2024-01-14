@@ -72,8 +72,8 @@ plot_smooth_term <- function(mdl, term, smooth, min, max,  plot = TRUE){
     if(plot){
       # Make ggplot
       ggplot2::ggplot(.dat) +
-        ggplot2::geom_smooth(ggplot2::aes(x = value, y = lp))+
-      ggplot2::geom_point(ggplot2::aes(x = value, y = lp), alpha = 0.5)
+        ggplot2::geom_smooth(ggplot2::aes(x = .data$value, y = .data$lp))+
+      ggplot2::geom_point(ggplot2::aes(x = .data$value, y = .data$lp), alpha = 0.5)
 
     } else {
       # return Variable value, linear predicrtors, and response scale

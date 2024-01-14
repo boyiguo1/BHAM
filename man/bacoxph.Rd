@@ -30,7 +30,7 @@ bacoxph(
 
 \item{prior, group, method.coef, verbose}{These arguments are the same as in \code{\link{bgam}}}
 
-\item{...}{}
+\item{...}{Reserved for future arguments.}
 }
 \value{
 This function returns an object of class "coxph.penal" and "coxph", including all outputs from the function coxph and also results for the additional parameters in the hierarchical models.

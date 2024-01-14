@@ -11,7 +11,7 @@
 #' @param maxit integer giving the maximal number of EM iterations.
 #' @param init  vector of initial values for all coefficients (not for intercept). If not given, it will be internally produced.
 #' @param alpha \code{alpha=1}: mixture double-exponential prior; \code{alpha=0}: mixture normal prior.
-#' @param ss  a vector of two positive scale values (ss[1] < ss[2]) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.
+#' @param ss  a vector of two positive scale values (ss\[1\] < ss\[2\]) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.
 #' @param b group-specific inclusion probabilities follow beta(1,b). The tuning parameter \code{b} can be a vector of group-specific values.
 #' @param group
 #' @param theta.weights

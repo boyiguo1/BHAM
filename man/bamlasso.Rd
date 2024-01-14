@@ -42,7 +42,7 @@ For family="cox", y should be a two-column matrix with columns named 'time' and 
 
 \item{alpha}{\code{alpha=1}: mixture double-exponential prior; \code{alpha=0}: mixture normal prior.}
 
-\item{ss}{a vector of two positive scale values (ss\link{1} < ss\link{2}) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.}
+\item{ss}{a vector of two positive scale values (ss[1] < ss[2]) for the spike-and-slab mixture prior, leading to different shrinkage on different predictors and allowing for incorporation of group information.}
 
 \item{b}{group-specific inclusion probabilities follow beta(1,b). The tuning parameter \code{b} can be a vector of group-specific values.}
 
