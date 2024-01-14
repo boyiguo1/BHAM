@@ -9,3 +9,5 @@
 ^R\NeedMoreWork\*$
 ^vignettes/Explaination Piece\.Rmd$
 ^vignettes/Validate_bglm_spline\.Rmd$
+^index.md$
+
