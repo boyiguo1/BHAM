@@ -7,6 +7,8 @@
 plot_smooth_term(mdl, term, smooth, min, max, plot = TRUE)
 }
 \arguments{
+\item{mdl}{a model fitted using bgam, banlasso or bacoxph}
+
 \item{plot}{a logic variable, indicating if ggplots are produced}
 
 \item{terms}{a vector of characters containing the variable names}
@@ -30,11 +32,6 @@ spl_df <- data.frame(
 train_sm_dat <- construct_smooth_data(spl_df, dat)
 train_smooth <- train_sm_dat$Smooth
 train_smooth_data <- train_sm_dat$data
-# Not implmented yet
-# mdl <- bgam(y~.-y,
-#             data = data.frame(train_smooth_data, y = y), family = "gaussian",
-#             prior = mde(), group = make_group(names(train_smooth_data))
-#             )
 mdl <-bamlasso(x = train_smooth_data, y = y, family = "gaussian",
                group = make_group(names(train_smooth_data)))
 plot_smooth_term(mdl, "X3", train_smooth, min = min(x[,"X3"])-0.1, max = max(x[,"X3"]) + 0.1)

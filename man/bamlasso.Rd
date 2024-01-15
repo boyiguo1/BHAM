@@ -46,6 +46,12 @@ For family="cox", y should be a two-column matrix with columns named 'time' and 
 
 \item{b}{group-specific inclusion probabilities follow beta(1,b). The tuning parameter \code{b} can be a vector of group-specific values.}
 
+\item{group}{a numeric vector, or an integer, or a list defining the groups of predictors. Only used for mde or mt priors. If group = NULL, all the predictors form a single group. If group = K, the predictors are evenly divided into groups each with K predictors. If group is a numberic vector, it defines groups as follows: Group 1: (group[1]+1):group[2], Group 2: (group[2]+1):group[3], Group 3: (group[3]+1):group[4], ..... If group is a list of variable names, group[[k]] includes variables in the k-th group.}
+
+\item{theta.weights}{Optional weights for the dispersion parameter.}
+
+\item{inter.hierarchy}{Optional specification for hierarchical interaction terms.}
+
 \item{inter.parents}{a numeric vector, or an integer, or a list defining the groups of predictors.
 If \code{group = NULL}, all the predictors form a single group.
 If \code{group = K}, the predictors are evenly divided into groups each with \code{K} predictors.

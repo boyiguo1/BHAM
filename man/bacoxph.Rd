@@ -28,7 +28,7 @@ bacoxph(
 \arguments{
 \item{formula, data, weights, subset, na.action, init, control, ties, tt}{These arguments are the same as in \code{\link{coxph}} in the package survival}
 
-\item{prior, group, method.coef, verbose}{These arguments are the same as in \code{\link{bgam}}}
+\item{prior, group, method.coef, verbose, theta.weights, inter.hierarchy, inter.parents}{These arguments are the same as in \code{\link{bgam}}}
 
 \item{...}{Reserved for future arguments.}
 }

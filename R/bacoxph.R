@@ -1,10 +1,7 @@
 #' Cox additive model
 #'
 #' @param formula,data,weights,subset,na.action,init,control,ties,tt These arguments are the same as in \code{\link{coxph}} in the package survival
-#' @param prior,group,method.coef,verbose These arguments are the same as in \code{\link{bgam}}
-#' @param theta.weights
-#' @param inter.hierarchy
-#' @param inter.parents
+#' @param prior,group,method.coef,verbose,theta.weights,inter.hierarchy,inter.parents These arguments are the same as in \code{\link{bgam}}
 #' @param ... Reserved for future arguments.
 #'
 #' @return This function returns an object of class "coxph.penal" and "coxph", including all outputs from the function coxph and also results for the additional parameters in the hierarchical models.
