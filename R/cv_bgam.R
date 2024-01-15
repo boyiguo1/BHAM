@@ -1,20 +1,20 @@
-#' Cross-Validation for Bayesian Additive Hierarchical Models
+#' Cross-Validation for Bayesian Hierarchical Additive Models
 #'
-#' he function \code{\link[BhGLM]{cv.bh}} performs K-fold cross-validation and calculates cross-validated predictive measures for Bayesian hierarchical GLMs and Cox survival model, or for elastic net from the package \bold{glmnet}.
+#' These functions perform K-fold cross-validation and calculates cross-validated
+#'  predictive measures or Bayesian hierarchical additive models and additive
+#'  Cox PH models.
 #'
-#' @param object
-#' @param nfolds
-#' @param foldid
-#' @param ncv
-#' @param s0
-#' @param verbose logical. If \code{TRUE}, print out the computational time and progress.
+#' @param object A model fitted using bgam, banlasso or bacoxph to be cross-validated.
+#' @param nfolds Number of folds for cross-validation (default is 10).
+#' @param foldid Optional vector specifying fold assignments. If provided, nfolds will be ignored.
+#' @param ncv Number of cross-validation runs (default is 1).
+#' @param s0 Smoothing parameter (NULL by default).
+#' @param verbose If TRUE, progress information is displayed (default is TRUE).
 #'
-#' @return
+#' @return An object containing the cross-validated results.
 #' @export
-#'
-#'
 #' @examples
-#'
+
 tune.bgam <- function(object, nfolds=10, foldid=NULL, ncv=1, s0 = NULL, verbose=TRUE){
 
   if(any(class(object) %in% "glm")){

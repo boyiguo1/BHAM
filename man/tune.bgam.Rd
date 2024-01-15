@@ -3,7 +3,7 @@
 \name{tune.bgam}
 \alias{tune.bgam}
 \alias{cv.bgam}
-\title{Cross-Validation for Bayesian Additive Hierarchical Models}
+\title{Cross-Validation for Bayesian Hierarchical Additive Models}
 \usage{
 tune.bgam(
   object,
@@ -17,8 +17,23 @@ tune.bgam(
 cv.bgam(object, nfolds = 10, foldid = NULL, ncv = 1, s0 = NULL, verbose = TRUE)
 }
 \arguments{
-\item{verbose}{logical. If \code{TRUE}, print out the computational time and progress.}
+\item{object}{A model fitted using bgam, banlasso or bacoxph to be cross-validated.}
+
+\item{nfolds}{Number of folds for cross-validation (default is 10).}
+
+\item{foldid}{Optional vector specifying fold assignments. If provided, nfolds will be ignored.}
+
+\item{ncv}{Number of cross-validation runs (default is 1).}
+
+\item{s0}{Smoothing parameter (NULL by default).}
+
+\item{verbose}{If TRUE, progress information is displayed (default is TRUE).}
+}
+\value{
+An object containing the cross-validated results.
 }
 \description{
-he function \code{\link[BhGLM]{cv.bh}} performs K-fold cross-validation and calculates cross-validated predictive measures for Bayesian hierarchical GLMs and Cox survival model, or for elastic net from the package \bold{glmnet}.
+These functions perform K-fold cross-validation and calculates cross-validated
+predictive measures or Bayesian hierarchical additive models and additive
+Cox PH models.
 }
