@@ -43,8 +43,7 @@ Suggests:
     lifecycle,
     rmarkdown,
     testthat (>= 3.0.0),
-    tidyverse,
-    BhGLM
+    tidyverse
 VignetteBuilder: knitr
 Imports: 
     glue,
